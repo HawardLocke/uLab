@@ -84,7 +84,7 @@ namespace Locke
 			if (poolGameObjectRoot == null)
 			{
 				poolGameObjectRoot = new GameObject("PoolRoot");
-				DontDestroyOnLoad(poolGameObjectRoot);
+				poolGameObjectRoot.transform.localPosition = new Vector3(0, -5000, 0);
 			}
 
 			PoolInfo poolInfo = null;
@@ -111,6 +111,9 @@ namespace Locke
 
 		private void OnGet(GameObject go, ObjectInfo objectInfo)
 		{
+			go.SetActive(true);
+			go.transform.parent = null;
+
 			ObjectType objectType = objectInfo.objectType;
 			switch (objectType)
 			{
@@ -127,6 +130,9 @@ namespace Locke
 
 		private void OnPut(GameObject go, ObjectInfo objectInfo)
 		{
+			go.SetActive(false);
+			go.transform.parent = poolGameObjectRoot.transform;
+
 			ObjectType objectType = objectInfo.objectType;
 			switch (objectType)
 			{
