@@ -59,8 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Common\Log.cs" />
+    <Compile Include="Assets\Scripts\Common\RuntimeStatus.cs" />
     <Compile Include="Assets\Scripts\Common\Singleton.cs" />
+    <Compile Include="Assets\Scripts\MagicBox.cs" />
     <Compile Include="Assets\Scripts\ResourceManager\ObjectPool.cs" />
+    <Compile Include="Assets\Scripts\ResourceManager\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\TestObjectPool.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>
