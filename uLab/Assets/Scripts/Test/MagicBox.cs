@@ -6,7 +6,7 @@ using Locke;
 
 public class MagicBox : MonoBehaviour
 {
-	private static GameObject prefab;
+	private static GameObject prefab = null;
 	private float scale = 0.5f;
 
 	[System.NonSerialized]
@@ -26,7 +26,6 @@ public class MagicBox : MonoBehaviour
 		if (size < 1.0f / Mathf.Pow(2, recursive-1))
 			return;
 
-		var pos = transform.localPosition;
 		float offset = 0.5f + transform.localScale.x * 0.25f;
 		Vector3[] childrenPos = new Vector3[6] { 
 				new Vector3(0, offset, 0), 

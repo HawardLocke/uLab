@@ -1,19 +1,30 @@
 
 
 using System.Data;
+using System.IO;
 
 using UnityEngine;
 using UnityEditor;
+
+using Excel;
 
 using Locke;
 
 
 public class Xlsx_To_X
 {
-	[MenuItem("Locke_Tools/Excel/xlsx_to_txt")]
+
+	private static string xlsxPath = Application.dataPath + "/Xlsx/";
+	private static string txtPath = Application.dataPath + "/Resources/Template/";
+	private static string csPath = Application.dataPath + "/Scripts/Template/auto/";
+
+
+	[MenuItem("Locke_Tools/Excel/xlsx -> txt")]
 	static void xlsx_to_txt()
 	{
-		string targetPath = Application.dataPath + "/Resources/Template/";
+		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+		watch.Start();
+
 		Object[] selectedObjects = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
 		if (selectedObjects.Length == 0)
 			Debug.LogError("u should select at least one .xlsx file.");
@@ -21,34 +32,26 @@ public class Xlsx_To_X
 		{
 			Object obj = selectedObjects[i] as Object;
 
-			string fileName = obj.name;
-			string filePath = Application.dataPath + "/" + fileName + ".xlsx";
-			//Debug.Log("begin "+filePath);
-
-			DataSet dataSet = XlsxReader.Instance.Read(filePath);
-			string txt = _to_txt(dataSet.Tables[0]);
-
-			string targetFile = targetPath + fileName + ".txt";
-			//Debug.Log("targetFile " + targetFile);
-			System.IO.StreamWriter streamwriter = new System.IO.StreamWriter(targetFile, false);
+			var sheetData = XlsxReader.Instance.AsStringArray(xlsxPath + obj.name + ".xlsx");
+			string txt = _to_txt(sheetData);
+			System.IO.StreamWriter streamwriter = new System.IO.StreamWriter(txtPath + obj.name + ".txt", false);
 			streamwriter.Write(txt);
 			streamwriter.Flush();
 			streamwriter.Close();
-
-			/*int columns = dataSet.Tables[0].Columns.Count;
-			int rows = dataSet.Tables[0].Rows.Count;
-			for (int i = 0; i < rows; i++)
-				for (int j = 0; j < columns; j++)
-					string nvalue = dataSet.Tables[0].Rows[i][j].ToString();*/
 		}
 
+		watch.Stop();
+
+		Debug.Log(string.Format("xlsx -> txt done, {0} files converted. cost {1} ms.", selectedObjects.Length, watch.ElapsedMilliseconds.ToString()));
 	}
 
 
-	[MenuItem("Locke_Tools/Excel/xlsx_to_cs")]
+	[MenuItem("Locke_Tools/Excel/xlsx -> cs")]
 	static void xlsx_to_cs()
 	{
-		string targetPath = Application.dataPath + "/Scripts/Template/auto/";
+		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+		watch.Start();
+
 		Object[] selectedObjects = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
 		if (selectedObjects.Length == 0)
 			Debug.LogError("u should select at least one .xlsx file.");
@@ -56,33 +59,34 @@ public class Xlsx_To_X
 		{
 			Object obj = selectedObjects[i] as Object;
 
-			string fileName = obj.name;
-			string filePath = Application.dataPath + "/" + fileName + ".xlsx";
-			//Debug.Log("begin " + filePath);
-
-			DataSet dataSet = XlsxReader.Instance.Read(filePath);
-			string txt = _to_cs(dataSet.Tables[0], fileName);
-
-			string targetFile = targetPath + fileName + "_Data.cs";
-			//Debug.Log("targetFile " + targetFile);
-			System.IO.StreamWriter streamwriter = new System.IO.StreamWriter(targetFile, false);
+			var sheetData = XlsxReader.Instance.AsStringArray(xlsxPath + obj.name + ".xlsx");
+			string txt = _to_cs(sheetData, obj.name);
+			System.IO.StreamWriter streamwriter = new System.IO.StreamWriter(csPath + obj.name + "_Data.cs", false);
 			streamwriter.Write(txt);
 			streamwriter.Flush();
 			streamwriter.Close();
 		}
+
+		watch.Stop();
+
+		Debug.Log(string.Format("xlsx -> cs done, {0} files converted. cost {1} ms.", selectedObjects.Length, watch.ElapsedMilliseconds));
 	}
 
-	private static string _to_txt(DataTable dataTable)
+	#region _functions
+
+	private static string _to_txt(XlsxReader.SheetData sheetData)
 	{
 		try
 		{
-			int columnCount = dataTable.Columns.Count;
+			int rowCount = sheetData.rowCount;
+			int columnCount = sheetData.columnCount;
+			
 			System.Text.StringBuilder convertedString = new System.Text.StringBuilder();
-			foreach (DataRow row in dataTable.Rows)
+			for (int row = 0; row < rowCount; ++row)
 			{
 				for (int col = 0; col < columnCount; ++col)
 				{
-					string cellText = row[col].ToString().Replace("\n", "\\n");
+					string cellText = sheetData.At(row, col).Replace("\n", "\\n");
 					convertedString.Append(cellText);
 					if (col != columnCount - 1)
 						convertedString.Append("\t");
@@ -101,7 +105,7 @@ public class Xlsx_To_X
 	}
 
 
-	private static string _to_cs(DataTable dataTable, string fileName)
+	private static string _to_cs(XlsxReader.SheetData sheetData, string fileName)
 	{
 		try
 		{
@@ -115,20 +119,20 @@ public class Xlsx_To_X
 			csFile += "\tpublic class " + fileName + "_Data : IData" + "\n";
 			csFile += "\t" + "{" + "\n";
 
-			int columnCount = dataTable.Columns.Count;
+			int columnCount = sheetData.columnCount;
 
 			// get variable names from 1st row.
 			string[] variableName = new string[columnCount];
 			for (int col = 0; col < columnCount; col++)
 			{
-				variableName[col] = dataTable.Rows[0][col].ToString();
+				variableName[col] = sheetData.At(0, col);
 			}
 
 			// Get variableDescribe array from 2nd row
 			string[] variableDescribe = new string[columnCount];
 			for (int col = 0; col < columnCount; col++)
 			{
-				variableDescribe[col] = dataTable.Rows[1][col].ToString();
+				variableDescribe[col] = sheetData.At(1, col);
 			}
 
 			// Add variableType Info To CS from 3rd row
@@ -139,7 +143,7 @@ public class Xlsx_To_X
 				int cellColumnIndex = col;
 				if (cellColumnIndex >= 2)
 				{
-					string cellInfo = dataTable.Rows[3][col].ToString();
+					string cellInfo = sheetData.At(3, col);
 					variableLength[cellColumnIndex] = "";
 					variableType[cellColumnIndex] = cellInfo;
 
@@ -183,7 +187,7 @@ public class Xlsx_To_X
 				int cellColumnIndex = col;
 				if (cellColumnIndex >= 2)
 				{
-					variableDefaultValue[cellColumnIndex] = dataTable.Rows[4][col].ToString();
+					variableDefaultValue[cellColumnIndex] = sheetData.At(4, col);
 
 					//special deal with bool
 					if (variableType[cellColumnIndex].Equals("bool"))
@@ -271,5 +275,7 @@ public class Xlsx_To_X
 			throw new System.IO.IOException(ex.Message);
 		}
 	}
+
+	#endregion
 
 }

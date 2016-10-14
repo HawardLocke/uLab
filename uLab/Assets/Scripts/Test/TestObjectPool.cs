@@ -18,7 +18,6 @@ public class TestObjectPool : MonoBehaviour
 	private const int resCount = 100;
 	private const string prefabDir = "prefabs/tmp/";
 	private const string rootName = "actived";
-	private float progress = 0;
 	private string progressText = "";
 
 	void Start()
@@ -39,7 +38,7 @@ public class TestObjectPool : MonoBehaviour
 
 		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "preload"))
 			StartCoroutine(Preload());
-		GUI.Label(new Rect(btnX + btnW + 10, btnY + (btnH + btnD) * btnIdx, 100, btnH), progressText);
+		GUI.Label(new Rect(btnX + btnW + 10, btnY + (btnH + btnD) * btnIdx, 1000, btnH), progressText);
 
 		btnIdx++;
 		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "pool.get"))
@@ -52,6 +51,14 @@ public class TestObjectPool : MonoBehaviour
 		btnIdx++;
 		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "load texture"))
 			StartCoroutine(LoadTexture());
+
+		btnIdx++;
+		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "load db"))
+			StartCoroutine(LoadDB());//StartCoroutine(DB.Instance.Load());
+
+		btnIdx++;
+		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "test db"))
+			TestDB();//StartCoroutine(DB.Instance.Load());
 	}
 
 	private IEnumerator Preload()
@@ -110,6 +117,29 @@ public class TestObjectPool : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 		yield return null;
+	}
+
+	private IEnumerator LoadDB()
+	{
+		float t1 = Time.realtimeSinceStartup;
+		IDictionaryEnumerator dicEtor = DB.Instance.TableList.GetEnumerator();
+		int i = 0;
+		while (dicEtor.MoveNext())
+		{
+			DB.Instance.LoadRes(dicEtor.Key as System.Type, "Template/" + dicEtor.Value as string);
+			i++;
+			progressText = "" + i;
+			yield return new WaitForEndOfFrame();
+		}
+		Log.Info("db time " + (Time.realtimeSinceStartup - t1));
+	}
+
+	private void TestDB()
+	{
+		/*var d1 = DB.Instance.GetDataByKey<Npc0_Data>(19002);
+		var d2 = DB.Instance.GetDataByKey<Npc55_Data>(19003);
+		var d3 = DB.Instance.GetDataByKey<Npc99_Data>(19004);
+		progressText = d1.res + " " + d2.res + " " + d3.res;*/
 	}
 
 }
