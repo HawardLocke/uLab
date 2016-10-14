@@ -48,19 +48,20 @@
      <Compile Include="Assets\Scripts\Common\Log.cs" />
      <Compile Include="Assets\Scripts\Common\RuntimeStatus.cs" />
      <Compile Include="Assets\Scripts\Common\Singleton.cs" />
-     <Compile Include="Assets\Scripts\MagicBox.cs" />
      <Compile Include="Assets\Scripts\ResourceManager\ObjectPool.cs" />
      <Compile Include="Assets\Scripts\ResourceManager\ResourceManager.cs" />
      <Compile Include="Assets\Scripts\Template\DB.cs" />
      <Compile Include="Assets\Scripts\Template\IData.cs" />
      <Compile Include="Assets\Scripts\Template\TabReader.cs" />
-     <Compile Include="Assets\Scripts\Template\auto\Npc_Data.cs" />
-     <Compile Include="Assets\Scripts\TestObjectPool.cs" />
+     <Compile Include="Assets\Scripts\Template\auto\Npc0_Data.cs" />
+     <Compile Include="Assets\Scripts\Test\MagicBox.cs" />
+     <Compile Include="Assets\Scripts\Test\TestObjectPool.cs" />
+     <None Include="Assets\Resources\Template\Npc0.txt" />
  <Reference Include="UnityEngine.UI">
- <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>d:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>d:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="Excel">
  <HintPath>G:/MyExploration/work/github/uLab/uLab/Assets/Plugins/Excel/Excel.dll</HintPath>
