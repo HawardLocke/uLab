@@ -89,6 +89,11 @@
     <Compile Include="Assets\Scripts\Template\auto\Npc0_Data.cs" />
     <Compile Include="Assets\Scripts\Test\MagicBox.cs" />
     <Compile Include="Assets\Scripts\Test\TestObjectPool.cs" />
+    <Compile Include="Assets\Scripts\UI\IUIContext.cs" />
+    <Compile Include="Assets\Scripts\UI\IWindow.cs" />
+    <Compile Include="Assets\Scripts\UI\UIContextManager.cs" />
+    <Compile Include="Assets\Scripts\UI\UIManager.cs" />
+    <Compile Include="Assets\Scripts\UI\UITypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Template\Npc0.txt" />
