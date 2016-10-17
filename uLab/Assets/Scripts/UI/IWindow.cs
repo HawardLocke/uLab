@@ -3,30 +3,34 @@
 using UnityEngine;
 
 
-namespace Locke
+namespace Locke.ui
 {
 
-	public class IWindow : MonoBehaviour
+	public abstract class IWindow : MonoBehaviour
 	{
-		void Awake()
+
+		public void Show()
 		{
-			OnAwake();
+			this.gameObject.SetActive(true);
 		}
 
-		void Start()
+		public void Hide()
 		{
-			OnStart();
+			this.gameObject.SetActive(false);
 		}
 
-		void Update()
+		public void Destroy()
 		{
-			OnUpdate();
+			Destroy(this.gameObject);
 		}
-		public void OnAwake() { }
 
-		public void OnStart() { }
+		public virtual void OnEnter(IContext context) { }
 
-		public void OnUpdate() { }
+		public virtual void OnExit(IContext context) { }
+
+		public virtual void OnPause(IContext context) { }
+
+		public virtual void OnResume(IContext context) { }
 
 	}
 
