@@ -30,7 +30,7 @@ namespace Locke.ui
 	public class WindowInfo
 	{
 		public string prefabPath;
-		public string windowName;
+		public string name;
 		public ShowMode showMode = ShowMode.Normal;
 		public OpenAction openAct = OpenAction.DoNothing;
 		public CloseAction closeAct = CloseAction.Traceback;
@@ -38,7 +38,7 @@ namespace Locke.ui
 		public WindowInfo(string path, ShowMode showMode, OpenAction openAct, CloseAction closeAct)
 		{
 			this.prefabPath = path;
-			this.windowName = path.Substring(path.LastIndexOf('/') + 1);
+			this.name = path.Substring(path.LastIndexOf('/') + 1);
 			this.showMode = showMode;
 			this.openAct = openAct;
 			this.closeAct = closeAct;
@@ -47,12 +47,17 @@ namespace Locke.ui
 	}
 
 
-	public abstract class IContext
+	public class WindowStackData
 	{
-		public WindowInfo winInfo;
+		public WindowInfo windowInfo;
 		public IWindow windowScript;
 
 		public List<WindowInfo> hiddenWindows = new List<WindowInfo>();
+
+	}
+
+	public abstract class IContext
+	{
 
 	}
 

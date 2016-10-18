@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Locke;
+using Locke.ui;
 
 /* 性能测试
  * 1.加载图片无压力，测试加载100个1024 png、bmp，对fps没有影响。飞快。
@@ -25,40 +26,11 @@ public class TestObjectPool : MonoBehaviour
 		var go = new GameObject(rootName);
 		go.transform.parent = null;
 		go.transform.localPosition = new Vector3(-5000, -5000, -5000);
-	}
-
-	float btnW = 90;
-	float btnH = 30;
-	float btnD = 10;
-	float btnX = 20;
-	float btnY = 20;
-	void OnGUI()
-	{
-		int btnIdx = 0;
-
-		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "preload"))
-			StartCoroutine(Preload());
-		GUI.Label(new Rect(btnX + btnW + 10, btnY + (btnH + btnD) * btnIdx, 1000, btnH), progressText);
-
-		btnIdx++;
-		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "pool.get"))
-			PoolGet();
-
-		btnIdx++;
-		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "pool.put"))
-			PoolPut();
-
-		btnIdx++;
-		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "load texture"))
-			StartCoroutine(LoadTexture());
-
-		btnIdx++;
-		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "load db"))
-			StartCoroutine(LoadDB());//StartCoroutine(DB.Instance.Load());
-
-		btnIdx++;
-		if (GUI.Button(new Rect(btnX, btnY + (btnH + btnD) * btnIdx, btnW, btnH), "test db"))
-			TestDB();//StartCoroutine(DB.Instance.Load());
+		if (progressText == null)
+			Debug.Log("whatever");
+		//
+		UIManager.Instance.Init();
+		UIManager.Instance.ShowWindow(GameUIList.testWindow1);
 	}
 
 	private IEnumerator Preload()
