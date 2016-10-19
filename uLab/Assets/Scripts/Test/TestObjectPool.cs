@@ -32,6 +32,7 @@ public class TestObjectPool : MonoBehaviour
 		UIManager.Instance.Init();
 		UIManager.Instance.ShowWindow(GameUIList.bar);
 		UIManager.Instance.ShowWindow(GameUIList.main);
+		//UIManager.Instance.ShowWindow(GameUIList.dialog);
 	}
 
 	private IEnumerator Preload()
