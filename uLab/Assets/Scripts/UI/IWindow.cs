@@ -12,6 +12,9 @@ namespace Locke.ui
 		private WindowInfo _windowInfo = null;
 		public WindowInfo windowInfo { set { _windowInfo = value; } }
 
+		private bool _isActived = false;
+		public bool IsActived { get { return _isActived; } }
+
 		#region Module internal functions, do not call them manually !
 
 		/// <summary>
@@ -20,7 +23,10 @@ namespace Locke.ui
 		/// <param name="context"></param>
 		public void _Enter(IContext context = null)
 		{
+			if (this._isActived)
+				return;
 			this.gameObject.SetActive(true);
+			this._isActived = true;
 			this.OnEnter(context);
 		}
 
@@ -40,7 +46,10 @@ namespace Locke.ui
 		/// <param name="context"></param>
 		public void _Pause(IContext context = null)
 		{
+			if (!this._isActived)
+				return;
 			this.gameObject.SetActive(false);
+			this._isActived = false;
 			this.OnPause(context);
 		}
 
@@ -50,7 +59,10 @@ namespace Locke.ui
 		/// <param name="context"></param>
 		public void _Resume(IContext context = null)
 		{
+			if (this._isActived)
+				return;
 			this.gameObject.SetActive(true);
+			this._isActived = true;
 			this.OnResume(context);
 		}
 

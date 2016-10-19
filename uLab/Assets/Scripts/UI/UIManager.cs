@@ -12,7 +12,6 @@ namespace Locke.ui
 	public class UIManager : Singleton<UIManager>
 	{
 		private Dictionary<WindowInfo, IWindow> allWindows = new Dictionary<WindowInfo, IWindow>();
-		private Dictionary<WindowInfo, IWindow> shownWindows = new Dictionary<WindowInfo, IWindow>();
 
 		private Stack<WindowStackData> windowsStack = new Stack<WindowStackData>();
 
@@ -27,14 +26,14 @@ namespace Locke.ui
 		{
 			if (currentWindowInfo == targetWindowInfo)
 			{
-				Log.Error("already shown.");
+				Log.Warning("already shown.");
 				return;
 			}
 
 			GameObject go = null;
 			IWindow script = null;
 
-			if (!shownWindows.ContainsKey(targetWindowInfo))
+			if (!allWindows.ContainsKey(targetWindowInfo))
 			{
 				var rootObj = this.GetRoot(targetWindowInfo.showMode);
 				var prefab = Resources.Load(targetWindowInfo.prefabPath) as GameObject;
@@ -50,7 +49,6 @@ namespace Locke.ui
 				script._Enter(context);
 
 				allWindows.Add(targetWindowInfo, script);
-				shownWindows.Add(targetWindowInfo, script);
 
 				var rectTran = go.GetComponent<RectTransform>();
 				rectTran.SetParent(rootObj.transform);
@@ -62,7 +60,7 @@ namespace Locke.ui
 			}
 			else
 			{
-				script = shownWindows[targetWindowInfo];
+				script = allWindows[targetWindowInfo];
 				script._Resume(context);
 			}
 
@@ -73,29 +71,21 @@ namespace Locke.ui
 			switch(targetWindowInfo.openAction)
 			{
 				case OpenAction.HideAll:
-					foreach (var wnd in shownWindows)
+					foreach (var wnd in allWindows)
 					{
-						if (wnd.Key == targetWindowInfo)
+						if (wnd.Key == targetWindowInfo || !wnd.Value.IsActived)
 							continue;
 						wnd.Value._Pause();
 						recordWindows.Add(wnd.Key, wnd.Value);
-					}
-					foreach (var wnd in recordWindows)
-					{
-						shownWindows.Remove(wnd.Key);
 					}
 					break;
 				case OpenAction.HideNormals:
-					foreach (var wnd in shownWindows)
+					foreach (var wnd in allWindows)
 					{
-						if (wnd.Key == targetWindowInfo || wnd.Key.showMode != ShowMode.Normal)
+						if (wnd.Key == targetWindowInfo || wnd.Key.showMode != ShowMode.Normal || !wnd.Value.IsActived)
 							continue;
 						wnd.Value._Pause();
 						recordWindows.Add(wnd.Key, wnd.Value);
-					}
-					foreach (var wnd in recordWindows)
-					{
-						shownWindows.Remove(wnd.Key);
 					}
 					break;
 				case OpenAction.DoNothing:
@@ -118,16 +108,18 @@ namespace Locke.ui
 		public void CloseWindow(WindowInfo targetWindowInfo)
 		{
 			WindowInfo curInfo = targetWindowInfo;
-			IWindow curWndScript = shownWindows[curInfo];
+			IWindow curWndScript = allWindows[curInfo];
 			curWndScript._Exit();
 
 			allWindows.Remove(targetWindowInfo);
-			if (shownWindows.ContainsKey(targetWindowInfo))
-				shownWindows.Remove(targetWindowInfo);
-			//currentWindowInfo = null;
 
-			WindowStackData stackdata = windowsStack.Peek();
-			windowsStack.Pop();
+			WindowStackData stackdata = null;
+			do
+			{
+				stackdata = windowsStack.Pop();
+			}
+			while (stackdata.windowInfo != targetWindowInfo);
+
 			switch (curInfo.openAction)
 			{
 				case OpenAction.HideAll:
@@ -137,7 +129,6 @@ namespace Locke.ui
 						var info = wnd.Key;
 						var script = wnd.Value;
 						script._Resume();
-						shownWindows.Add(info, script);
 					}
 					currentWindowInfo = stackdata.recordedCurrentWindow;
 					break;
@@ -150,7 +141,7 @@ namespace Locke.ui
 
 		private void CloseAllWindowExcept(WindowInfo info)
 		{
-			foreach (var wnd in shownWindows)
+			foreach (var wnd in allWindows)
 			{
 				WindowInfo tmpInfo = wnd.Key;
 				if (tmpInfo == info)
