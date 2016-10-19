@@ -55,15 +55,18 @@ namespace Locke.ui
 				var rectTran = go.GetComponent<RectTransform>();
 				rectTran.SetParent(rootObj.transform);
 				rectTran.localPosition = Vector3.zero;
-				//rectTran.
 				
 				script = go.GetComponent<IWindow>();
+
+				MakeWindowBackground(targetWindowInfo, script);
 			}
 			else
 			{
 				script = shownWindows[targetWindowInfo];
 				script._Resume(context);
 			}
+
+			MakeAsTopWindow(script);
 
 			// do open action
 			Dictionary<WindowInfo, IWindow> recordWindows = new Dictionary<WindowInfo, IWindow>();
@@ -155,6 +158,48 @@ namespace Locke.ui
 				if (tmpInfo.showMode == ShowMode.Fixed || tmpInfo.showMode == ShowMode.Popup)
 				wnd.Value._Exit();
 			}
+		}
+
+		private void MakeWindowBackground(WindowInfo targetWindowInfo, IWindow targetWindow)
+		{
+			GameObject newGo = null;
+			Image img = null;
+			switch(targetWindowInfo.backgroundMode)
+			{
+				case BackgroundMode.Transparent:
+					newGo = new GameObject("_auto_background", typeof(RectTransform), typeof(Image));
+					img = newGo.GetComponent<Image>();
+					img.color = new Color(0,0,0,0);
+					img.raycastTarget = true;
+					break;
+				case BackgroundMode.Dark:
+					newGo = new GameObject("_auto_background", typeof(RectTransform), typeof(Image));
+					img = newGo.GetComponent<Image>();
+					img.color = new Color(0,0,0,100/255.0f);
+					img.raycastTarget = true;
+					break;
+				case BackgroundMode.None:
+				default:
+					newGo = null;
+					break;
+			}
+			if (newGo != null)
+			{
+				var rectTran = newGo.GetComponent<RectTransform>();
+				rectTran.SetParent(targetWindow.transform);
+				rectTran.SetSiblingIndex(0);
+				rectTran.localPosition = Vector3.zero;
+				rectTran.anchorMin = new Vector2(0.5f, 0.5f);
+				rectTran.anchorMax = new Vector2(0.5f, 0.5f);
+				rectTran.pivot = new Vector2(0.5f, 0.5f);
+				rectTran.sizeDelta = new Vector2(9000, 9000);
+			}
+		}
+
+		private void MakeAsTopWindow(IWindow targetWindow)
+		{
+			var siblingCount = targetWindow.transform.parent.childCount;
+			targetWindow.transform.SetSiblingIndex(siblingCount-1);
 		}
 
 		public void Init()
