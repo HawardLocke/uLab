@@ -10,21 +10,15 @@ namespace Locke.ui
 	public enum ShowMode
 	{
 		Normal = 0,
-		Fixed,
+		Fixed,		// always exist, cannot be closed.
 		Popup,
-		Alone,
 	}
 
 	public enum OpenAction
 	{
 		DoNothing,
-		HideOthers,
-	}
-
-	public enum CloseAction
-	{
-		Traceback,
-		DoNotTraceback,
+		HideNormals,
+		HideAll,
 	}
 
 	public class WindowInfo
@@ -32,16 +26,14 @@ namespace Locke.ui
 		public string prefabPath;
 		public string name;
 		public ShowMode showMode = ShowMode.Normal;
-		public OpenAction openAct = OpenAction.DoNothing;
-		public CloseAction closeAct = CloseAction.Traceback;
+		public OpenAction openAction = OpenAction.DoNothing;
 
-		public WindowInfo(string path, ShowMode showMode, OpenAction openAct, CloseAction closeAct)
+		public WindowInfo(string path, ShowMode showMode, OpenAction openAct)
 		{
 			this.prefabPath = path;
 			this.name = path.Substring(path.LastIndexOf('/') + 1);
 			this.showMode = showMode;
-			this.openAct = openAct;
-			this.closeAct = closeAct;
+			this.openAction = openAct;
 		}
 
 	}
@@ -52,8 +44,8 @@ namespace Locke.ui
 		public WindowInfo windowInfo;
 		public IWindow windowScript;
 
-		public List<WindowInfo> hiddenWindows = new List<WindowInfo>();
-
+		public Dictionary<WindowInfo, IWindow> recordedWindows = null;
+		public WindowInfo recordedCurrentWindow = null;
 	}
 
 	public abstract class IContext

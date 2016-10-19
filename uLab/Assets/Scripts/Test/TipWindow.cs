@@ -2,20 +2,18 @@
 
 using Locke;
 using Locke.ui;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class TestWindow2 : IWindow
+public class TipWindow : IWindow
 {
 	protected override void OnEnter(IContext context)
 	{
-		for (int i = 0; i < 5; i++)
-		{
-			Button button = this.FindWidget<Button>("buttons/button1");
-			button.transform.GetComponentInChildren<Text>().text = "button " + (i + 1);
-		}
+		Button button = this.FindWidget<Button>("buttons/button1");
+		UIEventListener.Get(button.gameObject).onClick = onOkClick;
 
 		Button back = FindWidget<Button>("buttons/back");
-		back.onClick.AddListener(OnClick);
+		back.onClick.AddListener(OnBackClick);
 	}
 
 	protected override void OnExit(IContext context)
@@ -30,10 +28,14 @@ public class TestWindow2 : IWindow
 	{
 	}
 
-	private void OnClick()
+	private void onOkClick(GameObject go)
 	{
-		Log.Info("on click");
-		UIManager.Instance.CloseCurrentWindow();
+		this.CloseMe();
+	}
+
+	private void OnBackClick()
+	{
+		this.CloseMe();
 	}
 
 }

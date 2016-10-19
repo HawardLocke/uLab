@@ -6,19 +6,17 @@ using Locke;
 using Locke.ui;
 
 
-public class TestWindow : IWindow
+public class MainWindow : IWindow
 {
+	private static string[] buttonNames = new string[5] { "bag", "role", "shop", "tip", "dialog" };
 	protected override void OnEnter(IContext context)
 	{
 		for (int i = 0; i < 5; i++)
 		{
 			Button button = this.FindWidget<Button>("buttons/button" + (i + 1));
-			button.transform.GetComponentInChildren<Text>().text = "button " + (i + 1);
+			button.transform.GetComponentInChildren<Text>().text = buttonNames[i];
 			UIEventListener.Get(button.gameObject).onClick = OnButtonClick;
 		}
-
-		Button back = FindWidget<Button>("buttons/back");
-		UIEventListener.Get(back.gameObject).onClick = OnBackClick;
 	}
 
 	protected override void OnExit(IContext context)
@@ -36,33 +34,27 @@ public class TestWindow : IWindow
 	private void OnButtonClick(GameObject go)
 	{
 		int index = int.Parse(go.name.Substring(go.name.Length - 1));
-		Log.Info("to t" + index);
+		
 		if (index == 1)
 		{
-			// to t2
+			UIManager.Instance.ShowWindow(GameUIList.bag);
 		}
 		else if (index == 2)
 		{
-			// to t3
+			UIManager.Instance.ShowWindow(GameUIList.role);
 		}
 		else if (index == 3)
 		{
-			// to t4
+			UIManager.Instance.ShowWindow(GameUIList.shop);
 		}
 		else if (index == 4)
 		{
-			// to t2
+			UIManager.Instance.ShowWindow(GameUIList.tip);
 		}
 		else if (index == 5)
 		{
-
+			UIManager.Instance.ShowWindow(GameUIList.dialog);
 		}
-	}
-
-	private void OnBackClick(GameObject go)
-	{
-		Log.Info("on click");
-		UIManager.Instance.CloseCurrentWindow();
 	}
 
 }

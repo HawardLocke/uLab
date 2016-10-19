@@ -11,7 +11,7 @@ namespace Locke.ui
 {
 	public class UIManager : Singleton<UIManager>
 	{
-
+		private Dictionary<WindowInfo, IWindow> allWindows = new Dictionary<WindowInfo, IWindow>();
 		private Dictionary<WindowInfo, IWindow> shownWindows = new Dictionary<WindowInfo, IWindow>();
 
 		private Stack<WindowStackData> windowsStack = new Stack<WindowStackData>();
@@ -23,9 +23,9 @@ namespace Locke.ui
 		private GameObject popupRoot;
 
 
-		public void ShowWindow(WindowInfo info, IContext context = null)
+		public void ShowWindow(WindowInfo targetWindowInfo, IContext context = null)
 		{
-			if (currentWindowInfo == info)
+			if (currentWindowInfo == targetWindowInfo)
 			{
 				Log.Error("already shown.");
 				return;
@@ -34,21 +34,23 @@ namespace Locke.ui
 			GameObject go = null;
 			IWindow script = null;
 
-			if (!shownWindows.ContainsKey(info))
+			if (!shownWindows.ContainsKey(targetWindowInfo))
 			{
-				var rootObj = this.GetRoot(info.showMode);
-				var prefab = Resources.Load(info.prefabPath) as GameObject;
+				var rootObj = this.GetRoot(targetWindowInfo.showMode);
+				var prefab = Resources.Load(targetWindowInfo.prefabPath) as GameObject;
 				go = GameObject.Instantiate(prefab);
 				if (go == null)
 				{
-					Log.Error(string.Format("file {0} does not exist.", info.prefabPath));
+					Log.Error(string.Format("file {0} does not exist.", targetWindowInfo.prefabPath));
 					return;
 				}
 
 				script = go.GetComponent<IWindow>();
-				script.Enter(context);
+				script.windowInfo = targetWindowInfo;
+				script._Enter(context);
 
-				shownWindows.Add(info, script);
+				allWindows.Add(targetWindowInfo, script);
+				shownWindows.Add(targetWindowInfo, script);
 
 				var rectTran = go.GetComponent<RectTransform>();
 				rectTran.SetParent(rootObj.transform);
@@ -56,65 +58,104 @@ namespace Locke.ui
 				//rectTran.
 				
 				script = go.GetComponent<IWindow>();
-
-				// set z to max
-
-				
 			}
 			else
 			{
-				script = shownWindows[info];
-				script.Resume(context);
+				script = shownWindows[targetWindowInfo];
+				script._Resume(context);
+			}
 
-				// set z to max
+			// do open action
+			Dictionary<WindowInfo, IWindow> recordWindows = new Dictionary<WindowInfo, IWindow>();
+			switch(targetWindowInfo.openAction)
+			{
+				case OpenAction.HideAll:
+					foreach (var wnd in shownWindows)
+					{
+						if (wnd.Key == targetWindowInfo)
+							continue;
+						wnd.Value._Pause();
+						recordWindows.Add(wnd.Key, wnd.Value);
+					}
+					foreach (var wnd in recordWindows)
+					{
+						shownWindows.Remove(wnd.Key);
+					}
+					break;
+				case OpenAction.HideNormals:
+					foreach (var wnd in shownWindows)
+					{
+						if (wnd.Key == targetWindowInfo || wnd.Key.showMode != ShowMode.Normal)
+							continue;
+						wnd.Value._Pause();
+						recordWindows.Add(wnd.Key, wnd.Value);
+					}
+					foreach (var wnd in recordWindows)
+					{
+						shownWindows.Remove(wnd.Key);
+					}
+					break;
+				case OpenAction.DoNothing:
+				default:
+					break;
 			}
 
 			// make stack data
 			WindowStackData newStackData = new WindowStackData();
-			newStackData.windowInfo = info;
+			newStackData.windowInfo = targetWindowInfo;
 			newStackData.windowScript = script;
+			newStackData.recordedWindows = recordWindows;
+			newStackData.recordedCurrentWindow = currentWindowInfo;
+			// push stack
+			windowsStack.Push(newStackData);
+			// save current status
+			currentWindowInfo = targetWindowInfo;
+		}
+
+		public void CloseWindow(WindowInfo targetWindowInfo)
+		{
+			WindowInfo curInfo = targetWindowInfo;
+			IWindow curWndScript = shownWindows[curInfo];
+			curWndScript._Exit();
+
+			allWindows.Remove(targetWindowInfo);
+			if (shownWindows.ContainsKey(targetWindowInfo))
+				shownWindows.Remove(targetWindowInfo);
+			//currentWindowInfo = null;
+
+			WindowStackData stackdata = windowsStack.Peek();
+			windowsStack.Pop();
+			switch (curInfo.openAction)
+			{
+				case OpenAction.HideAll:
+				case OpenAction.HideNormals:
+					foreach (var wnd in stackdata.recordedWindows)
+					{
+						var info = wnd.Key;
+						var script = wnd.Value;
+						script._Resume();
+						shownWindows.Add(info, script);
+					}
+					currentWindowInfo = stackdata.recordedCurrentWindow;
+					break;
+				case OpenAction.DoNothing:
+				default:
+					currentWindowInfo = stackdata.recordedCurrentWindow;
+					break;
+			}
+		}
+
+		private void CloseAllWindowExcept(WindowInfo info)
+		{
 			foreach (var wnd in shownWindows)
 			{
-				if (wnd.Key == info)
+				WindowInfo tmpInfo = wnd.Key;
+				if (tmpInfo == info)
 					continue;
-				wnd.Value.Pause();
-				newStackData.hiddenWindows.Add(wnd.Key);
-			}
-			windowsStack.Push(newStackData);
-
-			// save current status
-			currentWindowInfo = info;
-		}
-
-		public void CloseWindow(WindowInfo info, IContext context = null)
-		{
-
-		}
-
-
-		public void CloseCurrentWindow()
-		{
-			if (currentWindowInfo != null)
-			{
-				shownWindows[currentWindowInfo].Exit();
-				shownWindows.Remove(currentWindowInfo);
-				currentWindowInfo = null;
-
-				WindowStackData stackdata = windowsStack.Peek();
-				for(int i = 0; i < stackdata.hiddenWindows.Count; ++i)
-				{
-					var info = stackdata.hiddenWindows[i];
-					var script = shownWindows[info];
-					script.Resume();
-					// as current
-					if ( i == stackdata.hiddenWindows.Count - 1)
-					{
-						currentWindowInfo = info;
-					}
-				}
+				if (tmpInfo.showMode == ShowMode.Fixed || tmpInfo.showMode == ShowMode.Popup)
+				wnd.Value._Exit();
 			}
 		}
-
 
 		public void Init()
 		{
