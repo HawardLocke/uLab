@@ -15,150 +15,118 @@ namespace Locke.ui
 
 		private Stack<WindowStackData> mWindowStack = new Stack<WindowStackData>();
 
+		private List<IContext> mWindowContextList = new List<IContext>();
 
-		public static void OpenWindow(WindowInfo windowInfo, IContext context = null)
+
+		public void Init()
 		{
-			try
-			{
-				UIManager.Instance._OpenWindow(windowInfo, context);
-			}
-			catch (UnityException ue)
-			{
-				Log.Error(ue.ToString());
-			}
-			catch (Exception e)
-			{
-				Log.Error(e.ToString());
-			}
+			SetupCanvas();
 		}
 
-		public static void CloseWindow(IWindow script)
+		public void Reset()
 		{
-			try
-			{
-				UIManager.Instance._CloseWindow(script);
-			}
-			catch (UnityException ue)
-			{
-				Log.Error(ue.ToString());
-			}
-			catch (Exception e)
-			{
-				Log.Error(e.ToString());
-			}
+			this.CloseAllWindows();
+			mAllWindowDic.Clear();
+			mWindowStack.Clear();
+			mWindowContextList.Clear();
 		}
 
-		/*public static IWindow GetLastWindow(WindowInfo windowInfo)
-		{
-			var mAllWindowDic = UIManager.Instance.mAllWindowDic;
-			if (mAllWindowDic.ContainsKey(windowInfo))
-			{
-				List<IWindow> windowList = mAllWindowDic[windowInfo];
-				if (windowList.Count == 0)
-					return null;
-				IWindow script = windowList[windowList.Count - 1];
-				if (script != null)
-					return script;
-			}
-			return null;
-		}
 
-		public static IWindow GetLastActivedWindow(WindowInfo windowInfo)
-		{
-			var mAllWindowDic = UIManager.Instance.mAllWindowDic;
-			if (mAllWindowDic.ContainsKey(windowInfo))
-			{
-				List<IWindow> windowList = mAllWindowDic[windowInfo];
-				if (windowList.Count == 0)
-					return null;
-				IWindow script = windowList[windowList.Count - 1];
-				if (script != null && script.IsActived)
-					return script;
-			}
-			return null;
-		}*/
-
-		private void _OpenWindow(WindowInfo windowInfo, IContext context = null)
+		public IWindow OpenWindow(WindowInfo windowInfo, IContext context = null)
 		{
 			IWindow script = null;
 			List<IWindow> windowList = null;
 
-			if (!mAllWindowDic.ContainsKey(windowInfo))
+			try
 			{
-				windowList = new List<IWindow>();
-				mAllWindowDic.Add(windowInfo, windowList);
-			}
-			else
-			{
-				if (mWindowStack.Count > 0)
+				if (!mAllWindowDic.ContainsKey(windowInfo))
 				{
-					var stackData = mWindowStack.Peek();
-					if (stackData.windowInfo == windowInfo)// current shown window is target window.
-						return;
+					windowList = new List<IWindow>();
+					mAllWindowDic.Add(windowInfo, windowList);
 				}
-				windowList = mAllWindowDic[windowInfo];
-			}
-
-			script = CreateWindowInst(windowInfo);
-			windowList.Add(script);
-			script._Enter(context);
-
-			MakeAsTopWindow(script.gameObject);
-
-			// do open action
-			List<IWindow> recordWindows = null;
-			switch(windowInfo.openAction)
-			{
-				case OpenAction.HideAll:
-					recordWindows = new List<IWindow>();
-					foreach (var wnd in mAllWindowDic)
+				else
+				{
+					if (mWindowStack.Count > 0)
 					{
-						if (wnd.Key == windowInfo)
-							continue;
-						for (int i = 0; i < wnd.Value.Count; ++i)
-						{
-							IWindow tmpWindow = wnd.Value[i];
-							if (!tmpWindow.IsActived)
-								continue;
-							tmpWindow._Pause();
-							recordWindows.Add(tmpWindow);
-						}
+						var stackData = mWindowStack.Peek();
+						if (stackData.windowInfo == windowInfo)// current shown window is target window.
+							return null;
 					}
-					break;
-				case OpenAction.HideNormals:
-					recordWindows = new List<IWindow>();
-					foreach (var wnd in mAllWindowDic)
-					{
-						if (wnd.Key == windowInfo || wnd.Key.showMode != ShowMode.Normal)
-							continue;
-						for (int i = 0; i < wnd.Value.Count; ++i)
-						{
-							IWindow tmpWindow = wnd.Value[i];
-							if (!tmpWindow.IsActived)
-								continue;
-							tmpWindow._Pause();
-							recordWindows.Add(tmpWindow);
-						}
-					}
-					break;
-				case OpenAction.DoNothing:
-				default:
-					recordWindows = null;
-					break;
-			}
+					windowList = mAllWindowDic[windowInfo];
+				}
 
-			if (windowInfo.openAction != OpenAction.DoNothing)
+				script = CreateWindowInst(windowInfo);
+				windowList.Add(script);
+				script._Enter(context);
+
+				MakeAsTopWindow(script.gameObject);
+
+				// do open action
+				List<IWindow> recordWindows = null;
+				switch (windowInfo.openAction)
+				{
+					case OpenAction.HideAll:
+						recordWindows = new List<IWindow>();
+						foreach (var wnd in mAllWindowDic)
+						{
+							if (wnd.Key == windowInfo)
+								continue;
+							for (int i = 0; i < wnd.Value.Count; ++i)
+							{
+								IWindow tmpWindow = wnd.Value[i];
+								if (!tmpWindow.IsActived)
+									continue;
+								tmpWindow._Pause();
+								recordWindows.Add(tmpWindow);
+							}
+						}
+						break;
+					case OpenAction.HideNormals:
+						recordWindows = new List<IWindow>();
+						foreach (var wnd in mAllWindowDic)
+						{
+							if (wnd.Key == windowInfo || wnd.Key.showMode != ShowMode.Normal)
+								continue;
+							for (int i = 0; i < wnd.Value.Count; ++i)
+							{
+								IWindow tmpWindow = wnd.Value[i];
+								if (!tmpWindow.IsActived)
+									continue;
+								tmpWindow._Pause();
+								recordWindows.Add(tmpWindow);
+							}
+						}
+						break;
+					case OpenAction.DoNothing:
+					default:
+						recordWindows = null;
+						break;
+				}
+
+				if (windowInfo.openAction != OpenAction.DoNothing)
+				{
+					WindowStackData newStackData = new WindowStackData();
+					newStackData.windowInfo = windowInfo;
+					newStackData.windowScript = script;
+					newStackData.recordedWindows = recordWindows;
+					mWindowStack.Push(newStackData);
+				}
+
+			}
+			catch (UnityException ue)
 			{
-				WindowStackData newStackData = new WindowStackData();
-				newStackData.windowInfo = windowInfo;
-				newStackData.windowScript = script;
-				newStackData.recordedWindows = recordWindows;
-				mWindowStack.Push(newStackData);
+				Log.Error(ue.ToString());
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
 			}
 
+			return script;
 		}
 
-		private void _CloseWindow(IWindow script)
+
+		public void CloseWindow(IWindow script)
 		{
 			if (script == null)
 			{
@@ -174,44 +142,125 @@ namespace Locke.ui
 				return;
 			}
 			
-			if (windowInfo.openAction == OpenAction.DoNothing)
+			try
 			{
-				List<IWindow> windowList = mAllWindowDic[windowInfo];
-				windowList.Remove(script);
-				script._Exit();
-			}
-			else
-			{
-				var topStackdata = mWindowStack.Peek();
-				if (topStackdata.windowInfo != windowInfo)
-				{
-					Log.Error(string.Format("Cannot close {0} in this way !", windowInfo.name));
-					return;
-				}
-				else
+				if (windowInfo.openAction == OpenAction.DoNothing)
 				{
 					List<IWindow> windowList = mAllWindowDic[windowInfo];
 					windowList.Remove(script);
 					script._Exit();
-					switch (windowInfo.openAction)
-					{
-						case OpenAction.HideAll:
-						case OpenAction.HideNormals:
-							for (int i = 0; i < topStackdata.recordedWindows.Count; ++i)
-							{
-								IWindow tempScript = topStackdata.recordedWindows[i];
-								tempScript._Resume();
-							}
-							break;
-						case OpenAction.DoNothing:
-						default:
-							break;
-					}
-					mWindowStack.Pop();
 				}
+				else
+				{
+					if (mWindowStack.Count > 0)
+					{
+						var topStackdata = mWindowStack.Peek();
+						if (topStackdata.windowInfo != windowInfo)
+						{
+							Log.Error(string.Format("Cannot close {0} in this way !", windowInfo.name));
+							return;
+						}
+						else
+						{
+							List<IWindow> windowList = mAllWindowDic[windowInfo];
+							windowList.Remove(script);
+							script._Exit();
+							switch (windowInfo.openAction)
+							{
+								case OpenAction.HideAll:
+								case OpenAction.HideNormals:
+									for (int i = 0; i < topStackdata.recordedWindows.Count; ++i)
+									{
+										IWindow tempScript = topStackdata.recordedWindows[i];
+										tempScript._Resume();
+									}
+									break;
+								case OpenAction.DoNothing:
+								default:
+									break;
+							}
+							mWindowStack.Pop();
+						}
+					}
+					else
+					{
+						WindowInfo previousWindowInfo = script.PreviousWindowInfo;
+						List<IWindow> windowList = mAllWindowDic[windowInfo];
+						windowList.Remove(script);
+						script._Exit();
+						// open default window.
+						OpenWindow(previousWindowInfo);
+					}
+				}
+
+			}
+			catch (UnityException ue)
+			{
+				Log.Error(ue.ToString());
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
 			}
 
 		}
+
+		public void CloseAllNormalWindows()
+		{
+			foreach (var wnd in mAllWindowDic)
+			{
+				if (wnd.Key.showMode != ShowMode.Normal)
+					continue;
+
+				List<IWindow> scriptList = wnd.Value;
+				for (int i = 0; i < scriptList.Count; ++i)
+				{
+					scriptList[i]._Exit();
+				}
+				scriptList.Clear();
+			}
+			mWindowStack.Clear();
+
+		}
+
+		public void CloseAllWindows()
+		{
+			CloseAllWindowsExcept(null);
+		}
+
+		public void CloseAllWindowsExcept(WindowInfo exceptWindowInfo)
+		{
+			foreach(var wnd in mAllWindowDic)
+			{
+				if (exceptWindowInfo != null && wnd.Key == exceptWindowInfo)
+					continue;
+
+				List<IWindow> scriptList = wnd.Value;
+				for (int i = 0; i < scriptList.Count; ++i)
+				{
+					scriptList[i]._Exit();
+				}
+				scriptList.Clear();
+			}
+			mWindowStack.Clear();
+			
+		}
+
+		// only return the latest open window.
+		public IWindow GetNewestWindow(WindowInfo windowInfo)
+		{
+			if (mAllWindowDic.ContainsKey(windowInfo))
+			{
+				List<IWindow> windowList = mAllWindowDic[windowInfo];
+				if (windowList.Count == 0)
+					return null;
+				IWindow script = windowList[windowList.Count - 1];
+				if (script != null)
+					return script;
+			}
+			return null;
+		}
+
 
 		private IWindow CreateWindowInst(WindowInfo windowInfo)
 		{
@@ -243,7 +292,7 @@ namespace Locke.ui
 
 		private void MakeWindowBackground(WindowInfo windowInfo, GameObject windowObj)
 		{
-			GameObject newGo = null;
+			/*GameObject newGo = null;
 			Image img = null;
 			switch(windowInfo.backgroundMode)
 			{
@@ -274,18 +323,13 @@ namespace Locke.ui
 				rectTran.anchorMax = new Vector2(0.5f, 0.5f);
 				rectTran.pivot = new Vector2(0.5f, 0.5f);
 				rectTran.sizeDelta = new Vector2(9000, 9000);
-			}
+			}*/
 		}
 
 		private void MakeAsTopWindow(GameObject windowObj)
 		{
 			var siblingCount = windowObj.transform.parent.childCount;
 			windowObj.transform.SetSiblingIndex(siblingCount-1);
-		}
-
-		public void Init()
-		{
-			SetupCanvas();
 		}
 
 		private void SetupCanvas()
@@ -328,7 +372,7 @@ namespace Locke.ui
 			
 		}
 
-		public GameObject GetModeRoot(ShowMode mode)
+		private GameObject GetModeRoot(ShowMode mode)
 		{
 			switch (mode)
 			{

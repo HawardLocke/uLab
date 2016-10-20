@@ -12,6 +12,9 @@ namespace Locke.ui
 		private WindowInfo _windowInfo = null;
 		public WindowInfo windowInfo { set { _windowInfo = value; } get { return _windowInfo; } }
 
+		private WindowInfo _previousWindowInfo = null;
+		public WindowInfo PreviousWindowInfo { set { _previousWindowInfo = value; } get { return _previousWindowInfo; } }
+
 		private bool _isActived = false;
 		public bool IsActived { get { return _isActived; } }
 

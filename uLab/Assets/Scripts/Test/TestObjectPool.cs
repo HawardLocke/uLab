@@ -30,10 +30,10 @@ public class TestObjectPool : MonoBehaviour
 			Debug.Log("whatever");
 		
 		UIManager.Instance.Init();
-		UIManager.OpenWindow(GameUIList.bar);
-		UIManager.OpenWindow(GameUIList.main);
-// 		UIManager.OpenWindow(GameUIList.tip);
-// 		UIManager.OpenWindow(GameUIList.tip);
+		UIManager.Instance.OpenWindow(GameUIList.bar);
+		UIManager.Instance.OpenWindow(GameUIList.main);
+// 		UIManager.Instance.OpenWindow(GameUIList.tip);
+// 		UIManager.Instance.OpenWindow(GameUIList.tip);
 	}
 
 	private IEnumerator Preload()

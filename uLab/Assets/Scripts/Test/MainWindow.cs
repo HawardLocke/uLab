@@ -8,10 +8,10 @@ using Locke.ui;
 
 public class MainWindow : IWindow
 {
-	private static string[] buttonNames = new string[5] { "bag", "role", "shop", "tip", "dialog" };
+	private static string[] buttonNames = new string[9] { "bag", "role", "shop", "tip", "dialog", "close normals", "close all", "??", "reset" };
 	protected override void OnEnter(IContext context)
 	{
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 9; i++)
 		{
 			Button button = this.FindWidget<Button>("buttons/button" + (i + 1));
 			button.transform.GetComponentInChildren<Text>().text = buttonNames[i];
@@ -37,23 +37,39 @@ public class MainWindow : IWindow
 		
 		if (index == 1)
 		{
-			UIManager.OpenWindow(GameUIList.bag);
+			UIManager.Instance.OpenWindow(GameUIList.bag);
 		}
 		else if (index == 2)
 		{
-			UIManager.OpenWindow(GameUIList.role);
+			UIManager.Instance.OpenWindow(GameUIList.role);
 		}
 		else if (index == 3)
 		{
-			UIManager.OpenWindow(GameUIList.shop);
+			UIManager.Instance.OpenWindow(GameUIList.shop);
 		}
 		else if (index == 4)
 		{
-			UIManager.OpenWindow(GameUIList.tip);
+			UIManager.Instance.OpenWindow(GameUIList.tip);
 		}
 		else if (index == 5)
 		{
-			UIManager.OpenWindow(GameUIList.dialog);
+			UIManager.Instance.OpenWindow(GameUIList.dialog);
+		}
+		else if (index == 6)
+		{
+			UIManager.Instance.CloseAllNormalWindows();
+		}
+		else if (index == 7)
+		{
+			UIManager.Instance.CloseAllWindows();
+		}
+		else if (index == 8)
+		{
+			UIManager.Instance.CloseAllWindowsExcept(GameUIList.main);
+		}
+		else if (index == 9)
+		{
+			UIManager.Instance.Reset();
 		}
 	}
 

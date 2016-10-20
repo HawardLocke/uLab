@@ -30,12 +30,12 @@ public class TipWindow : IWindow
 
 	private void onOkClick(GameObject go)
 	{
-		UIManager.CloseWindow(this);
+		UIManager.Instance.CloseWindow(this);
 	}
 
 	private void OnBackClick()
 	{
-		UIManager.CloseWindow(this);
+		UIManager.Instance.CloseWindow(this);
 	}
 
 }
