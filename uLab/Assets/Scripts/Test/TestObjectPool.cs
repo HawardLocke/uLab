@@ -28,11 +28,12 @@ public class TestObjectPool : MonoBehaviour
 		go.transform.localPosition = new Vector3(-5000, -5000, -5000);
 		if (progressText == null)
 			Debug.Log("whatever");
-		//
+		
 		UIManager.Instance.Init();
-		UIManager.Instance.ShowWindow(GameUIList.bar);
-		UIManager.Instance.ShowWindow(GameUIList.main);
-		//UIManager.Instance.ShowWindow(GameUIList.dialog);
+		UIManager.OpenWindow(GameUIList.bar);
+		UIManager.OpenWindow(GameUIList.main);
+// 		UIManager.OpenWindow(GameUIList.tip);
+// 		UIManager.OpenWindow(GameUIList.tip);
 	}
 
 	private IEnumerator Preload()

@@ -30,12 +30,12 @@ public class DialogWindow : IWindow
 
 	private void onOkClick(GameObject go)
 	{
-		this.CloseMe();
+		UIManager.CloseWindow(this);
 	}
 
 	private void OnBackClick()
 	{
-		this.CloseMe();
+		UIManager.CloseWindow(this);
 	}
 
 }

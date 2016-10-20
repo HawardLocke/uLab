@@ -10,7 +10,7 @@ namespace Locke.ui
 	public abstract class IWindow : MonoBehaviour
 	{
 		private WindowInfo _windowInfo = null;
-		public WindowInfo windowInfo { set { _windowInfo = value; } }
+		public WindowInfo windowInfo { set { _windowInfo = value; } get { return _windowInfo; } }
 
 		private bool _isActived = false;
 		public bool IsActived { get { return _isActived; } }
@@ -80,13 +80,7 @@ namespace Locke.ui
 
 		#endregion
 
-		/// <summary>
-		/// Close this window. Should only be called by self.
-		/// </summary>
-		protected void CloseMe()
-		{
-			UIManager.Instance.CloseWindow(this._windowInfo);
-		}
+
 		/// <summary>
 		/// Get a component in a child of the window.
 		/// </summary>

@@ -53,7 +53,7 @@ namespace Locke.ui
 		public WindowInfo windowInfo;
 		public IWindow windowScript;
 
-		public Dictionary<WindowInfo, IWindow> recordedWindows = null;
+		public List<IWindow> recordedWindows = null;
 		public WindowInfo recordedCurrentWindow = null;
 	}
 
