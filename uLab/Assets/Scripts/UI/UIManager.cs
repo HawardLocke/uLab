@@ -81,11 +81,13 @@ namespace Locke.ui
 							}
 						}
 						break;
-					case OpenAction.HideNormals:
+					case OpenAction.HideNormalsMains:
 						recordWindows = new List<IWindow>();
 						foreach (var wnd in mAllWindowDic)
 						{
-							if (wnd.Key == windowInfo || wnd.Key.showMode != ShowMode.Normal)
+							if (wnd.Key == windowInfo)
+								continue;
+							if (wnd.Key.showMode != ShowMode.Normal && wnd.Key.showMode != ShowMode.Main)
 								continue;
 							for (int i = 0; i < wnd.Value.Count; ++i)
 							{
@@ -168,7 +170,7 @@ namespace Locke.ui
 							switch (windowInfo.openAction)
 							{
 								case OpenAction.HideAll:
-								case OpenAction.HideNormals:
+								case OpenAction.HideNormalsMains:
 									for (int i = 0; i < topStackdata.recordedWindows.Count; ++i)
 									{
 										IWindow tempScript = topStackdata.recordedWindows[i];
@@ -360,6 +362,11 @@ namespace Locke.ui
 			normalRoot.transform.localPosition = Vector3.zero;
 			normalRoot.transform.localScale = Vector3.one;
 
+			GameObject mainRoot = new GameObject("main");
+			mainRoot.transform.parent = uiRoot.transform;
+			mainRoot.transform.localPosition = Vector3.zero;
+			mainRoot.transform.localScale = Vector3.one;
+
 			GameObject fixedRoot = new GameObject("fixed");
 			fixedRoot.transform.parent = uiRoot.transform;
 			fixedRoot.transform.localPosition = Vector3.zero;
@@ -378,6 +385,8 @@ namespace Locke.ui
 			{
 				case ShowMode.Normal:
 					return GameObject.Find("Canvas/normal");
+				case ShowMode.Main:
+					return GameObject.Find("Canvas/main");
 				case ShowMode.Fixed:
 					return GameObject.Find("Canvas/fixed");
 				case ShowMode.Popup:

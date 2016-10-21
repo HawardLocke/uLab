@@ -10,14 +10,15 @@ namespace Locke.ui
 	public enum ShowMode
 	{
 		Normal,
-		Fixed,		// always exist, cannot be closed.
+		Main,		// cannot be closed.
+		Fixed,		// cannot be closed.
 		Popup,
 	}
 
 	public enum OpenAction
 	{
 		DoNothing,
-		HideNormals,
+		HideNormalsMains,
 		HideAll,
 	}
 
