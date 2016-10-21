@@ -5,7 +5,7 @@ using UnityEngine;
 using Locke.ui;
 
 
-public class GameUIList
+public class GameUI
 {
 	public static WindowInfo main = new WindowInfo(
 		"ui/MainWindow",

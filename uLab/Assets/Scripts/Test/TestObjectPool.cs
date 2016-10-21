@@ -30,9 +30,9 @@ public class TestObjectPool : MonoBehaviour
 			Debug.Log("whatever");
 		
 		UIManager.Instance.Init();
-		UIManager.Instance.OpenWindow(GameUIList.bar);
-		UIManager.Instance.OpenWindow(GameUIList.main);
-		UIManager.Instance.mainWindowInfo = GameUIList.main;
+		UIManager.Instance.OpenWindow(GameUI.bar);
+		UIManager.Instance.OpenWindow(GameUI.main);
+		UIManager.Instance.mainWindowInfo = GameUI.main;
 
 		/*UIManager.Instance.OpenWindow(GameUIList.tip);
 		UIManager.Instance.OpenWindow(GameUIList.bag);

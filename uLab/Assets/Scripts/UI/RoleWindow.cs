@@ -40,23 +40,23 @@ public class RoleWindow : IWindow
 
 		if (index == 1)
 		{
-			UIManager.Instance.OpenWindow(GameUIList.bag);
+			UIManager.Instance.OpenWindow(GameUI.bag);
 		}
 		else if (index == 2)
 		{
-			UIManager.Instance.OpenWindow(GameUIList.role);
+			UIManager.Instance.OpenWindow(GameUI.role);
 		}
 		else if (index == 3)
 		{
-			UIManager.Instance.OpenWindow(GameUIList.shop);
+			UIManager.Instance.OpenWindow(GameUI.shop);
 		}
 		else if (index == 4)
 		{
-			UIManager.Instance.OpenWindow(GameUIList.tip);
+			UIManager.Instance.OpenWindow(GameUI.tip);
 		}
 		else if (index == 5)
 		{
-			UIManager.Instance.OpenWindow(GameUIList.dialog);
+			UIManager.Instance.OpenWindow(GameUI.dialog);
 		}
 	}
 
