@@ -21,6 +21,16 @@ namespace Locke.ui
 		#region Module internal functions, do not call them manually !
 
 		/// <summary>
+		/// Invoked when instantiated.
+		/// Do not call this manually ! Only called by UIManager.
+		/// </summary>
+		public void _Instantiate()
+		{
+			this.OnInit();
+		}
+
+		/// <summary>
+		/// Invoked when open.
 		/// Do not call this manually ! Only called by UIManager.
 		/// </summary>
 		/// <param name="context"></param>
@@ -40,7 +50,8 @@ namespace Locke.ui
 		public void _Exit(IContext context = null)
 		{
 			this.OnExit(context);
-			Destroy(this.gameObject);
+			this.gameObject.SetActive(false);
+			this._isActived = false;
 		}
 
 		/// <summary>
@@ -73,6 +84,7 @@ namespace Locke.ui
 
 		#region handlers to be override
 
+		protected virtual void OnInit() { }
 		protected virtual void OnEnter(IContext context) { }
 
 		protected virtual void OnExit(IContext context) { }

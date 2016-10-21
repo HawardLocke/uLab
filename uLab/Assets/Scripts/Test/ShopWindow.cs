@@ -9,7 +9,7 @@ public class ShopWindow : IWindow
 {
 	private static string[] buttonNames = new string[5] { "bag", "role", "shop", "tip", "dialog" };
 
-	protected override void OnEnter(IContext context)
+	protected override void OnInit()
 	{
 		for (int i = 0; i < 5; i++)
 		{

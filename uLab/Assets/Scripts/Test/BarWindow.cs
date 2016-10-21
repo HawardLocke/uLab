@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class BarWindow : IWindow
 {
-	protected override void OnEnter(IContext context)
+	protected override void OnInit()
 	{
 		Button button = this.FindWidget<Button>("buttons/button1");
 		button.transform.GetComponentInChildren<Text>().text = "I'm bar.";

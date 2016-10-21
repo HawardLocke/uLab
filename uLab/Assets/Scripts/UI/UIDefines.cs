@@ -9,10 +9,10 @@ namespace Locke.ui
 
 	public enum ShowMode
 	{
-		Normal,
-		Main,		// cannot be closed.
+		Normal,		// for example : bag, equip, rank. NOTE: only normal window can be tracing back.
+		Main,		// Main Window. cannot be closed.
 		Fixed,		// cannot be closed.
-		Popup,
+		Popup,		// for example : messagebox, floating window.
 	}
 
 	public enum OpenAction
@@ -54,7 +54,7 @@ namespace Locke.ui
 		public WindowInfo windowInfo;
 		public IWindow windowScript;
 
-		public List<IWindow> recordedWindows = null;
+		public List<IWindow> historyWindows = null;
 		public WindowInfo recordedCurrentWindow = null;
 	}
 

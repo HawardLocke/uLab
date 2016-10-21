@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class DialogWindow : IWindow
 {
-	protected override void OnEnter(IContext context)
+	protected override void OnInit()
 	{
 		Button button = this.FindWidget<Button>("buttons/button1");
 		UIEventListener.Get(button.gameObject).onClick = onOkClick;

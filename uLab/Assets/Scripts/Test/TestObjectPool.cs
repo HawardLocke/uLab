@@ -32,8 +32,17 @@ public class TestObjectPool : MonoBehaviour
 		UIManager.Instance.Init();
 		UIManager.Instance.OpenWindow(GameUIList.bar);
 		UIManager.Instance.OpenWindow(GameUIList.main);
-// 		UIManager.Instance.OpenWindow(GameUIList.tip);
-// 		UIManager.Instance.OpenWindow(GameUIList.tip);
+		UIManager.Instance.mainWindowInfo = GameUIList.main;
+
+		/*UIManager.Instance.OpenWindow(GameUIList.tip);
+		UIManager.Instance.OpenWindow(GameUIList.bag);
+		UIManager.Instance.OpenWindow(GameUIList.role);
+		UIManager.Instance.OpenWindow(GameUIList.bag);
+
+		UIManager.Instance.Cleanup();
+		UIManager.Instance.OpenWindow(GameUIList.main);
+		UIManager.Instance.mainWindowInfo = GameUIList.main;*/
+		
 	}
 
 	private IEnumerator Preload()

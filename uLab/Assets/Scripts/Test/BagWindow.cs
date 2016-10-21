@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class BagWindow : IWindow
 {
-	private static string[] buttonNames = new string[5] { "bag", "role", "shop", "tip", "dialog" };
+	private static string[] buttonNames = new string[5] { "bag", "role", "shop", "tip", "close normals" };
 
-	protected override void OnEnter(IContext context)
+	protected override void OnInit()
 	{
 		for (int i = 0; i < 5; i++)
 		{
@@ -56,7 +56,7 @@ public class BagWindow : IWindow
 		}
 		else if (index == 5)
 		{
-			UIManager.Instance.OpenWindow(GameUIList.dialog);
+			UIManager.Instance.BackToMainWindow();
 		}
 	}
 

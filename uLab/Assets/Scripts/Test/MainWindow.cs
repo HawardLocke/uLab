@@ -8,8 +8,8 @@ using Locke.ui;
 
 public class MainWindow : IWindow
 {
-	private static string[] buttonNames = new string[9] { "bag", "role", "shop", "tip", "dialog", "close normals", "close all", "??", "reset" };
-	protected override void OnEnter(IContext context)
+	private static string[] buttonNames = new string[9] { "bag", "role", "shop", "tip", "dialog", "close normals", "close all", "show main", "reset" };
+	protected override void OnInit()
 	{
 		for (int i = 0; i < 9; i++)
 		{
@@ -57,19 +57,19 @@ public class MainWindow : IWindow
 		}
 		else if (index == 6)
 		{
-			UIManager.Instance.CloseAllNormalWindows();
+			UIManager.Instance.BackToMainWindow();
 		}
 		else if (index == 7)
 		{
-			UIManager.Instance.CloseAllWindows();
+			//UIManager.Instance.CloseAllWindows();
 		}
 		else if (index == 8)
 		{
-			UIManager.Instance.CloseAllWindowsExcept(GameUIList.main);
+			//UIManager.Instance.CloseAllWindowsExcept(GameUIList.main);
 		}
 		else if (index == 9)
 		{
-			UIManager.Instance.Reset();
+			UIManager.Instance.Cleanup();
 		}
 	}
 
