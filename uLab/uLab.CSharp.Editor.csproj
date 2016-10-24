@@ -82,23 +82,14 @@
     <Reference Include="UnityEditor.Graphs">
       <HintPath>Library\UnityAssemblies\UnityEditor.Graphs.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.Android.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Android.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    <Reference Include="Debugger">
+      <HintPath>Assets\Plugins\Debugger.dll</HintPath>
     </Reference>
     <Reference Include="Excel">
       <HintPath>Assets\Plugins\Excel\Excel.dll</HintPath>
@@ -117,11 +108,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Editor\Custom\CustomSettings.cs" />
     <Compile Include="Assets\Scripts\Editor\Excel\XlsxReader.cs" />
     <Compile Include="Assets\Scripts\Editor\Excel\Xlsx_To_X.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_LuaInterface_EventObject.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_LuaInterface_LuaConstructor.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_LuaInterface_LuaField.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_LuaInterface_LuaMethod.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_LuaInterface_LuaProperty.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_System_Delegate.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_System_Enum.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_System_Object.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_System_String.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_System_Type.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_UnityEngine_GameObject.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_UnityEngine_Input.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\Extend\ToLua_UnityEngine_Object.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\ToLuaExport.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\ToLuaMenu.cs" />
+    <Compile Include="Assets\Scripts\ToLua\Editor\ToLuaTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Template\Npc0.txt" />
+    <None Include="Assets\Scripts\ToLua\readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>
