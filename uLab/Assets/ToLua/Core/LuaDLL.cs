@@ -198,7 +198,13 @@ namespace LuaInterface
 #endif
         /*
         ** third party library
-        */
+		 **/
+        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int luaopen_sproto_core(IntPtr L);
+
+        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int luaopen_protobuf_c(IntPtr L);
+        
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern int luaopen_pb(IntPtr L);
 
