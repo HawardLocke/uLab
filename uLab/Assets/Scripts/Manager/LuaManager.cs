@@ -9,7 +9,7 @@ using LuaInterface;
 namespace Locke
 {
 
-	public class LuaManager : SingletonComponent<LuaManager>, IManager
+	public class LuaManager : Manager
 	{
 		private LuaState luaState = null;
 		private LuaLooper loop = null;
@@ -24,7 +24,8 @@ namespace Locke
 			LuaBinder.Bind(luaState);
 			LuaCoroutine.Register(luaState, this);
 
-
+			InitLuaPath();
+			InitLuaBundle();
 			luaState.Start();
 			StartLooper();
 			StartMain();
@@ -47,6 +48,44 @@ namespace Locke
 
 				state.Dispose();
 			}
+		}
+
+		void InitLuaPath()
+		{
+			if (AppConst.DebugMode)
+			{
+				string rootPath = AppConst.FrameworkRoot;
+				luaState.AddSearchPath(rootPath + "/Lua");
+				luaState.AddSearchPath(rootPath + "/ToLua/Lua");
+			}
+			else
+			{
+				luaState.AddSearchPath(Util.DataPath + "lua");
+			}
+		}
+
+		void InitLuaBundle()
+		{
+			/*if (loader.beZip)
+			{
+				loader.AddBundle("lua/lua.unity3d");
+				loader.AddBundle("lua/lua_math.unity3d");
+				loader.AddBundle("lua/lua_system.unity3d");
+				loader.AddBundle("lua/lua_system_reflection.unity3d");
+				loader.AddBundle("lua/lua_unityengine.unity3d");
+				loader.AddBundle("lua/lua_common.unity3d");
+				loader.AddBundle("lua/lua_logic.unity3d");
+				loader.AddBundle("lua/lua_view.unity3d");
+				loader.AddBundle("lua/lua_controller.unity3d");
+				loader.AddBundle("lua/lua_misc.unity3d");
+
+				loader.AddBundle("lua/lua_protobuf.unity3d");
+				loader.AddBundle("lua/lua_3rd_cjson.unity3d");
+				loader.AddBundle("lua/lua_3rd_luabitop.unity3d");
+				loader.AddBundle("lua/lua_3rd_pbc.unity3d");
+				loader.AddBundle("lua/lua_3rd_pblua.unity3d");
+				loader.AddBundle("lua/lua_3rd_sproto.unity3d");
+			}*/
 		}
 
 		void OpenLibs()
@@ -75,6 +114,26 @@ namespace Locke
 		{
 			loop = gameObject.AddComponent<LuaLooper>();
 			loop.luaState = luaState;
+		}
+
+		public void LuaGC()
+		{
+			luaState.LuaGC(LuaGCOptions.LUA_GCCOLLECT);
+		}
+
+		public object[] CallFunction(string funcName, params object[] args)
+		{
+			LuaFunction func = luaState.GetFunction(funcName);
+			if (func != null)
+			{
+				return func.Call(args);
+			}
+			return null;
+		}
+
+		public object[] DoFile(string filename)
+		{
+			return luaState.DoFile(filename);
 		}
 
 	}

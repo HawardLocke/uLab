@@ -30,7 +30,7 @@ namespace Locke
 	}
 
 
-	public class SingletonComponent<T> : MonoBehaviour
+	public class SingletonMono<T> : MonoBehaviour
 		where T : Component
 	{
 		private static T _instance;
@@ -44,9 +44,14 @@ namespace Locke
 					_instance = FindObjectOfType(typeof(T)) as T;
 					if (_instance == null)
 					{
-						var go = new GameObject();
-						go.name = typeof(T).Name;
-						go.hideFlags = HideFlags.HideAndDontSave;
+						string goName = "SingletonMonos";
+						var go = GameObject.Find(goName);
+						if (go == null)
+						{
+							go = new GameObject();
+							go.name = goName;// typeof(T).Name;
+							//go.hideFlags = HideFlags.HideAndDontSave;
+						}
 						_instance = go.AddComponent<T>();
 					}
 				}

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Locke
 {
 
-	public class ResourceManager : Singleton<ResourceManager>
+	public class ResourceManager : Manager
 	{
 
 		public GameObject LoadRes(string pathName)

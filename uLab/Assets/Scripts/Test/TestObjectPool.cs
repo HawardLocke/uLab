@@ -43,7 +43,9 @@ public class TestObjectPool : MonoBehaviour
 		UIManager.Instance.OpenWindow(GameUIList.main);
 		UIManager.Instance.mainWindowInfo = GameUIList.main;*/
 
-		LuaManager.Instance.Initialize();
+		App.Instance.Inittialize();
+
+		//GameManager.Instance.Initialize();
 	}
 
 	private IEnumerator Preload()
