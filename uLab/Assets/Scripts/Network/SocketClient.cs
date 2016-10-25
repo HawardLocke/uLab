@@ -231,8 +231,8 @@ public class SocketClient
 		byte[] message = r.ReadBytes((int)(ms.Length - ms.Position));
 		//int msglen = message.Length;
 
-		ByteBuffer buffer = new ByteBuffer(message);
-		int mainId = buffer.ReadShort();
+		//ByteBuffer buffer = new ByteBuffer(message);
+		//int mainId = buffer.ReadShort();
 		//NetworkManager.AddEvent(mainId, buffer);
 	}
 

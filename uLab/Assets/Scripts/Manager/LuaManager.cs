@@ -56,7 +56,7 @@ namespace Locke
 		{
 			if (AppConst.DebugMode)
 			{
-				string rootPath = AppConst.FrameworkRoot;
+				string rootPath = Application.dataPath;
 				luaState.AddSearchPath(rootPath + "/Lua");
 				luaState.AddSearchPath(rootPath + "/ToLua/Lua");
 			}
@@ -87,6 +87,9 @@ namespace Locke
 				loader.AddBundle("lua/lua_3rd_pbc.unity3d");
 				loader.AddBundle("lua/lua_3rd_pblua.unity3d");
 				loader.AddBundle("lua/lua_3rd_sproto.unity3d");
+				
+				// Locke
+				loader.AddBundle("lua/lua_ui.unity3d");
 			}
 		}
 

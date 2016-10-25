@@ -145,11 +145,11 @@ public class LuaBundle
 			Recursive(luaDataPath, ref paths, ref files);
 			foreach (string f in files)
 			{
-				if (f.EndsWith(".meta") || f.EndsWith(".lua")) 
+				if (f.EndsWith(".meta") || f.EndsWith(".lua"))
 					continue;
 				string newfile = f.Replace(luaDataPath, "");
 				string destPath = Path.GetDirectoryName(luaTargetPath + newfile);
-				if (!Directory.Exists(destPath)) 
+				if (!Directory.Exists(destPath))
 					Directory.CreateDirectory(destPath);
 
 				string destfile = destPath + "/" + Path.GetFileName(f);
@@ -169,8 +169,8 @@ public class LuaBundle
 		{
 			Directory.CreateDirectory(luaPath);
 		}
-		string[] luaPaths = { AppDataPath + "/LuaFramework/lua/", 
-                              AppDataPath + "/LuaFramework/Tolua/Lua/" };
+		string[] luaPaths = { AppDataPath + "/lua/",
+                              AppDataPath + "/Tolua/Lua/" };
 
 		for (int i = 0; i < luaPaths.Length; i++)
 		{
@@ -185,7 +185,7 @@ public class LuaBundle
 				string newfile = f.Replace(luaDataPath, "");
 				string newpath = luaPath + newfile;
 				string path = Path.GetDirectoryName(newpath);
-				if (!Directory.Exists(path)) 
+				if (!Directory.Exists(path))
 					Directory.CreateDirectory(path);
 
 				if (File.Exists(newpath))
@@ -229,7 +229,7 @@ public class LuaBundle
 		for (int i = 0; i < fileList.Count; i++)
 		{
 			string filePath = fileList[i];
-			string ext = Path.GetExtension(filePath);
+			//string ext = Path.GetExtension(filePath);
 			if (filePath.EndsWith(".meta") || filePath.Contains(".DS_Store"))
 				continue;
 
@@ -298,7 +298,7 @@ public class LuaBundle
 		info.WindowStyle = ProcessWindowStyle.Hidden;
 		info.ErrorDialog = true;
 		info.UseShellExecute = isWin;
-		Util.Log(info.FileName + " " + info.Arguments);
+		UnityEngine.Debug.Log(info.FileName + " " + info.Arguments);
 
 		Process pro = Process.Start(info);
 		pro.WaitForExit();

@@ -55,7 +55,7 @@ public class Xlsx_To_X
 
 			Debug.Log(string.Format("xlsx -> txt done, {0} files converted. take {1} ms.", convertedCount, watch.ElapsedMilliseconds));
 		}
-		catch (System.Exception e)
+		catch (System.Exception)
 		{
 			EditorUtility.ClearProgressBar();
 			AssetDatabase.Refresh();
@@ -99,7 +99,7 @@ public class Xlsx_To_X
 
 			Debug.Log(string.Format("xlsx -> cs done, {0} files converted. take {1} ms.", convertedCount, watch.ElapsedMilliseconds));
 		}
-		catch (System.Exception e)
+		catch (System.Exception)
 		{
 			EditorUtility.ClearProgressBar();
 			AssetDatabase.Refresh();

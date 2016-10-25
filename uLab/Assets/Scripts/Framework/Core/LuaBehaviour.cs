@@ -9,7 +9,7 @@ namespace Locke
 {
 	public class LuaBehaviour : Base
 	{
-		private string data = null;
+		//private string data = null;
 		private Dictionary<string, LuaFunction> buttons = new Dictionary<string, LuaFunction>();
 
 		protected void Awake()

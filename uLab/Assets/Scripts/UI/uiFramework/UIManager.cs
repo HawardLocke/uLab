@@ -243,6 +243,8 @@ namespace Locke.ui
 				Log.Error(string.Format("file {0} does not exist.", windowInfo.prefabPath));
 				return null;
 			}
+			go.name = windowInfo.prefabPath.Substring(windowInfo.prefabPath.LastIndexOf('/')+1);
+			App.Instance.GetManager<LuaManager>().DoFile("UI/"+go.name+".lua");
 			IWindow script = go.GetComponent<IWindow>();
 			if (script == null)
 			{
@@ -256,6 +258,8 @@ namespace Locke.ui
 			var rectTran = go.GetComponent<RectTransform>();
 			rectTran.SetParent(modeRoot.transform);
 			rectTran.localPosition = Vector3.zero;
+
+			go.AddComponent<LuaBehaviour>();
 
 			MakeWindowBackground(windowInfo, go);
 

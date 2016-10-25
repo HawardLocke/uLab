@@ -28,6 +28,9 @@ public class TestObjectPool : MonoBehaviour
 		go.transform.localPosition = new Vector3(-5000, -5000, -5000);
 		if (progressText == null)
 			Debug.Log("whatever");
+
+		App.Instance.Inittialize();
+		App.Instance.GetManager<LuaManager>().Initialize();
 		
 		UIManager.Instance.Init();
 		UIManager.Instance.OpenWindow(GameUI.bar);
@@ -43,9 +46,7 @@ public class TestObjectPool : MonoBehaviour
 		UIManager.Instance.OpenWindow(GameUIList.main);
 		UIManager.Instance.mainWindowInfo = GameUIList.main;*/
 
-		App.Instance.Inittialize();
-
-		App.Instance.GetManager<LuaManager>().Initialize();
+		
 	}
 
 	private IEnumerator Preload()

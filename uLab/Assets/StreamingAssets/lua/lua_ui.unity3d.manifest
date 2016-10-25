@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1966702025
+CRC: 897812097
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a3e225892cf8b23ca5569ee631a86900
+    Hash: d0f250878649b678d39d8b6fd9ff582d
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
@@ -12,7 +12,6 @@ ClassTypes:
 - Class: 49
   Script: {instanceID: 0}
 Assets:
-- Assets/templua/System/ValueType.lua.bytes
-- Assets/templua/System/Timer.lua.bytes
-- Assets/templua/System/coroutine.lua.bytes
+- Assets/templua/UI/MainWindow.lua.bytes
+- Assets/templua/UI/BarWindow.lua.bytes
 Dependencies: []
