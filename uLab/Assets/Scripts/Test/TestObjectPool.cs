@@ -45,7 +45,7 @@ public class TestObjectPool : MonoBehaviour
 
 		App.Instance.Inittialize();
 
-		//GameManager.Instance.Initialize();
+		App.Instance.GetManager<LuaManager>().Initialize();
 	}
 
 	private IEnumerator Preload()

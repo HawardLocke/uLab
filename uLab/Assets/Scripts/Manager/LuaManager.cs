@@ -13,10 +13,12 @@ namespace Locke
 	{
 		private LuaState luaState = null;
 		private LuaLooper loop = null;
+		private LuaLoader loader;
 
 		public bool Initialize()
 		{
 			luaState = new LuaState();
+			loader = new LuaLoader();
 
 			OpenLibs();
 			luaState.LuaSetTop(0);
@@ -66,7 +68,7 @@ namespace Locke
 
 		void InitLuaBundle()
 		{
-			/*if (loader.beZip)
+			if (loader.beZip)
 			{
 				loader.AddBundle("lua/lua.unity3d");
 				loader.AddBundle("lua/lua_math.unity3d");
@@ -85,7 +87,7 @@ namespace Locke
 				loader.AddBundle("lua/lua_3rd_pbc.unity3d");
 				loader.AddBundle("lua/lua_3rd_pblua.unity3d");
 				loader.AddBundle("lua/lua_3rd_sproto.unity3d");
-			}*/
+			}
 		}
 
 		void OpenLibs()

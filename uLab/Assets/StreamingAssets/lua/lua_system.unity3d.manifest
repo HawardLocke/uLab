@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 1966702025
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 66df490b06eb35d8b2e137d55eaf6610
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/templua/System/ValueType.lua.bytes
+- Assets/templua/System/Timer.lua.bytes
+- Assets/templua/System/coroutine.lua.bytes
+Dependencies: []

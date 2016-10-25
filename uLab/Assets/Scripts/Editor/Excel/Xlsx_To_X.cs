@@ -22,54 +22,88 @@ public class Xlsx_To_X
 	[MenuItem("Locke/Excel/xlsx -> txt")]
 	static void xlsx_to_txt()
 	{
-		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-		watch.Start();
-
-		Object[] selectedObjects = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
-		if (selectedObjects.Length == 0)
-			Debug.LogError("u should select at least one .xlsx file.");
-		for (int i = 0; i < selectedObjects.Length; i++)
+		try
 		{
-			Object obj = selectedObjects[i] as Object;
+			System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+			watch.Start();
 
-			var sheetData = XlsxReader.Instance.AsStringArray(xlsxPath + obj.name + ".xlsx");
-			string txt = _to_txt(sheetData);
-			System.IO.StreamWriter streamwriter = new System.IO.StreamWriter(txtPath + obj.name + ".txt", false);
-			streamwriter.Write(txt);
-			streamwriter.Flush();
-			streamwriter.Close();
+			Object[] selectedObjects = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
+			if (selectedObjects.Length == 0)
+				Debug.LogError("u should select at least one .xlsx file.");
+			int convertedCount = 0;
+			for (int i = 0; i < selectedObjects.Length; i++)
+			{
+				Object obj = selectedObjects[i] as Object;
+
+				string srcFilePath = xlsxPath + obj.name + ".xlsx";
+				if (!File.Exists(srcFilePath))
+					continue;
+				var sheetData = XlsxReader.Instance.AsStringArray(srcFilePath);
+				string txt = _to_txt(sheetData);
+				System.IO.StreamWriter streamwriter = new System.IO.StreamWriter(txtPath + obj.name + ".txt", false);
+				streamwriter.Write(txt);
+				streamwriter.Flush();
+				streamwriter.Close();
+
+				convertedCount++;
+				UpdateProgress(convertedCount, selectedObjects.Length, (txtPath + obj.name + ".txt").Replace(Application.dataPath, "Assets"));
+			}
+			EditorUtility.ClearProgressBar();
+			AssetDatabase.Refresh();
+
+			watch.Stop();
+
+			Debug.Log(string.Format("xlsx -> txt done, {0} files converted. take {1} ms.", convertedCount, watch.ElapsedMilliseconds));
 		}
-
-		watch.Stop();
-
-		Debug.Log(string.Format("xlsx -> txt done, {0} files converted. cost {1} ms.", selectedObjects.Length, watch.ElapsedMilliseconds.ToString()));
+		catch (System.Exception e)
+		{
+			EditorUtility.ClearProgressBar();
+			AssetDatabase.Refresh();
+		}
 	}
 
 
 	[MenuItem("Locke/Excel/xlsx -> cs")]
 	static void xlsx_to_cs()
 	{
-		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-		watch.Start();
-
-		Object[] selectedObjects = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
-		if (selectedObjects.Length == 0)
-			Debug.LogError("u should select at least one .xlsx file.");
-		for (int i = 0; i < selectedObjects.Length; i++)
+		try
 		{
-			Object obj = selectedObjects[i] as Object;
+			System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+			watch.Start();
 
-			var sheetData = XlsxReader.Instance.AsStringArray(xlsxPath + obj.name + ".xlsx");
-			string txt = _to_cs(sheetData, obj.name);
-			System.IO.StreamWriter streamwriter = new System.IO.StreamWriter(csPath + obj.name + "_Data.cs", false);
-			streamwriter.Write(txt);
-			streamwriter.Flush();
-			streamwriter.Close();
+			Object[] selectedObjects = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
+			if (selectedObjects.Length == 0)
+				Debug.LogError("u should select at least one .xlsx file.");
+			int convertedCount = 0;
+			for (int i = 0; i < selectedObjects.Length; i++)
+			{
+				Object obj = selectedObjects[i] as Object;
+
+				string srcFilePath = xlsxPath + obj.name + ".xlsx";
+				if (!File.Exists(srcFilePath))
+					continue;
+				var sheetData = XlsxReader.Instance.AsStringArray(srcFilePath);
+				string txt = _to_cs(sheetData, obj.name);
+				System.IO.StreamWriter streamwriter = new System.IO.StreamWriter(csPath + obj.name + "_Data.cs", false);
+				streamwriter.Write(txt);
+				streamwriter.Flush();
+				streamwriter.Close();
+
+				convertedCount++;
+				UpdateProgress(convertedCount, selectedObjects.Length, (txtPath + obj.name + "_Data.cs").Replace(Application.dataPath, "Assets"));
+			}
+			EditorUtility.ClearProgressBar();
+			AssetDatabase.Refresh();
+
+			watch.Stop();
+
+			Debug.Log(string.Format("xlsx -> cs done, {0} files converted. take {1} ms.", convertedCount, watch.ElapsedMilliseconds));
 		}
-
-		watch.Stop();
-
-		Debug.Log(string.Format("xlsx -> cs done, {0} files converted. cost {1} ms.", selectedObjects.Length, watch.ElapsedMilliseconds));
+		catch (System.Exception e)
+		{
+			EditorUtility.ClearProgressBar();
+			AssetDatabase.Refresh();
+		}
 	}
 
 	#region _functions
@@ -277,5 +311,12 @@ public class Xlsx_To_X
 	}
 
 	#endregion
+
+	static void UpdateProgress(int progress, int progressMax, string desc)
+	{
+		string title = "Processing...[" + progress + " - " + progressMax + "]";
+		float value = (float)progress / (float)progressMax;
+		EditorUtility.DisplayProgressBar(title, desc, value);
+	}
 
 }

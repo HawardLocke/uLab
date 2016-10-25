@@ -14,7 +14,7 @@ using Locke;
 
 public class LuaBundle
 {
-	const string tempLua = "/templua";
+	const string tempLua = "/templua/";
 
 	[MenuItem("Locke/Lua/Build for Windows")]
 	public static void Build_for_Windows()
@@ -34,14 +34,23 @@ public class LuaBundle
 		BuildLuaBundles(BuildTarget.Android);
 	}
 
-
+	/// <summary>
+	/// ·ÖÆ½Ì¨build bundle
+	/// </summary>
+	/// <param name="target"></param>
 	private static void BuildLuaBundles(BuildTarget target)
 	{
-		// delete directories in streamingasset
-		if (Directory.Exists(Util.DataPath))
+		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+		watch.Start();
+
+		// delete streamingasset and recreate it.
+		string streamPath = Application.streamingAssetsPath;
+		if (Directory.Exists(streamPath))
 		{
-			Directory.Delete(Util.DataPath, true);
+			Directory.Delete(streamPath, true);
 		}
+		Directory.CreateDirectory(streamPath);
+		AssetDatabase.Refresh();
 
 		List<AssetBundleBuild> buildList = new List<AssetBundleBuild>();
 
@@ -56,6 +65,9 @@ public class LuaBundle
 		if (Directory.Exists(streamDir))
 			Directory.Delete(streamDir, true);
 		AssetDatabase.Refresh();
+
+		watch.Stop();
+		UnityEngine.Debug.Log(string.Format("build done ! take {0} ms.", watch.ElapsedMilliseconds));
 	}
 
 	static void AddBuildMap(ref List<AssetBundleBuild> buildList, string bundleName, string pattern, string path)
@@ -173,7 +185,8 @@ public class LuaBundle
 				string newfile = f.Replace(luaDataPath, "");
 				string newpath = luaPath + newfile;
 				string path = Path.GetDirectoryName(newpath);
-				if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+				if (!Directory.Exists(path)) 
+					Directory.CreateDirectory(path);
 
 				if (File.Exists(newpath))
 				{
