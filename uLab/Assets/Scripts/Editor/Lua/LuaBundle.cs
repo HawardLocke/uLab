@@ -14,11 +14,7 @@ using Locke;
 
 public class LuaBundle
 {
-
-	static List<string> paths = new List<string>();
-	static List<string> files = new List<string>();
-	static List<AssetBundleBuild> maps = new List<AssetBundleBuild>();
-
+	const string tempLua = "/templua";
 
 	[MenuItem("Locke/Lua/Build for Windows")]
 	public static void Build_for_Windows()
@@ -47,17 +43,22 @@ public class LuaBundle
 			Directory.Delete(Util.DataPath, true);
 		}
 
-		string outputPath = "Assets/" + AppConst.AssetDir;
+		List<AssetBundleBuild> buildList = new List<AssetBundleBuild>();
+
+		HandleLuaBundle(ref buildList);
+
+		string outputPath = "Assets/" + AppConst.StreamingAssetDir;
 		BuildAssetBundleOptions opt = BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.UncompressedAssetBundle;
-		BuildPipeline.BuildAssetBundles(outputPath, null, opt, target);
+		BuildPipeline.BuildAssetBundles(outputPath, buildList.ToArray(), opt, target);
 		BuildFileIndex();
 
-		string streamDir = Application.dataPath + "/" + AppConst.LuaTempDir;
-		if (Directory.Exists(streamDir)) Directory.Delete(streamDir, true);
+		string streamDir = Application.dataPath + tempLua;
+		if (Directory.Exists(streamDir))
+			Directory.Delete(streamDir, true);
 		AssetDatabase.Refresh();
 	}
 
-	static void AddBuildMap(string bundleName, string pattern, string path)
+	static void AddBuildMap(ref List<AssetBundleBuild> buildList, string bundleName, string pattern, string path)
 	{
 		string[] files = Directory.GetFiles(path, pattern);
 		if (files.Length == 0) return;
@@ -69,14 +70,16 @@ public class LuaBundle
 		AssetBundleBuild build = new AssetBundleBuild();
 		build.assetBundleName = bundleName;
 		build.assetNames = files;
-		maps.Add(build);
+		buildList.Add(build);
 	}
 
 
-	static void HandleLuaBundle()
+	static void HandleLuaBundle(ref List<AssetBundleBuild> buildList)
 	{
-		string streamDir = Application.dataPath + "/" + AppConst.LuaTempDir;
-		if (!Directory.Exists(streamDir)) Directory.CreateDirectory(streamDir);
+		// 先把lua文件拷贝到临时目录
+		string tempLuaDir = Application.dataPath + tempLua;
+		if (!Directory.Exists(tempLuaDir))
+			Directory.CreateDirectory(tempLuaDir);
 
 		string[] srcDirs = { Application.dataPath + "/Lua", Application.dataPath + "/ToLua/Lua" };
 		for (int i = 0; i < srcDirs.Length; i++)
@@ -94,7 +97,7 @@ public class LuaBundle
 				for (int j = 0; j < files.Length; j++)
 				{
 					string str = files[j].Remove(0, len);
-					string dest = streamDir + str + ".bytes";
+					string dest = tempLuaDir + str + ".bytes";
 					string dir = Path.GetDirectoryName(dest);
 					Directory.CreateDirectory(dir);
 					EncodeLuaFile(files[j], dest);
@@ -102,36 +105,42 @@ public class LuaBundle
 			}
 			else
 			{
-				ToLuaMenu.CopyLuaBytesFiles(srcDirs[i], streamDir);
+				ToLuaMenu.CopyLuaBytesFiles(srcDirs[i], tempLuaDir);
 			}
 		}
-		string[] dirs = Directory.GetDirectories(streamDir, "*", SearchOption.AllDirectories);
+
+		// 对临时目录的每个子文件夹的lua按文件夹打包
+		string[] dirs = Directory.GetDirectories(tempLuaDir, "*", SearchOption.AllDirectories);
 		for (int i = 0; i < dirs.Length; i++)
 		{
-			string name = dirs[i].Replace(streamDir, string.Empty);
+			string name = dirs[i].Replace(tempLuaDir, string.Empty);
 			name = name.Replace('\\', '_').Replace('/', '_');
-			name = "lua/lua_" + name.ToLower() + AppConst.ExtName;
+			name = "lua/lua_" + name.ToLower() + ".unity3d";
 
 			string path = "Assets" + dirs[i].Replace(Application.dataPath, "");
-			AddBuildMap(name, "*.bytes", path);
+			AddBuildMap(ref buildList, name, "*.bytes", path);
 		}
-		AddBuildMap("lua/lua" + AppConst.ExtName, "*.bytes", "Assets/" + AppConst.LuaTempDir);
+		// 对临时目录根部的lua打一个包
+		AddBuildMap(ref buildList, "lua/lua" + ".unity3d", "*.bytes", "Assets" + tempLua);
 
 		//-------------------------------处理非Lua文件----------------------------------
-		string luaPath = AppDataPath + "/StreamingAssets/lua/";
+		string luaTargetPath = AppDataPath + "/StreamingAssets/lua/";
 		for (int i = 0; i < srcDirs.Length; i++)
 		{
-			paths.Clear(); files.Clear();
 			string luaDataPath = srcDirs[i].ToLower();
-			Recursive(luaDataPath);
+			List<string> paths = new List<string>();
+			List<string> files = new List<string>();
+			Recursive(luaDataPath, ref paths, ref files);
 			foreach (string f in files)
 			{
-				if (f.EndsWith(".meta") || f.EndsWith(".lua")) continue;
+				if (f.EndsWith(".meta") || f.EndsWith(".lua")) 
+					continue;
 				string newfile = f.Replace(luaDataPath, "");
-				string path = Path.GetDirectoryName(luaPath + newfile);
-				if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+				string destPath = Path.GetDirectoryName(luaTargetPath + newfile);
+				if (!Directory.Exists(destPath)) 
+					Directory.CreateDirectory(destPath);
 
-				string destfile = path + "/" + Path.GetFileName(f);
+				string destfile = destPath + "/" + Path.GetFileName(f);
 				File.Copy(f, destfile, true);
 			}
 		}
@@ -153,9 +162,10 @@ public class LuaBundle
 
 		for (int i = 0; i < luaPaths.Length; i++)
 		{
-			paths.Clear(); files.Clear();
 			string luaDataPath = luaPaths[i].ToLower();
-			Recursive(luaDataPath);
+			List<string> paths = new List<string>();
+			List<string> files = new List<string>();
+			Recursive(luaDataPath, ref paths, ref files);
 			int n = 0;
 			foreach (string f in files)
 			{
@@ -194,27 +204,31 @@ public class LuaBundle
 		string resPath = AppDataPath + "/StreamingAssets/";
 		///----------------------创建文件列表-----------------------
 		string newFilePath = resPath + "/files.txt";
-		if (File.Exists(newFilePath)) File.Delete(newFilePath);
+		if (File.Exists(newFilePath))
+			File.Delete(newFilePath);
 
-		paths.Clear(); files.Clear();
-		Recursive(resPath);
+		List<string> pathList = new List<string>();
+		List<string> fileList = new List<string>();
+		Recursive(resPath, ref pathList, ref fileList);
 
 		FileStream fs = new FileStream(newFilePath, FileMode.CreateNew);
 		StreamWriter sw = new StreamWriter(fs);
-		for (int i = 0; i < files.Count; i++)
+		for (int i = 0; i < fileList.Count; i++)
 		{
-			string file = files[i];
-			string ext = Path.GetExtension(file);
-			if (file.EndsWith(".meta") || file.Contains(".DS_Store")) continue;
+			string filePath = fileList[i];
+			string ext = Path.GetExtension(filePath);
+			if (filePath.EndsWith(".meta") || filePath.Contains(".DS_Store"))
+				continue;
 
-			string md5 = Util.md5file(file);
-			string value = file.Replace(resPath, string.Empty);
+			string md5 = Util.md5file(filePath);
+			string value = filePath.Replace(resPath, string.Empty);
 			sw.WriteLine(value + "|" + md5);
 		}
-		sw.Close(); fs.Close();
+		sw.Close();
+		fs.Close();
 	}
 
-	static void Recursive(string path)
+	static void Recursive(string path, ref List<string> pathList, ref List<string> fileList)
 	{
 		string[] names = Directory.GetFiles(path);
 		string[] dirs = Directory.GetDirectories(path);
@@ -222,12 +236,12 @@ public class LuaBundle
 		{
 			string ext = Path.GetExtension(filename);
 			if (ext.Equals(".meta")) continue;
-			files.Add(filename.Replace('\\', '/'));
+			fileList.Add(filename.Replace('\\', '/'));
 		}
 		foreach (string dir in dirs)
 		{
-			paths.Add(dir.Replace('\\', '/'));
-			Recursive(dir);
+			pathList.Add(dir.Replace('\\', '/'));
+			Recursive(dir, ref pathList, ref fileList);
 		}
 	}
 

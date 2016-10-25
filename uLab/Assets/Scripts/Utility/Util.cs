@@ -231,7 +231,7 @@ namespace Locke
 				}
 				if (AppConst.DebugMode)
 				{
-					return Application.dataPath + "/" + AppConst.AssetDir + "/";
+					return Application.dataPath + "/" + AppConst.StreamingAssetDir + "/";
 				}
 				if (Application.platform == RuntimePlatform.OSXEditor)
 				{
@@ -245,7 +245,7 @@ namespace Locke
 		public static string GetRelativePath()
 		{
 			if (Application.isEditor)
-				return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/") + "/Assets/" + AppConst.AssetDir + "/";
+				return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/") + "/Assets/" + AppConst.StreamingAssetDir + "/";
 			else if (Application.isMobilePlatform || Application.isConsolePlatform)
 				return "file:///" + DataPath;
 			else // For standalone player.
@@ -297,7 +297,7 @@ namespace Locke
 					path = Application.dataPath + "/Raw/";
 					break;
 				default:
-					path = Application.dataPath + "/" + AppConst.AssetDir + "/";
+					path = Application.dataPath + "/" + AppConst.StreamingAssetDir + "/";
 					break;
 			}
 			return path;
