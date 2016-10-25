@@ -19,7 +19,7 @@ public class Xlsx_To_X
 	private static string csPath = Application.dataPath + "/Scripts/Template/auto/";
 
 
-	[MenuItem("Locke_Tools/Excel/xlsx -> txt")]
+	[MenuItem("Locke/Excel/xlsx -> txt")]
 	static void xlsx_to_txt()
 	{
 		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
@@ -46,7 +46,7 @@ public class Xlsx_To_X
 	}
 
 
-	[MenuItem("Locke_Tools/Excel/xlsx -> cs")]
+	[MenuItem("Locke/Excel/xlsx -> cs")]
 	static void xlsx_to_cs()
 	{
 		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();

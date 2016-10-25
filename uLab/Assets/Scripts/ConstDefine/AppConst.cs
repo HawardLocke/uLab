@@ -26,8 +26,8 @@ namespace Locke
 		public const int TimerInterval = 1;
 		public const int GameFrameRate = 30;                        //游戏帧频
 
-		public const string AppName = "LuaFramework";               //应用程序名称
-		public const string LuaTempDir = "Lua/";                    //临时目录
+		public const string AppName = "uLab";               //应用程序名称
+		public const string LuaTempDir = "tempLua/";                    //临时目录
 		public const string AppPrefix = AppName + "_";              //应用程序前缀
 		public const string ExtName = ".unity3d";                   //素材扩展名
 		public const string AssetDir = "StreamingAssets";           //素材目录 
