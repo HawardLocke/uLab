@@ -6,3 +6,9 @@ uLab/Temp/
 uLab/obj/
 uLab/uLab.CSharp.Editor.csproj
 uLab/uLab.CSharp.csproj
+uLab/Assets/StreamingAssets/StreamingAssets
+uLab/Assets/StreamingAssets/StreamingAssets.manifest
+uLab/Assets/StreamingAssets/StreamingAssets.manifest.meta
+uLab/Assets/StreamingAssets/StreamingAssets.meta
+uLab/Assets/StreamingAssets/files.txt
+uLab/Assets/StreamingAssets/files.txt.meta
