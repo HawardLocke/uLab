@@ -13,5 +13,5 @@ end
 
 function MainWindow.Init()
 	--this.btnOpen = transform:FindChild("open").gameObject;
-	Log.Error("MainWindow~");
+	Locke.Log.Error("MainWindow~");
 end
