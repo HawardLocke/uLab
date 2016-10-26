@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Locke
 {
-	public class LuaBehaviour : Base
+	public class LuaBehaviour : MonoBehaviour
 	{
 		//private string data = null;
 		private Dictionary<string, LuaFunction> buttons = new Dictionary<string, LuaFunction>();

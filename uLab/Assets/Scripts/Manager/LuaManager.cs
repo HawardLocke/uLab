@@ -15,7 +15,7 @@ namespace Locke
 		private LuaState luaState = null;
 		private LuaLooper loop = null;
 
-		public bool Initialize()
+		public override void Initialize()
 		{
 			luaState = new LuaState();
 
@@ -23,17 +23,16 @@ namespace Locke
 			luaState.LuaSetTop(0);
 
 			LuaBinder.Bind(luaState);
-			LuaCoroutine.Register(luaState, this);
+			LuaCoroutine.Register(luaState, App.Instance);
 
 			InitLuaPath();
 			InitLuaBundle();
 			luaState.Start();
 			StartLooper();
 
-			return true;
 		}
 
-		public void Destroy()
+		public override void Destroy()
 		{
 			if (luaState != null)
 			{
@@ -124,6 +123,7 @@ namespace Locke
 
 		protected void StartLooper()
 		{
+			var gameObject = Util.GetManagerGo();
 			loop = gameObject.AddComponent<LuaLooper>();
 			loop.luaState = luaState;
 		}
@@ -143,9 +143,23 @@ namespace Locke
 			return null;
 		}
 
+		/// <summary>
+		/// do lua file
+		/// </summary>
+		/// <param name="filename"> path/*lua </param>
+		/// <returns></returns>
 		public object[] DoFile(string filename)
 		{
 			return luaState.DoFile(filename);
+		}
+
+		/// <summary>
+		/// require lua file
+		/// </summary>
+		/// <param name="filename"> path/file, without file extension </param>
+		public void RequireFile(string filename)
+		{
+			luaState.Require(filename);
 		}
 
 	}

@@ -29,8 +29,8 @@ public class TestObjectPool : MonoBehaviour
 		if (progressText == null)
 			Debug.Log("whatever");
 
-		App.Instance.Inittialize();
-		App.Instance.GetManager<LuaManager>().Initialize();
+		App.Instance.Initialize();
+		App.luaManager.Initialize();
 		
 		UIManager.Instance.Init();
 		UIManager.Instance.OpenWindow(GameUI.bar);

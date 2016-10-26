@@ -61,7 +61,7 @@ namespace Locke
 
 			if (go == null)
 			{
-				var loadedObj = App.Instance.GetManager<ResourceManager>().LoadRes(resName);
+				var loadedObj = App.resManager.LoadRes(resName);
 				// instantiate one.
 				go = GameObject.Instantiate(loadedObj) as GameObject;
 			}

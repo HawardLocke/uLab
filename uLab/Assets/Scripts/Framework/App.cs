@@ -6,40 +6,43 @@ using UnityEngine;
 
 namespace Locke
 {
-	public class App : Singleton<App>
+	public class App : SingletonMono<App>
 	{
 		private Dictionary<string, Manager> mManagerDic = new Dictionary<string, Manager>();
 
-		public void Inittialize()
-		{
-			InitManagers();
-		}
-		private void InitManagers()
-		{
-			GameObject go = GameObject.Find("GameManagers");
-			if (go == null)
-				go = new GameObject("GameManagers");
+		// for quick access
+		public static EventManager eventManager = null;
+		public static ResourceManager resManager = null;
+		public static LuaManager luaManager = null;
 
-			this.AddManager<ResourceManager>();
-			this.AddManager<LuaManager>();
+		public void Initialize()
+		{
+			AddAndInitManagers();
 		}
-		public T GetManager<T>() where T : Manager
+		private void AddAndInitManagers()
+		{
+			eventManager = this.AddManager<EventManager>();
+			resManager = this.AddManager<ResourceManager>();
+			luaManager = this.AddManager<LuaManager>();
+		}
+		/*public T GetManager<T>() where T : Manager
 		{
 			string name = typeof(T).ToString();
 			Manager mgr = null;
 			mManagerDic.TryGetValue(name, out mgr);
 			return mgr as T;
-		}
+		}*/
 
-		private void AddManager<T>() where T : Manager
+		private T AddManager<T>() where T : Manager, new()
 		{
+			T mgr = null;
 			string name = typeof(T).ToString();
 			if (!mManagerDic.ContainsKey(name))
 			{
-				GameObject go = GameObject.Find("GameManagers");
-				T mgr = go.AddComponent<T>();
+				mgr = new T();
 				mManagerDic.Add(name, mgr);
 			}
+			return mgr;
 		}
 
 	}

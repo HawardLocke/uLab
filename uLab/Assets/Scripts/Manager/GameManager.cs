@@ -16,24 +16,18 @@ namespace Locke
 			ReadyForPlay,
 		}
 
-		public void Initialize()
+		public override void Initialize()
 		{
 			OnResourceLoaded();
 		}
 
-		public void Destroy()
+		public override void Destroy()
 		{
 
 		}
-
-		void Update()
-		{
-
-		}
-
 		public void OnResourceLoaded()
 		{
-			App.Instance.GetManager<LuaManager>().Initialize();
+			
 		}
 
 	}

@@ -244,7 +244,7 @@ namespace Locke.ui
 				return null;
 			}
 			go.name = windowInfo.prefabPath.Substring(windowInfo.prefabPath.LastIndexOf('/')+1);
-			App.Instance.GetManager<LuaManager>().DoFile("UI/"+go.name+".lua");
+			App.luaManager.RequireFile("UI/" + go.name);
 			IWindow script = go.GetComponent<IWindow>();
 			if (script == null)
 			{

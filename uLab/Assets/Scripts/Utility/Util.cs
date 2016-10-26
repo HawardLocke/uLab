@@ -212,7 +212,7 @@ namespace Locke
 		public static void ClearMemory()
 		{
 			GC.Collect(); Resources.UnloadUnusedAssets();
-			LuaManager mgr = App.Instance.GetManager<LuaManager>();
+			LuaManager mgr = App.luaManager;
 			if (mgr != null) mgr.LuaGC();
 		}
 
@@ -322,7 +322,18 @@ namespace Locke
 		/// </summary>
 		public static object[] CallMethod(string module, string func, params object[] args)
 		{
-			return App.Instance.GetManager<LuaManager>().CallFunction(module + "." + func, args);
+			return App.luaManager.CallFunction(module + "." + func, args);
+		}
+
+		public static GameObject GetManagerGo()
+		{
+			var go = GameObject.Find(AppDefine.ManagerGOName);
+			if (go == null)
+			{
+				go = new GameObject(AppDefine.ManagerGOName);
+				UnityEngine.Object.DontDestroyOnLoad(go);
+			}
+			return go;
 		}
 
 	}

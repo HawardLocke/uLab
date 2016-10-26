@@ -7,10 +7,10 @@ namespace Locke
 {
 	public class AppDefine
 	{
-		public static bool LuaBundleMode = true;                    //True:从bundle中加载lua, false:直接读lua文件
+		public static bool LuaBundleMode = false;                    //True:从bundle中加载lua, false:直接读lua文件
 
-		public const bool UpdateMode = false;                       //更新模式-默认关闭 
-		public const bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
+		public static bool UpdateMode = false;                       //更新模式-默认关闭 
+		public static bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
 		
 		public const int TimerInterval = 1;
 		public const int GameFrameRate = 30;                        //游戏帧频
@@ -24,6 +24,8 @@ namespace Locke
 		public static string UserId = string.Empty;                 //用户ID
 		public static int SocketPort = 0;                           //Socket服务器端口
 		public static string SocketAddress = string.Empty;          //Socket服务器地址
+
+		public const string ManagerGOName = "Managers";				// 给各种管理器使用的go
 
 	}
 }

@@ -44,14 +44,9 @@ namespace Locke
 					_instance = FindObjectOfType(typeof(T)) as T;
 					if (_instance == null)
 					{
-						string goName = "SingletonMonos";
-						var go = GameObject.Find(goName);
-						if (go == null)
-						{
-							go = new GameObject();
-							go.name = goName;// typeof(T).Name;
-							//go.hideFlags = HideFlags.HideAndDontSave;
-						}
+						var go = new GameObject();
+						go.name = typeof(T).Name;
+						//go.hideFlags = HideFlags.HideAndDontSave;
 						_instance = go.AddComponent<T>();
 					}
 				}
