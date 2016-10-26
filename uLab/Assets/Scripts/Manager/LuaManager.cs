@@ -1,6 +1,7 @@
 
 
 using System;
+using System.IO;
 using UnityEngine;
 
 using LuaInterface;
@@ -13,12 +14,10 @@ namespace Locke
 	{
 		private LuaState luaState = null;
 		private LuaLooper loop = null;
-		private LuaLoader loader;
 
 		public bool Initialize()
 		{
 			luaState = new LuaState();
-			loader = new LuaLoader();
 
 			OpenLibs();
 			luaState.LuaSetTop(0);
@@ -30,7 +29,6 @@ namespace Locke
 			InitLuaBundle();
 			luaState.Start();
 			StartLooper();
-			StartMain();
 
 			return true;
 		}
@@ -54,42 +52,42 @@ namespace Locke
 
 		void InitLuaPath()
 		{
-			if (AppConst.DebugMode)
+			if (AppDefine.LuaBundleMode)
 			{
-				string rootPath = Application.dataPath;
-				luaState.AddSearchPath(rootPath + "/Lua");
-				luaState.AddSearchPath(rootPath + "/ToLua/Lua");
+				luaState.AddSearchPath(Util.DataPath + "lua");
 			}
 			else
 			{
-				luaState.AddSearchPath(Util.DataPath + "lua");
+				luaState.AddSearchPath(Application.dataPath + "/Lua");
+				luaState.AddSearchPath(Application.dataPath + "/ToLua/Lua");
 			}
 		}
 
 		void InitLuaBundle()
 		{
-			if (loader.beZip)
+			LuaFileUtils.Instance.beZip = AppDefine.LuaBundleMode;
+			if (LuaFileUtils.Instance.beZip)
 			{
-				loader.AddBundle("lua/lua.unity3d");
-				loader.AddBundle("lua/lua_math.unity3d");
-				loader.AddBundle("lua/lua_system.unity3d");
-				loader.AddBundle("lua/lua_system_reflection.unity3d");
-				loader.AddBundle("lua/lua_unityengine.unity3d");
-				loader.AddBundle("lua/lua_common.unity3d");
-				loader.AddBundle("lua/lua_logic.unity3d");
-				loader.AddBundle("lua/lua_view.unity3d");
-				loader.AddBundle("lua/lua_controller.unity3d");
-				loader.AddBundle("lua/lua_misc.unity3d");
+				this.AddBundle("lua/lua.unity3d");
+				this.AddBundle("lua/lua_math.unity3d");
+				this.AddBundle("lua/lua_system.unity3d");
+				this.AddBundle("lua/lua_system_reflection.unity3d");
+				this.AddBundle("lua/lua_unityengine.unity3d");
+				this.AddBundle("lua/lua_common.unity3d");
+				this.AddBundle("lua/lua_logic.unity3d");
+				this.AddBundle("lua/lua_view.unity3d");
+				this.AddBundle("lua/lua_controller.unity3d");
+				this.AddBundle("lua/lua_misc.unity3d");
 
-				loader.AddBundle("lua/lua_protobuf.unity3d");
-				loader.AddBundle("lua/lua_3rd_cjson.unity3d");
-				loader.AddBundle("lua/lua_3rd_luabitop.unity3d");
-				loader.AddBundle("lua/lua_3rd_pbc.unity3d");
-				loader.AddBundle("lua/lua_3rd_pblua.unity3d");
-				loader.AddBundle("lua/lua_3rd_sproto.unity3d");
+				this.AddBundle("lua/lua_protobuf.unity3d");
+				this.AddBundle("lua/lua_3rd_cjson.unity3d");
+				this.AddBundle("lua/lua_3rd_luabitop.unity3d");
+				this.AddBundle("lua/lua_3rd_pbc.unity3d");
+				this.AddBundle("lua/lua_3rd_pblua.unity3d");
+				this.AddBundle("lua/lua_3rd_sproto.unity3d");
 				
 				// Locke
-				loader.AddBundle("lua/lua_ui.unity3d");
+				this.AddBundle("lua/lua_ui.unity3d");
 			}
 		}
 
@@ -110,9 +108,18 @@ namespace Locke
 			luaState.LuaSetField(-2, "cjson.safe");
 		}
 
-		protected virtual void StartMain()
+		void AddBundle(string bundleName)
 		{
-			luaState.DoFile("Main.lua");
+			string url = Util.DataPath + bundleName.ToLower();
+			if (File.Exists(url))
+			{
+				AssetBundle bundle = AssetBundle.LoadFromFile(url);
+				if (bundle != null)
+				{
+					bundleName = bundleName.Replace("lua/", "").Replace(".unity3d", "");
+					LuaFileUtils.Instance.AddSearchBundle(bundleName.ToLower(), bundle);
+				}
+			}
 		}
 
 		protected void StartLooper()

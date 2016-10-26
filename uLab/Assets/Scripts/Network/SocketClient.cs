@@ -263,7 +263,7 @@ public class SocketClient
 	/// </summary>
 	public void SendConnect()
 	{
-		ConnectServer(AppConst.SocketAddress, AppConst.SocketPort);
+		ConnectServer(AppDefine.SocketAddress, AppDefine.SocketPort);
 	}
 
 	/// <summary>

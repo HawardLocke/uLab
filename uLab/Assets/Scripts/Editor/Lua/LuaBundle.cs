@@ -56,7 +56,7 @@ public class LuaBundle
 
 		HandleLuaBundle(ref buildList);
 
-		string outputPath = "Assets/" + AppConst.StreamingAssetDir;
+		string outputPath = "Assets/" + AppDefine.StreamingAssetDir;
 		BuildAssetBundleOptions opt = BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.UncompressedAssetBundle;
 		BuildPipeline.BuildAssetBundles(outputPath, buildList.ToArray(), opt, target);
 		BuildFileIndex();
@@ -96,7 +96,7 @@ public class LuaBundle
 		string[] srcDirs = { Application.dataPath + "/Lua", Application.dataPath + "/ToLua/Lua" };
 		for (int i = 0; i < srcDirs.Length; i++)
 		{
-			if (AppConst.LuaByteMode)
+			if (AppDefine.LuaByteMode)
 			{
 				string sourceDir = srcDirs[i];
 				string[] files = Directory.GetFiles(sourceDir, "*.lua", SearchOption.AllDirectories);
@@ -192,7 +192,7 @@ public class LuaBundle
 				{
 					File.Delete(newpath);
 				}
-				if (AppConst.LuaByteMode)
+				if (AppDefine.LuaByteMode)
 				{
 					EncodeLuaFile(f, newpath);
 				}

@@ -11,6 +11,10 @@ function BarWindow.Awake(obj)
 	BarWindow.Init();
 end
 
+function BarWindow.Start(obj)
+	-- body
+end
+
 function BarWindow.Init()
 	--this.btnOpen = transform:FindChild("open").gameObject;
 	Locke.Log.Error("BarWindow~");

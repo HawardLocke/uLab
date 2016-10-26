@@ -11,6 +11,10 @@ function MainWindow.Awake(obj)
 	MainWindow.Init();
 end
 
+function MainWindow.Start(obj)
+
+end
+
 function MainWindow.Init()
 	--this.btnOpen = transform:FindChild("open").gameObject;
 	Locke.Log.Error("MainWindow~");

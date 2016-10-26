@@ -223,28 +223,28 @@ namespace Locke
 		{
 			get
 			{
-				string game = AppConst.AppName.ToLower();
+				string game = AppDefine.AppName.ToLower();
 				if (Application.isMobilePlatform)
 				{
 					return Application.persistentDataPath + "/" + game + "/";
 				}
-				if (AppConst.DebugMode)
+				/*if (AppConst.DebugMode)
 				{
 					return Application.dataPath + "/" + AppConst.StreamingAssetDir + "/";
-				}
+				}*/
 				if (Application.platform == RuntimePlatform.OSXEditor)
 				{
 					int i = Application.dataPath.LastIndexOf('/');
 					return Application.dataPath.Substring(0, i + 1) + game + "/";
 				}
-				return Application.dataPath + "/" + AppConst.StreamingAssetDir + "/"; //"c:/" + game + "/";
+				return Application.dataPath + "/" + AppDefine.StreamingAssetDir + "/"; //"c:/" + game + "/";
 			}
 		}
 
 		public static string GetRelativePath()
 		{
 			if (Application.isEditor)
-				return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/") + "/Assets/" + AppConst.StreamingAssetDir + "/";
+				return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/") + "/Assets/" + AppDefine.StreamingAssetDir + "/";
 			else if (Application.isMobilePlatform || Application.isConsolePlatform)
 				return "file:///" + DataPath;
 			else // For standalone player.
@@ -296,7 +296,7 @@ namespace Locke
 					path = Application.dataPath + "/Raw/";
 					break;
 				default:
-					path = Application.dataPath + "/" + AppConst.StreamingAssetDir + "/";
+					path = Application.dataPath + "/" + AppDefine.StreamingAssetDir + "/";
 					break;
 			}
 			return path;

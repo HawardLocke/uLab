@@ -5,19 +5,13 @@ using System.Collections.Generic;
 
 namespace Locke
 {
-	public class AppConst
+	public class AppDefine
 	{
-		public static bool DebugMode = false;                       //调试模式-用于内部测试
+		public static bool LuaBundleMode = true;                    //True:从bundle中加载lua, false:直接读lua文件
 
-		/// <summary>
-		/// 如果开启更新模式，前提必须启动框架自带服务器端。
-		/// 否则就需要自己将StreamingAssets里面的所有内容
-		/// 复制到自己的Webserver上面，并修改下面的WebUrl。
-		/// </summary>
 		public const bool UpdateMode = false;                       //更新模式-默认关闭 
 		public const bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
-		public static bool LuaBundleMode = true;                    //Lua代码AssetBundle模式
-
+		
 		public const int TimerInterval = 1;
 		public const int GameFrameRate = 30;                        //游戏帧频
 
