@@ -10,6 +10,13 @@ public static class LuaBinder
 		float t = Time.realtimeSinceStartup;
 		L.BeginModule(null);
 		LuaInterface_DebuggerWrap.Register(L);
+		L.BeginModule("Locke");
+		Locke_LogWrap.Register(L);
+		Locke_AppWrap.Register(L);
+		Locke_UIManagerWrap.Register(L);
+		Locke_SingletonMono_Locke_AppWrap.Register(L);
+		Locke_ManagerWrap.Register(L);
+		L.EndModule();
 		L.BeginModule("UnityEngine");
 		UnityEngine_ComponentWrap.Register(L);
 		UnityEngine_TransformWrap.Register(L);
@@ -17,6 +24,7 @@ public static class LuaBinder
 		UnityEngine_LightWrap.Register(L);
 		UnityEngine_CameraWrap.Register(L);
 		UnityEngine_AudioSourceWrap.Register(L);
+		UnityEngine_RectTransformWrap.Register(L);
 		UnityEngine_BehaviourWrap.Register(L);
 		UnityEngine_MonoBehaviourWrap.Register(L);
 		UnityEngine_GameObjectWrap.Register(L);
@@ -60,6 +68,9 @@ public static class LuaBinder
 		L.BeginModule("Camera");
 		L.RegFunction("CameraCallback", UnityEngine_Camera_CameraCallback);
 		L.EndModule();
+		L.BeginModule("RectTransform");
+		L.RegFunction("ReapplyDrivenProperties", UnityEngine_RectTransform_ReapplyDrivenProperties);
+		L.EndModule();
 		L.BeginModule("Application");
 		L.RegFunction("LogCallback", UnityEngine_Application_LogCallback);
 		L.RegFunction("AdvertisingIdentifierCallback", UnityEngine_Application_AdvertisingIdentifierCallback);
@@ -67,15 +78,6 @@ public static class LuaBinder
 		L.BeginModule("AudioClip");
 		L.RegFunction("PCMReaderCallback", UnityEngine_AudioClip_PCMReaderCallback);
 		L.RegFunction("PCMSetPositionCallback", UnityEngine_AudioClip_PCMSetPositionCallback);
-		L.EndModule();
-		L.EndModule();
-		L.BeginModule("Locke");
-		Locke_LogWrap.Register(L);
-		Locke_AppWrap.Register(L);
-		Locke_SingletonMono_Locke_AppWrap.Register(L);
-		Locke_Singleton_Locke_ui_UIManagerWrap.Register(L);
-		L.BeginModule("ui");
-		Locke_ui_UIManagerWrap.Register(L);
 		L.EndModule();
 		L.EndModule();
 		L.BeginModule("System");
@@ -149,6 +151,33 @@ public static class LuaBinder
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
 				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(UnityEngine.Camera.CameraCallback), func, self);
+				ToLua.Push(L, arg1);
+			}
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int UnityEngine_RectTransform_ReapplyDrivenProperties(IntPtr L)
+	{
+		try
+		{
+			int count = LuaDLL.lua_gettop(L);
+			LuaFunction func = ToLua.CheckLuaFunction(L, 1);
+
+			if (count == 1)
+			{
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(UnityEngine.RectTransform.ReapplyDrivenProperties), func);
+				ToLua.Push(L, arg1);
+			}
+			else
+			{
+				LuaTable self = ToLua.CheckLuaTable(L, 2);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(UnityEngine.RectTransform.ReapplyDrivenProperties), func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

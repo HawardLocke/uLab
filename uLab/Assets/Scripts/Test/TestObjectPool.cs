@@ -29,24 +29,6 @@ public class TestObjectPool : MonoBehaviour
 		if (progressText == null)
 			Debug.Log("whatever");
 
-		App.Instance.Initialize();
-		App.luaManager.Initialize();
-		
-		UIManager.Instance.Init();
-		UIManager.Instance.OpenWindow(GameUI.bar);
-		UIManager.Instance.OpenWindow(GameUI.main);
-		UIManager.Instance.mainWindowInfo = GameUI.main;
-
-		/*UIManager.Instance.OpenWindow(GameUIList.tip);
-		UIManager.Instance.OpenWindow(GameUIList.bag);
-		UIManager.Instance.OpenWindow(GameUIList.role);
-		UIManager.Instance.OpenWindow(GameUIList.bag);
-
-		UIManager.Instance.Cleanup();
-		UIManager.Instance.OpenWindow(GameUIList.main);
-		UIManager.Instance.mainWindowInfo = GameUIList.main;*/
-
-		
 	}
 
 	private IEnumerator Preload()

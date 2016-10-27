@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Locke.ui
 {
-	public class UIManager : Singleton<UIManager>
+	public sealed class WindowManager
 	{
 		private Dictionary<WindowInfo, IWindow> mShownWindowDic = new Dictionary<WindowInfo, IWindow>();
 
@@ -43,6 +43,13 @@ namespace Locke.ui
 			mWindowStack.Clear();
 
 			Resources.UnloadUnusedAssets();
+		}
+
+		public IWindow GetWindow(WindowInfo windowInfo)
+		{
+			IWindow iwindow = null;
+			mShownWindowDic.TryGetValue(windowInfo, out iwindow);
+			return iwindow;
 		}
 
 		/// <summary>
@@ -101,11 +108,18 @@ namespace Locke.ui
 		}
 
 
-		public void CloseWindow(IWindow script)
+		public void CloseWindow(WindowInfo windowInfo)
+		{
+			IWindow iwindow = this.GetWindow(windowInfo);
+			this.CloseWindow(iwindow);
+		}
+
+
+		public void CloseWindow(IWindow iwindow)
 		{
 			try
 			{
-				WindowInfo windowInfo = script.windowInfo;
+				WindowInfo windowInfo = iwindow.windowInfo;
 
 				if (!mShownWindowDic.ContainsKey(windowInfo))
 				{
@@ -124,7 +138,7 @@ namespace Locke.ui
 							return;
 						}
 
-						this.PushToWindowCache(script, true);
+						this.PushToWindowCache(iwindow, true);
 						
 						switch (windowInfo.openAction)
 						{
@@ -144,15 +158,15 @@ namespace Locke.ui
 					}
 					else // some error happened in stack...
 					{
-						WindowInfo previousWindowInfo = script.PreviousWindowInfo;
-						this.PushToWindowCache(script, true);
+						WindowInfo previousWindowInfo = iwindow.PreviousWindowInfo;
+						this.PushToWindowCache(iwindow, true);
 						// open default previous window.
 						OpenWindow(previousWindowInfo);
 					}
 				}
 				else if (windowInfo.showMode == ShowMode.Popup)
 				{
-					this.PushToWindowCache(script, true);
+					this.PushToWindowCache(iwindow, true);
 				}
 				else
 				{

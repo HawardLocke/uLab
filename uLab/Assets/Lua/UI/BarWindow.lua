@@ -9,6 +9,7 @@ function BarWindow.Awake(obj)
 	gameObject = obj;
 	transform = obj.transform;
 	BarWindow.Init();
+	LogInfo("Bar Awake");
 end
 
 function BarWindow.Start(obj)
@@ -17,5 +18,4 @@ end
 
 function BarWindow.Init()
 	--this.btnOpen = transform:FindChild("open").gameObject;
-	Locke.Log.Error("BarWindow~");
 end

@@ -228,16 +228,12 @@ namespace Locke
 				{
 					return Application.persistentDataPath + "/" + game + "/";
 				}
-				/*if (AppConst.DebugMode)
-				{
-					return Application.dataPath + "/" + AppConst.StreamingAssetDir + "/";
-				}*/
 				if (Application.platform == RuntimePlatform.OSXEditor)
 				{
 					int i = Application.dataPath.LastIndexOf('/');
 					return Application.dataPath.Substring(0, i + 1) + game + "/";
 				}
-				return Application.dataPath + "/" + AppDefine.StreamingAssetDir + "/"; //"c:/" + game + "/";
+				return "d:/" + game + "/"; //Application.dataPath + "/" + AppDefine.StreamingAssetDir + "/";
 			}
 		}
 
@@ -325,7 +321,7 @@ namespace Locke
 			return App.luaManager.CallFunction(module + "." + func, args);
 		}
 
-		public static GameObject GetManagerGo()
+		public static GameObject GetGlobalGameObject()
 		{
 			var go = GameObject.Find(AppDefine.ManagerGOName);
 			if (go == null)

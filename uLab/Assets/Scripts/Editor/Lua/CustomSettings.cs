@@ -42,6 +42,11 @@ public static class CustomSettings
 	//在这里添加你要导出注册到lua的类型列表
 	public static BindType[] customTypeList =
 	{
+		// for Locke
+		_GT(typeof(Log)),
+		_GT(typeof(App)),
+		_GT(typeof(UIManager)),
+
 		//------------------------为例子导出--------------------------------
 		//_GT(typeof(TestEventListener)),
 		//_GT(typeof(TestProtol)),
@@ -85,6 +90,7 @@ public static class CustomSettings
 		_GT(typeof(AudioSource)),
 		//_GT(typeof(LineRenderer))
 		//_GT(typeof(TrailRenderer))
+		_GT(typeof(RectTransform)),
 #endif
 						
 
@@ -142,10 +148,7 @@ public static class CustomSettings
 
 #endregion
 
-		// for Locke
-		_GT(typeof(Log)),
-		_GT(typeof(App)),
-		_GT(typeof(Locke.ui.UIManager)),
+		
 	};
 
 	public static List<Type> dynamicList = new List<Type>()

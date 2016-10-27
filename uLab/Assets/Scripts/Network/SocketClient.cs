@@ -75,7 +75,7 @@ public class SocketClient
 	{
 		outStream = client.GetStream();
 		client.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
-		//NetworkManager.AddEvent(Protocal.Connect, new ByteBuffer());
+		NetworkManager.AddEvent(Protocal.Connect, new ByteBuffer());
 	}
 
 	/// <summary>
@@ -147,7 +147,7 @@ public class SocketClient
 
 		ByteBuffer buffer = new ByteBuffer();
 		buffer.WriteShort((ushort)protocal);
-		//NetworkManager.AddEvent(protocal, buffer);
+		NetworkManager.AddEvent(protocal, buffer);
 		Debug.LogError("Connection was closed by the server:>" + msg + " Distype:>" + dis);
 	}
 
@@ -231,9 +231,9 @@ public class SocketClient
 		byte[] message = r.ReadBytes((int)(ms.Length - ms.Position));
 		//int msglen = message.Length;
 
-		//ByteBuffer buffer = new ByteBuffer(message);
-		//int mainId = buffer.ReadShort();
-		//NetworkManager.AddEvent(mainId, buffer);
+		ByteBuffer buffer = new ByteBuffer(message);
+		int mainId = buffer.ReadShort();
+		NetworkManager.AddEvent(mainId, buffer);
 	}
 
 

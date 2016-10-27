@@ -40,29 +40,29 @@ public class ShopWindow : IWindow
 
 		if (index == 1)
 		{
-			UIManager.Instance.OpenWindow(GameUI.bag);
+			App.uiManager.OpenWindow(GameUI.bag);
 		}
 		else if (index == 2)
 		{
-			UIManager.Instance.OpenWindow(GameUI.role);
+			App.uiManager.OpenWindow(GameUI.role);
 		}
 		else if (index == 3)
 		{
-			UIManager.Instance.OpenWindow(GameUI.shop);
+			App.uiManager.OpenWindow(GameUI.shop);
 		}
 		else if (index == 4)
 		{
-			UIManager.Instance.OpenWindow(GameUI.tip);
+			App.uiManager.OpenWindow(GameUI.tip);
 		}
 		else if (index == 5)
 		{
-			UIManager.Instance.OpenWindow(GameUI.dialog);
+			App.uiManager.OpenWindow(GameUI.dialog);
 		}
 	}
 
 	private void OnClick()
 	{
-		UIManager.Instance.CloseWindow(this);
+		App.uiManager.CloseWindow(this);
 	}
 
 }

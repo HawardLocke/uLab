@@ -28,7 +28,7 @@ namespace Locke
 			
 		}
 
-		public void AddListener(string eventName, IListener listener)
+		public void RegisterListener(string eventName, IListener listener)
 		{
 			List<IListener> listenerList = null;
 			if (!mListenerMap.TryGetValue(eventName, out listenerList))
@@ -39,7 +39,7 @@ namespace Locke
 			listenerList.Add(listener);
 		}
 
-		public void RemoveListener(string eventName, IListener listener)
+		public void UnregisterListener(string eventName, IListener listener)
 		{
 			List<IListener> listenerList = null;
 			if (mListenerMap.TryGetValue(eventName, out listenerList))
@@ -48,14 +48,20 @@ namespace Locke
 			}
 		}
 
-		public void PushEvent(Event evnt)
+		public void SendMessage(string evntName, object msg)
+		{
+			Message evnt = new Message(evntName, msg);
+			this.SendMessage(evnt);
+		}
+
+		public void SendMessage(Message evnt)
 		{
 			List<IListener> listenerList = null;
 			if (mListenerMap.TryGetValue(evnt.name, out listenerList))
 			{
 				for (int i = 0; i < listenerList.Count; ++i)
 				{
-					listenerList[i].OnEvent(evnt);
+					listenerList[i].OnMessage(evnt);
 				}
 			}
 		}

@@ -8,12 +8,11 @@ namespace Locke
 
 		public virtual void Destroy() { }
 
+		public virtual void Start() { }
+
 		public virtual void Update() { }
 
-		public void ListenFor(string eventName)
-		{
-		}
-		public void OnEvent(Event evnt)
+		public void OnMessage(Message evnt)
 		{
 		}
 

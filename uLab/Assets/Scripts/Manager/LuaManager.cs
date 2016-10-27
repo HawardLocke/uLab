@@ -18,18 +18,21 @@ namespace Locke
 		public override void Initialize()
 		{
 			luaState = new LuaState();
-
 			OpenLibs();
 			luaState.LuaSetTop(0);
-
 			LuaBinder.Bind(luaState);
 			LuaCoroutine.Register(luaState, App.Instance);
+		}
 
+		/// <summary>
+		/// start lua, must be called when resources updating finished.
+		/// </summary>
+		public override void Start()
+		{
 			InitLuaPath();
 			InitLuaBundle();
 			luaState.Start();
 			StartLooper();
-
 		}
 
 		public override void Destroy()
@@ -123,7 +126,7 @@ namespace Locke
 
 		protected void StartLooper()
 		{
-			var gameObject = Util.GetManagerGo();
+			var gameObject = Util.GetGlobalGameObject();
 			loop = gameObject.AddComponent<LuaLooper>();
 			loop.luaState = luaState;
 		}
