@@ -13,9 +13,6 @@ namespace Locke
 	public class GameManager : Manager
 	{
 
-		private List<string> downloadFiles = new List<string>();
-
-
 		public enum State
 		{
 			CheckVersion,
@@ -96,7 +93,7 @@ namespace Locke
 				infile = resPath + fs[0];
 				outfile = dataPath + fs[0];
 
-				message = "正在解包文件:>" + fs[0];
+				message = "正在解包文件:>" + outfile;
 				//Debug.Log("正在解包文件:>" + infile);
 				App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, message);
 
@@ -152,7 +149,7 @@ namespace Locke
 			yield return www;
 			if (www.error != null)
 			{
-				OnUpdateResourceFailed(www.error);
+				OnUpdateResourceFailed(www.error, listUrl);
 				yield break;
 			}
 
@@ -193,13 +190,17 @@ namespace Locke
 				if (canUpdate)
 				{
 					Debug.Log(fileUrl);
-					message = "downloading>>" + fileUrl;
+					message = "downloading>>" + localfile;
 					App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, message);
-					BeginDownload(fileUrl, localfile);
-					while (!(IsDownloadFinished(localfile))) 
-					{ 
-						yield return new WaitForEndOfFrame(); 
+
+					www = new WWW(fileUrl);
+					yield return www;
+					if (www.error != null)
+					{
+						OnUpdateResourceFailed(www.error, fileUrl);
+						yield break;
 					}
+					File.WriteAllBytes(localfile, www.bytes);
 				}
 			}
 			yield return new WaitForEndOfFrame();
@@ -210,46 +211,24 @@ namespace Locke
 			OnResourceReady();
 		}
 
-		void OnUpdateResourceFailed(string error)
+		void OnUpdateResourceFailed(string error, string url)
 		{
-			string message = "更新失败!>" + error;
+			string message = "更新失败!>" + error + ": " + url;
 			App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, message);
-		}
-
-		bool IsDownloadFinished(string file)
-		{
-			return downloadFiles.Contains(file);
-		}
-
-		void BeginDownload(string url, string file)
-		{
-			object[] param = new object[2] { url, file };
-
-			ThreadEvent ev = new ThreadEvent();
-			ev.Key = MessageDefine.UPDATE_DOWNLOAD;
-			ev.evParams.AddRange(param);
-			App.threadManager.AddEvent(ev, OnThreadCompleted);
-		}
-
-		void OnThreadCompleted(NotiData data)
-		{
-			switch (data.evName)
-			{
-				case MessageDefine.UPDATE_EXTRACT:
-					break;
-				case MessageDefine.UPDATE_DOWNLOAD:
-					downloadFiles.Add(data.evParam.ToString());
-					break;
-			}
 		}
 
 		public void OnResourceReady()
 		{
-			App.Instance.StartManagers();
+			try
+			{
+				App.Instance.StartManagers();
 
 			App.luaManager.DoFile("Game.lua");
 			Util.CallMethod("Game", "OnInitialize");
-
+			}catch(System.Exception e)
+			{
+				App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, e.ToString());
+			}
 		}
 
 	}

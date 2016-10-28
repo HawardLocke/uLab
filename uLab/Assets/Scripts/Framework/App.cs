@@ -19,7 +19,6 @@ namespace Locke
 		public static ResourceManager	resManager = null;
 		public static LuaManager		luaManager = null;
 		public static UIManager			uiManager = null;
-		public static ThreadManager		threadManager = null;
 
 
 		public void Initialize()
@@ -48,7 +47,6 @@ namespace Locke
 			resManager = this.AddManager<ResourceManager>();
 			luaManager = this.AddManager<LuaManager>();
 			uiManager = this.AddManager<UIManager>();
-			threadManager = this.AddManager<ThreadManager>();
 
 			foreach(var mgr in mManagerDic.Values)
 			{

@@ -133,7 +133,8 @@ namespace Locke
 
 		public void LuaGC()
 		{
-			luaState.LuaGC(LuaGCOptions.LUA_GCCOLLECT);
+			if (luaState!= null)
+				luaState.LuaGC(LuaGCOptions.LUA_GCCOLLECT);
 		}
 
 		public object[] CallFunction(string funcName, params object[] args)

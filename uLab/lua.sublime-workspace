@@ -8,18 +8,66 @@
 	"buffers":
 	[
 		{
-			"file": "Assets/Lua/UI/BarWindow.lua",
+			"file": "Assets/Lua/Game.lua",
 			"settings":
 			{
-				"buffer_size": 345,
+				"buffer_size": 301,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "require \"3rd/pblua/login_pb\"\nrequire \"3rd/pbc/protobuf\"\n\nlocal lpeg = require \"lpeg\"\n\nlocal json = require \"cjson\"\nlocal util = require \"3rd/cjson/util\"\n\nlocal sproto = require \"3rd/sproto/sproto\"\nlocal core = require \"sproto.core\"\nlocal print_r = require \"3rd/sproto/print_r\"\n\nrequire \"Logic/LuaClass\"\nrequire \"Logic/CtrlManager\"\nrequire \"Common/functions\"\nrequire \"Controller/PromptCtrl\"\n\n--管理器--\nGame = {};\nlocal this = Game;\n\nlocal game; \nlocal transform;\nlocal gameObject;\nlocal WWW = UnityEngine.WWW;\n\nfunction Game.InitViewPanels()\n\tfor i = 1, #PanelNames do\n\t\trequire (\"View/\"..tostring(PanelNames[i]))\n\tend\nend\n\n--初始化完成，发送链接服务器信息--\nfunction Game.OnInitOK()\n    AppConst.SocketPort = 2012;\n    AppConst.SocketAddress = \"127.0.0.1\";\n    networkMgr:SendConnect();\n\n    --注册LuaView--\n    this.InitViewPanels();\n\n    this.test_class_func();\n    this.test_pblua_func();\n    this.test_cjson_func();\n    this.test_pbc_func();\n    this.test_lpeg_func();\n    this.test_sproto_func();\n    coroutine.start(this.test_coroutine);\n\n    CtrlManager.Init();\n    local ctrl = CtrlManager.GetCtrl(CtrlNames.Prompt);\n    if ctrl ~= nil and AppConst.ExampleMode == 1 then\n        ctrl:Awake();\n    end\n       \n    logWarn('LuaFramework InitOK--->>>');\nend\n\n--测试协同--\nfunction Game.test_coroutine()    \n    logWarn(\"1111\");\n    coroutine.wait(1);\t\n    logWarn(\"2222\");\n\t\n    local www = WWW(\"http://bbs.ulua.org/readme.txt\");\n    coroutine.www(www);\n    logWarn(www.text);    \t\nend\n\n--测试sproto--\nfunction Game.test_sproto_func()\n    logWarn(\"test_sproto_func-------->>\");\n    local sp = sproto.parse [[\n    .Person {\n        name 0 : string\n        id 1 : integer\n        email 2 : string\n\n        .PhoneNumber {\n            number 0 : string\n            type 1 : integer\n        }\n\n        phone 3 : *PhoneNumber\n    }\n\n    .AddressBook {\n        person 0 : *Person(id)\n        others 1 : *Person\n    }\n    ]]\n\n    local ab = {\n        person = {\n            [10000] = {\n                name = \"Alice\",\n                id = 10000,\n                phone = {\n                    { number = \"123456789\" , type = 1 },\n                    { number = \"87654321\" , type = 2 },\n                }\n            },\n            [20000] = {\n                name = \"Bob\",\n                id = 20000,\n                phone = {\n                    { number = \"01234567890\" , type = 3 },\n                }\n            }\n        },\n        others = {\n            {\n                name = \"Carol\",\n                id = 30000,\n                phone = {\n                    { number = \"9876543210\" },\n                }\n            },\n        }\n    }\n    local code = sp:encode(\"AddressBook\", ab)\n    local addr = sp:decode(\"AddressBook\", code)\n    print_r(addr)\nend\n\n--测试lpeg--\nfunction Game.test_lpeg_func()\n\tlogWarn(\"test_lpeg_func-------->>\");\n\t-- matches a word followed by end-of-string\n\tlocal p = lpeg.R\"az\"^1 * -1\n\n\tprint(p:match(\"hello\"))        --> 6\n\tprint(lpeg.match(p, \"hello\"))  --> 6\n\tprint(p:match(\"1 hello\"))      --> nil\nend\n\n--测试lua类--\nfunction Game.test_class_func()\n    LuaClass:New(10, 20):test();\nend\n\n--测试pblua--\nfunction Game.test_pblua_func()\n    local login = login_pb.LoginRequest();\n    login.id = 2000;\n    login.name = 'game';\n    login.email = 'jarjin@163.com';\n    \n    local msg = login:SerializeToString();\n    LuaHelper.OnCallLuaFunc(msg, this.OnPbluaCall);\nend\n\n--pblua callback--\nfunction Game.OnPbluaCall(data)\n    local msg = login_pb.LoginRequest();\n    msg:ParseFromString(data);\n    print(msg);\n    print(msg.id..' '..msg.name);\nend\n\n--测试pbc--\nfunction Game.test_pbc_func()\n    local path = Util.DataPath..\"lua/3rd/pbc/addressbook.pb\";\n    log('io.open--->>>'..path);\n\n    local addr = io.open(path, \"rb\")\n    local buffer = addr:read \"*a\"\n    addr:close()\n    protobuf.register(buffer)\n\n    local addressbook = {\n        name = \"Alice\",\n        id = 12345,\n        phone = {\n            { number = \"1301234567\" },\n            { number = \"87654321\", type = \"WORK\" },\n        }\n    }\n    local code = protobuf.encode(\"tutorial.Person\", addressbook)\n    LuaHelper.OnCallLuaFunc(code, this.OnPbcCall)\nend\n\n--pbc callback--\nfunction Game.OnPbcCall(data)\n    local path = Util.DataPath..\"lua/3rd/pbc/addressbook.pb\";\n\n    local addr = io.open(path, \"rb\")\n    local buffer = addr:read \"*a\"\n    addr:close()\n    protobuf.register(buffer)\n    local decode = protobuf.decode(\"tutorial.Person\" , data)\n\n    print(decode.name)\n    print(decode.id)\n    for _,v in ipairs(decode.phone) do\n        print(\"\\t\"..v.number, v.type)\n    end\nend\n\n--测试cjson--\nfunction Game.test_cjson_func()\n    local path = Util.DataPath..\"lua/3rd/cjson/example2.json\";\n    local text = util.file_load(path);\n    LuaHelper.OnJsonCallFunc(text, this.OnJsonCall);\nend\n\n--cjson callback--\nfunction Game.OnJsonCall(data)\n    local obj = json.decode(data);\n    print(obj['menu']['id']);\nend\n\n--销毁--\nfunction Game.OnDestroy()\n\t--logWarn('OnDestroy--->>>');\nend\n",
+			"file": "Assets/Lua/Example/Logic/Game.lua",
+			"file_size": 5004,
+			"file_write_time": 131173481610000000,
+			"settings":
+			{
+				"buffer_size": 4926,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Assets/Lua/Defines.lua",
+			"settings":
+			{
+				"buffer_size": 115,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Assets/Lua/Functions.lua",
+			"settings":
+			{
+				"buffer_size": 161,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/Locke/u/GitHub/LuaFramework_UGUI/Assets/LuaFramework/Scripts/Main.cs",
+			"settings":
+			{
+				"buffer_size": 241,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/D/resUpdateServer/lua/lua.unity3d.manifest",
+			"settings":
+			{
+				"buffer_size": 706,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "Assets/Lua/UI/MainWindow.lua",
 			"settings":
 			{
-				"buffer_size": 344,
+				"buffer_size": 335,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		}
@@ -51,7 +99,6 @@
 		"height": 126.0,
 		"history":
 		[
-			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())",
 			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
 		]
 	},
@@ -66,16 +113,25 @@
 	},
 	"expanded_folders":
 	[
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/ToLua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/ToLua/Lua"
 	],
 	"file_history":
 	[
-		"/G/MyExploration/work/github/uLab/uLab/Assets/Lua/Example/Logic/Game.lua",
-		"/G/MyExploration/work/github/uLab/uLab/Assets/Lua/Example/View/PromptPanel.lua",
-		"/G/MyExploration/work/github/uLab/uLab/Assets/Lua/Example/Logic/Network.lua",
-		"/G/MyExploration/work/github/uLab/uLab/Assets/Lua/Example/Logic/CtrlManager.lua",
-		"/G/MyExploration/work/github/uLab/uLab/Assets/Lua/Example/Main.lua",
-		"/G/MyExploration/work/github/uLab/uLab/Assets/Lua/Example/Controller/PromptCtrl.lua",
+		"/D/resUpdateServer/StreamingAssets",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Example/Logic/Game.lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/UI/BarWindow.lua",
 		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Example/Common/functions.lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/ToLua/Examples/21_String/TestString.cs",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Example/Common/define.lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Example/Main.lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/ToLua/Examples/14_Out/TestOutArg.cs",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/ToLua/Examples/02_ScriptsFromFile/ScriptsFromFile.lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Example/View/PromptPanel.lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Example/Logic/Network.lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Example/Logic/CtrlManager.lua",
+		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Example/Controller/PromptCtrl.lua",
 		"/D/Locke/u/GitHub/uLab/uLab/Assets/Lua/Main.lua",
 		"/D/Locke/u/GitHub/uLab/uLab/Assets/ToLua/Lua/mime.lua",
 		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/SideBarEnhancements/Side Bar.sublime-settings",
@@ -101,6 +157,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"lpeg",
 			"PromptCtrl"
 		],
 		"highlight": true,
@@ -114,59 +171,208 @@
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
-		"wrap": true
+		"wrap": false
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 5,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "Assets/Lua/UI/BarWindow.lua",
+					"file": "Assets/Lua/Game.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 345,
+						"buffer_size": 301,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								78,
-								78
+								18,
+								18
 							]
 						],
 						"settings":
 						{
 							"is_init_dirty_state": false,
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/Lua/Lua.tmLanguage"
+							"open_with_edit": true,
+							"syntax": "Packages/Lua/Lua.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Assets/Lua/Example/Logic/Game.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4926,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								389,
+								389
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": true,
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Assets/Lua/Defines.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 115,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								115,
+								115
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"open_with_edit": true,
+							"syntax": "Packages/Lua/Lua.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Assets/Lua/Functions.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								103,
+								103
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"open_with_edit": true,
+							"syntax": "Packages/Lua/Lua.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/Locke/u/GitHub/LuaFramework_UGUI/Assets/LuaFramework/Scripts/Main.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 241,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								172,
+								172
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"syntax": "Packages/C#/C#.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/D/resUpdateServer/lua/lua.unity3d.manifest",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 706,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 90.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
+					"buffer": 6,
 					"file": "Assets/Lua/UI/MainWindow.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 344,
+						"buffer_size": 335,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								220,
-								220
+								203,
+								203
 							]
 						],
 						"settings":
@@ -268,7 +474,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
@@ -280,7 +486,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 31.0
 	},
 	"layout":
 	{

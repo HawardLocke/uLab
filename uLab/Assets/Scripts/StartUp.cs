@@ -31,7 +31,7 @@ public class StartUp : MonoBehaviour, IListener
 
 	void OnGUI()
 	{
-		GUI.Label(new Rect(20, 20, 960, 50), msgText);
+		GUI.Label(new Rect(20, 20, 960, 500), msgText);
 	}
 
 	public void OnMessage(Message msg)
