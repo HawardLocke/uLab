@@ -21,7 +21,8 @@ namespace Locke.ui
 		static public UIEventListener Get(GameObject go)
 		{
 			UIEventListener listener = go.GetComponent<UIEventListener>();
-			if (listener == null) listener = go.AddComponent<UIEventListener>();
+			if (listener == null)
+				listener = go.AddComponent<UIEventListener>();
 			return listener;
 		}
 		public override void OnPointerClick(PointerEventData eventData)
@@ -51,6 +52,25 @@ namespace Locke.ui
 		public override void OnUpdateSelected(BaseEventData eventData)
 		{
 			if (onUpdateSelect != null) onUpdateSelect(gameObject);
+		}
+
+		// for lua
+		public static void SetOnClick(GameObject go, LuaInterface.LuaFunction luafunc)
+		{
+			if (go == null || luafunc == null)
+			{
+				Debug.LogError("UIEventListener SetOnClick: " + (go == null ? "param GameObject is null." : "param LuaFunction is null."));
+				return;
+			}
+			UnityEngine.UI.Button btn = go.GetComponent<UnityEngine.UI.Button>();
+			if (btn != null)
+			{
+				btn.onClick.AddListener(delegate(){luafunc.Call(go);});
+			}
+			else
+			{
+				Get(go).onClick = delegate(GameObject obj){luafunc.Call(obj);};
+			}
 		}
 	}
 

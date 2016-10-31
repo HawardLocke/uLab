@@ -5,17 +5,24 @@ local transform;
 BarWindow = {};
 --local this = BarWindow;
 
-function BarWindow.Awake(obj)
+function BarWindow.OnInit(obj)
 	gameObject = obj;
 	transform = obj.transform;
-	BarWindow.Init();
-	LogInfo("Bar Awake");
+	LogInfo("Bar OnInit");
 end
 
-function BarWindow.Start(obj)
-	-- body
+function BarWindow.OnEnter()
+	LogInfo("Bar OnEnter");
 end
 
-function BarWindow.Init()
-	--this.btnOpen = transform:FindChild("open").gameObject;
+function BarWindow.OnExit()
+	LogInfo("Bar OnExit");
+end
+
+function BarWindow.OnPause()
+	LogInfo("Bar OnPause");
+end
+
+function BarWindow.OnResume()
+	LogInfo("Bar OnResume");
 end

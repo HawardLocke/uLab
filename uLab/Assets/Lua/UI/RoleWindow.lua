@@ -2,37 +2,41 @@
 local gameObject;
 local transform;
 
-MainWindow = {};
---local this = MainWindow;
+RoleWindow = {};
+--local this = RoleWindow;
 
-local buttonNames = { "bag", "role", "shop", "tip", "dialog", "close normals", "close all", "show main", "reset" };
+local buttonNames = { "bag", "role", "shop", "tip", "dialog"};
 
 
-function MainWindow.OnInit(obj)
+function RoleWindow.OnInit(obj)
 	gameObject = obj;
 	transform = obj.transform;
-	--LogInfo("Main OnInit");
-	for i = 1, 9 do
+
+	for i = 1, 5 do
 		local btn = Util.FindGameObject(gameObject, 'buttons/button'..tostring(i));
 		local label = Util.FindComponent(btn, 'Text', "Text");
 		label.text = buttonNames[i];
 		UIEventListener.SetOnClick(btn, onBtnClick);
 	end
+
+	local back = Util.FindGameObject(gameObject, "buttons/back");
+	UIEventListener.SetOnClick(back, onBackClick);
+
 end
 
-function MainWindow.OnEnter()
+function RoleWindow.OnEnter()
 	
 end
 
-function MainWindow.OnExit()
+function RoleWindow.OnExit()
 	
 end
 
-function MainWindow.OnPause()
+function RoleWindow.OnPause()
 	
 end
 
-function MainWindow.OnResume()
+function RoleWindow.OnResume()
 	
 end
 
@@ -48,14 +52,10 @@ function onBtnClick(go)
 	elseif index == 4 then
 		OpenWindow(GameUI.tip);
 	elseif index == 5 then
-		OpenWindow(GameUI.dialog);	
-	elseif index == 6 then
-		BackToMainWindow();
-	elseif index == 7 then
-		--
-	elseif index == 8 then
-		--
-	elseif index == 9 then
-		App.uiManager:Cleanup();
+		OpenWindow(GameUI.dialog);
 	end
+end
+
+function onBackClick(go)
+	CloseWindow(GameUI.role);
 end

@@ -22,6 +22,7 @@ public static class DelegateFactory
 		dict.Add(typeof(System.Predicate<int>), System_Predicate_int);
 		dict.Add(typeof(System.Action<int>), System_Action_int);
 		dict.Add(typeof(System.Comparison<int>), System_Comparison_int);
+		dict.Add(typeof(Locke.ui.UIEventListener.VoidDelegate), Locke_ui_UIEventListener_VoidDelegate);
 		dict.Add(typeof(UnityEngine.Camera.CameraCallback), UnityEngine_Camera_CameraCallback);
 		dict.Add(typeof(UnityEngine.RectTransform.ReapplyDrivenProperties), UnityEngine_RectTransform_ReapplyDrivenProperties);
 		dict.Add(typeof(UnityEngine.Application.LogCallback), UnityEngine_Application_LogCallback);
@@ -375,6 +376,53 @@ public static class DelegateFactory
 		{
 			System_Comparison_int_Event target = new System_Comparison_int_Event(func, self);
 			System.Comparison<int> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	class Locke_ui_UIEventListener_VoidDelegate_Event : LuaDelegate
+	{
+		public Locke_ui_UIEventListener_VoidDelegate_Event(LuaFunction func) : base(func) { }
+		public Locke_ui_UIEventListener_VoidDelegate_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.GameObject param0)
+		{
+			func.BeginPCall();
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.GameObject param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.Push(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public static Delegate Locke_ui_UIEventListener_VoidDelegate(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			Locke.ui.UIEventListener.VoidDelegate fn = delegate(UnityEngine.GameObject param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			Locke_ui_UIEventListener_VoidDelegate_Event target = new Locke_ui_UIEventListener_VoidDelegate_Event(func);
+			Locke.ui.UIEventListener.VoidDelegate d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			Locke_ui_UIEventListener_VoidDelegate_Event target = new Locke_ui_UIEventListener_VoidDelegate_Event(func, self);
+			Locke.ui.UIEventListener.VoidDelegate d = target.CallWithSelf;
 			target.method = d.Method;
 			return d;
 		}

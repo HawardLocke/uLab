@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Locke.ui
 {
 
-	public abstract class IWindow : MonoBehaviour
+	public /*abstract*/ class IWindow : MonoBehaviour
 	{
 		private WindowInfo _windowInfo = null;
 		public WindowInfo windowInfo { set { _windowInfo = value; } get { return _windowInfo; } }
@@ -84,14 +84,30 @@ namespace Locke.ui
 
 		#region handlers to be override
 
-		protected virtual void OnInit() { }
-		protected virtual void OnEnter(IContext context) { }
+		protected virtual void OnInit() 
+		{
+			Util.CallMethod(name, "OnInit", gameObject);
+		}
 
-		protected virtual void OnExit(IContext context) { }
+		protected virtual void OnEnter(IContext context) 
+		{
+			Util.CallMethod(name, "OnEnter");
+		}
 
-		protected virtual void OnPause(IContext context) { }
+		protected virtual void OnExit(IContext context) 
+		{
+			Util.CallMethod(name, "OnExit");
+		}
 
-		protected virtual void OnResume(IContext context) { }
+		protected virtual void OnPause(IContext context) 
+		{
+			Util.CallMethod(name, "OnPause");
+		}
+
+		protected virtual void OnResume(IContext context) 
+		{
+			Util.CallMethod(name, "OnResume");
+		}
 
 		#endregion
 

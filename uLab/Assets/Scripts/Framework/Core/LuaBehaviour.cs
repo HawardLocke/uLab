@@ -32,12 +32,10 @@ namespace Locke
 			Util.CallMethod(name, "OnClick", go);
 		}
 
-		/// <summary>
-		/// 添加单击事件
-		/// </summary>
 		public void AddClick(GameObject go, LuaFunction luafunc)
 		{
-			if (go == null || luafunc == null) return;
+			if (go == null || luafunc == null)
+				return;
 			buttons.Add(go.name, luafunc);
 			go.GetComponent<Button>().onClick.AddListener(
 				delegate()
@@ -47,10 +45,6 @@ namespace Locke
 			);
 		}
 
-		/// <summary>
-		/// 删除单击事件
-		/// </summary>
-		/// <param name="go"></param>
 		public void RemoveClick(GameObject go)
 		{
 			if (go == null) return;
@@ -63,9 +57,6 @@ namespace Locke
 			}
 		}
 
-		/// <summary>
-		/// 清除单击事件
-		/// </summary>
 		public void ClearClick()
 		{
 			foreach (var de in buttons)

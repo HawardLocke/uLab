@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using LuaInterface;
 
-using Locke;
 
 using BindType = ToLuaMenu.BindType;
 using System.Reflection;
@@ -43,9 +42,11 @@ public static class CustomSettings
 	public static BindType[] customTypeList =
 	{
 		// for Locke
-		_GT(typeof(Log)),
-		_GT(typeof(App)),
-		_GT(typeof(UIManager)),
+		_GT(typeof(Locke.Log)),
+		_GT(typeof(Locke.Util)),
+		_GT(typeof(Locke.App)),
+		_GT(typeof(Locke.UIManager)),
+		_GT(typeof(Locke.ui.UIEventListener)),
 
 		//------------------------为例子导出--------------------------------
 		//_GT(typeof(TestEventListener)),
@@ -91,8 +92,7 @@ public static class CustomSettings
 		//_GT(typeof(LineRenderer))
 		//_GT(typeof(TrailRenderer))
 		_GT(typeof(RectTransform)),
-#endif
-						
+#endif			
 
 		_GT(typeof(Behaviour)),
 		_GT(typeof(MonoBehaviour)),		
@@ -145,6 +145,23 @@ public static class CustomSettings
 		_GT(typeof(RenderSettings)),														 
 		_GT(typeof(BlendWeights)),				 
 		_GT(typeof(RenderTexture)),
+
+		// UGUI
+		
+		_GT(typeof(UnityEngine.UI.Text)),
+		_GT(typeof(UnityEngine.UI.Image)),
+		_GT(typeof(UnityEngine.UI.RawImage)),
+		_GT(typeof(UnityEngine.UI.Mask)),
+		_GT(typeof(UnityEngine.UI.RectMask2D)),
+		_GT(typeof(UnityEngine.UI.Button)),
+		_GT(typeof(UnityEngine.UI.InputField)),
+		_GT(typeof(UnityEngine.UI.Toggle)),
+		_GT(typeof(UnityEngine.UI.ToggleGroup)),
+		_GT(typeof(UnityEngine.UI.Slider)),
+		_GT(typeof(UnityEngine.UI.Scrollbar)),
+		_GT(typeof(UnityEngine.UI.Dropdown)),
+		_GT(typeof(UnityEngine.UI.ScrollRect)),
+		_GT(typeof(UnityEngine.UI.Selectable)),
 
 #endregion
 

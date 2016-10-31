@@ -30,13 +30,15 @@ namespace Locke.ui
 		{
 			foreach (var wnd in mShownWindowDic)
 			{
-				GameObject.Destroy(wnd.Value.gameObject);
+				if (wnd.Value != null)
+					GameObject.Destroy(wnd.Value.gameObject);
 			}
 			mShownWindowDic.Clear();
 
 			foreach (var wnd in mCachedWindowDic)
 			{
-				GameObject.Destroy(wnd.Value.gameObject);
+				if (wnd.Value != null)
+					GameObject.Destroy(wnd.Value.gameObject);
 			}
 			mCachedWindowDic.Clear();
 
@@ -259,12 +261,8 @@ namespace Locke.ui
 			}
 			go.name = windowInfo.prefabPath.Substring(windowInfo.prefabPath.LastIndexOf('/')+1);
 			App.luaManager.RequireFile("UI/" + go.name);
-			IWindow script = go.GetComponent<IWindow>();
-			if (script == null)
-			{
-				Log.Error("Component IWindow does not exist.");
-				return null;
-			}
+
+			IWindow script = go.AddComponent<IWindow>();
 
 			script.windowInfo = windowInfo;
 
@@ -272,8 +270,6 @@ namespace Locke.ui
 			var rectTran = go.GetComponent<RectTransform>();
 			rectTran.SetParent(modeRoot.transform);
 			rectTran.localPosition = Vector3.zero;
-
-			go.AddComponent<LuaBehaviour>();
 
 			MakeWindowBackground(windowInfo, go);
 

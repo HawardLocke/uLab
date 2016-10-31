@@ -56,6 +56,35 @@ namespace Locke
 		}
 
 		/// <summary>
+		/// 搜索子物体组件
+		/// </summary>
+		public static Component FindComponent(GameObject go, string comName, string subnode)
+		{
+			if (go != null)
+			{
+				Transform sub = go.transform.FindChild(subnode);
+				if (sub != null)
+					return sub.GetComponent(comName);
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// 搜索子物体GameObject
+		/// </summary>
+		public static GameObject FindGameObject(GameObject go, string subnode)
+		{
+			if (go != null)
+			{
+				Transform sub = go.transform.FindChild(subnode);
+				if (sub != null)
+					return sub.gameObject;
+			}
+			return null;
+		}
+
+
+		/// <summary>
 		/// 搜索子物体组件-GameObject版
 		/// </summary>
 		public static T Get<T>(GameObject go, string subnode) where T : Component

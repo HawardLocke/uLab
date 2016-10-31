@@ -7,9 +7,9 @@ namespace Locke
 {
 	public class AppDefine
 	{
-		public static bool LuaBundleMode = true;                    //True:从bundle中加载lua, false:直接读lua文件
+		public static bool LuaBundleMode = false;                    //True:从bundle中加载lua, false:直接读lua文件
 
-		public static bool UpdateMode = true;                       //更新模式-默认关闭 
+		public static bool UpdateMode = false;                       //更新模式-默认关闭 
 
 		public static bool LuaByteMode = false;                       //Lua字节码模式-默认关闭 
 		

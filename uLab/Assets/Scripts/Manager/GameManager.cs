@@ -42,12 +42,12 @@ namespace Locke
 			bool isExist = Directory.Exists(Util.DataPath) && Directory.Exists(Util.DataPath + "lua") && File.Exists(Util.DataPath + "files.txt");
 			if (!isExist && AppDefine.LuaBundleMode)
 			{
-				App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, "Extract Resource...");
+				//App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, "Extract Resource...");
 				App.Instance.StartCoroutine(ExtractResource());
 			}
 			else
 			{
-				App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, "Update Resource...");
+				//App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, "Update Resource...");
 				App.Instance.StartCoroutine(UpdateResource());
 			}
 		}

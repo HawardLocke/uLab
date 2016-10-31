@@ -29,6 +29,11 @@ namespace Locke
 			return null;
 		}
 
+		public static void RegisterWindow(string filePath, int showMode, int openAction, int backgroundMode)
+		{
+			GameUI.AddWindowInfo(filePath, (ui.ShowMode)showMode, (ui.OpenAction)openAction, (ui.BackgroundMode)backgroundMode);
+		}
+
 		public IWindow OpenWindow(string windowName)
 		{
 			WindowInfo info = this.GetWindowInfo(windowName);
@@ -55,9 +60,11 @@ namespace Locke
 			mWindowMgr.CloseWindow(script);
 		}
 
-		public void SetMainWindow(WindowInfo windowInfo)
+		public void SetMainWindow(string name)
 		{
-			mWindowMgr.mainWindowInfo = windowInfo;
+			var info = GetWindowInfo(name);
+			if (info != null)
+				mWindowMgr.mainWindowInfo = info;
 		}
 
 		public void BackToMainWindow()
@@ -79,6 +86,7 @@ namespace Locke
 			}
 			return info;
 		}
+
 
 	}
 
