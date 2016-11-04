@@ -60,8 +60,9 @@ namespace Locke
 			}
 			else
 			{
-				luaState.AddSearchPath(Application.dataPath + "/Lua");
 				luaState.AddSearchPath(Application.dataPath + "/ToLua/Lua");
+				luaState.AddSearchPath(Application.dataPath + "/Lua");
+				luaState.AddSearchPath(Application.dataPath + "/Lua/3rd/protobuf");
 			}
 		}
 
