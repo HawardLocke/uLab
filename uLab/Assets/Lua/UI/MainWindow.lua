@@ -3,9 +3,9 @@ local gameObject;
 local transform;
 
 MainWindow = {};
---local this = MainWindow;
+local this = MainWindow;
 
-local buttonNames = { "bag", "role", "shop", "tip", "dialog", "close normals", "close all", "show main", "reset" };
+local buttonNames = { "bag", "role", "shop", "tip", "dialog", "show main", "send chat", "??", "reset" };
 
 
 function MainWindow.OnInit(obj)
@@ -52,10 +52,22 @@ function onBtnClick(go)
 	elseif index == 6 then
 		BackToMainWindow();
 	elseif index == 7 then
-		--
+		this.SendChat();
 	elseif index == 8 then
 		--
 	elseif index == 9 then
 		App.uiManager:Cleanup();
 	end
+end
+
+function MainWindow.SendChat()
+	local msg = login_pb.Login()
+	msg.name = "locke007"
+	msg.password = "2333"
+	--local pb_data = msg:SerializeToString()  -- Parse Example
+
+	--local buffer = ByteBuffer.New();
+	--buffer:WriteShort(PBX.MsgID.Login);
+	--buffer:WriteBuffer(pb_data);
+	App.networkManager:SendMessage(PBX.MsgID.Login, msg:SerializeToString());
 end

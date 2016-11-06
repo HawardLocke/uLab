@@ -22,11 +22,6 @@ public class StartUp : MonoBehaviour, IListener
 	void Start()
 	{
 		App.gameManager.CheckResource();
-
-		//App.uiManager.OpenWindow(GameUI.bar);
-		//App.uiManager.OpenWindow(GameUI.main);
-		//App.uiManager.SetMainWindow(GameUI.main);
-
 	}
 
 	void OnGUI()

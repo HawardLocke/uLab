@@ -23,8 +23,8 @@ namespace Locke
 		public const string WebUrl = "http://192.168.1.28:6688/";      //测试更新地址
 
 		public static string UserId = string.Empty;                 //用户ID
-		public static int SocketPort = 0;                           //Socket服务器端口
-		public static string SocketAddress = string.Empty;          //Socket服务器地址
+		public static int SocketPort = 8000;                           //Socket服务器端口
+		public static string SocketAddress = "127.0.0.1";          //Socket服务器地址
 
 		public const string ManagerGOName = "Managers";				// 给各种管理器使用的go
 

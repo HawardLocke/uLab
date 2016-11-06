@@ -14,10 +14,13 @@ public static class LuaBinder
 		Locke_LogWrap.Register(L);
 		Locke_UtilWrap.Register(L);
 		Locke_AppWrap.Register(L);
-		Locke_UIManagerWrap.Register(L);
-		Locke_SingletonMono_Locke_AppWrap.Register(L);
 		Locke_ManagerWrap.Register(L);
+		Locke_UIManagerWrap.Register(L);
+		Locke_NetworkManagerWrap.Register(L);
+		Locke_ByteBufferWrap.Register(L);
+		Locke_SingletonMono_Locke_AppWrap.Register(L);
 		L.BeginModule("ui");
+		Locke_ui_IWindowWrap.Register(L);
 		Locke_ui_UIEventListenerWrap.Register(L);
 		L.BeginModule("UIEventListener");
 		L.RegFunction("VoidDelegate", Locke_ui_UIEventListener_VoidDelegate);

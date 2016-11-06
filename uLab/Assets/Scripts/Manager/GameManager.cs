@@ -221,11 +221,14 @@ namespace Locke
 		{
 			try
 			{
+				App.luaManager.RequireFile("Network");
+
 				App.Instance.StartManagers();
 
-			App.luaManager.DoFile("Game.lua");
-			Util.CallMethod("Game", "OnInitialize");
-			}catch(System.Exception e)
+				App.luaManager.DoFile("Game.lua");
+				Util.CallMethod("Game", "OnInitialize");
+			}
+			catch (System.Exception e)
 			{
 				App.eventManager.SendMessage(MessageDefine.UPDATE_MESSAGE, e.ToString());
 			}

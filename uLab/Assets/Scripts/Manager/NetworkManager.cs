@@ -22,35 +22,23 @@ namespace Locke
 			}
 		}
 
-		void Awake()
+		public override void Initialize()
 		{
-			Init();
+			SocketClient.Init();
 		}
 
-		void Init()
+		public override void Start()
 		{
-			SocketClient.OnRegister();
+			Util.CallMethod("Network", "Start");
 		}
 
-		public void OnInit()
+		public override void Destroy()
 		{
-			CallMethod("Start");
+			Util.CallMethod("Network", "Destroy");
+			SocketClient.Destroy();
+			Debug.Log("~NetworkManager was destroy");
 		}
 
-		public void Unload()
-		{
-			CallMethod("Unload");
-		}
-
-		/// <summary>
-		/// 执行Lua方法
-		/// </summary>
-		public object[] CallMethod(string func, params object[] args)
-		{
-			return Util.CallMethod("Network", func, args);
-		}
-
-		///------------------------------------------------------------------------------------
 		public static void AddEvent(int _event, ByteBuffer data)
 		{
 			lock (m_lockObject)
@@ -59,9 +47,6 @@ namespace Locke
 			}
 		}
 
-		/// <summary>
-		/// 交给Command，这里不想关心发给谁。
-		/// </summary>
 		public override void Update()
 		{
 			if (mEvents.Count > 0)
@@ -74,29 +59,18 @@ namespace Locke
 			}
 		}
 
-		/// <summary>
-		/// 发送链接请求
-		/// </summary>
 		public void SendConnect()
 		{
 			SocketClient.SendConnect();
 		}
 
-		/// <summary>
-		/// 发送SOCKET消息
-		/// </summary>
-		public void SendMessage(ByteBuffer buffer)
+		public void SendMessage(ushort msgId, LuaByteBuffer buffer)
 		{
-			SocketClient.SendMessage(buffer);
+			var bb = new ByteBuffer();
+			bb.WriteShort(msgId);
+			bb.WriteBuffer(buffer);
+			SocketClient.SendMessage(bb);
 		}
 
-		/// <summary>
-		/// 析构函数
-		/// </summary>
-		public void OnDestroy()
-		{
-			SocketClient.OnRemove();
-			Debug.Log("~NetworkManager was destroy");
-		}
 	}
 }

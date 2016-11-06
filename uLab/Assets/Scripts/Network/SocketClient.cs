@@ -7,15 +7,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Locke;
 
-public enum DisType
+public enum DisconnectType
 {
 	Exception,
 	Disconnect,
+	ClientClosing,
 }
 
 public class SocketClient
 {
-	private TcpClient client = null;
+	private TcpClient tcpClient = null;
 	private NetworkStream outStream = null;
 	private MemoryStream memStream;
 	private BinaryReader reader;
@@ -24,63 +25,45 @@ public class SocketClient
 	private byte[] byteBuffer = new byte[MAX_READ];
 	public static bool loggedIn = false;
 
-	// Use this for initialization
-	public SocketClient()
-	{
-	}
 
-	/// <summary>
-	/// 注册代理
-	/// </summary>
-	public void OnRegister()
+	public void Init()
 	{
 		memStream = new MemoryStream();
 		reader = new BinaryReader(memStream);
 	}
 
-	/// <summary>
-	/// 移除代理
-	/// </summary>
-	public void OnRemove()
+	public void Destroy()
 	{
-		this.Close();
+		this.CloseClient();
 		reader.Close();
 		memStream.Close();
 	}
 
-	/// <summary>
-	/// 连接服务器
-	/// </summary>
 	void ConnectServer(string host, int port)
 	{
-		client = null;
-		client = new TcpClient();
-		client.SendTimeout = 1000;
-		client.ReceiveTimeout = 1000;
-		client.NoDelay = true;
+		tcpClient = null;
+		tcpClient = new TcpClient();
+		tcpClient.SendTimeout = 1000;
+		tcpClient.ReceiveTimeout = 1000;
+		tcpClient.NoDelay = true;
 		try
 		{
-			client.BeginConnect(host, port, new AsyncCallback(OnConnect), null);
+			tcpClient.BeginConnect(host, port, new AsyncCallback(OnConnectServer), null);
 		}
 		catch (Exception e)
 		{
-			Close(); Debug.LogError(e.Message);
+			CloseClient();
+			Debug.LogError(e.Message);
 		}
 	}
 
-	/// <summary>
-	/// 连接上服务器
-	/// </summary>
-	void OnConnect(IAsyncResult asr)
+	void OnConnectServer(IAsyncResult asr)
 	{
-		outStream = client.GetStream();
-		client.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
+		outStream = tcpClient.GetStream();
+		tcpClient.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
 		NetworkManager.AddEvent(Protocal.Connect, new ByteBuffer());
 	}
 
-	/// <summary>
-	/// 写数据
-	/// </summary>
 	void WriteMessage(byte[] message)
 	{
 		MemoryStream ms = null;
@@ -92,7 +75,7 @@ public class SocketClient
 			writer.Write(msglen);
 			writer.Write(message);
 			writer.Flush();
-			if (client != null && client.Connected)
+			if (tcpClient != null && tcpClient.Connected)
 			{
 				//NetworkStream stream = client.GetStream(); 
 				byte[] payload = ms.ToArray();
@@ -105,56 +88,51 @@ public class SocketClient
 		}
 	}
 
-	/// <summary>
-	/// 读取消息
-	/// </summary>
 	void OnRead(IAsyncResult asr)
 	{
 		int bytesRead = 0;
 		try
 		{
-			lock (client.GetStream())
-			{         //读取字节流到缓冲区
-				bytesRead = client.GetStream().EndRead(asr);
-			}
-			if (bytesRead < 1)
-			{                //包尺寸有问题，断线处理
-				OnDisconnected(DisType.Disconnect, "bytesRead < 1");
+			if (tcpClient == null)
+			{
+				OnDisconnect(DisconnectType.ClientClosing, "");
 				return;
 			}
-			OnReceive(byteBuffer, bytesRead);   //分析数据包内容，抛给逻辑层
-			lock (client.GetStream())
-			{         //分析完，再次监听服务器发过来的新消息
-				Array.Clear(byteBuffer, 0, byteBuffer.Length);   //清空数组
-				client.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
+			lock (tcpClient.GetStream())
+			{
+				bytesRead = tcpClient.GetStream().EndRead(asr);
+			}
+			if (bytesRead < 1)
+			{
+				OnDisconnect(DisconnectType.Disconnect, "bytesRead < 1");
+				return;
+			}
+			OnRecv(byteBuffer, bytesRead);
+			lock (tcpClient.GetStream())
+			{
+				Array.Clear(byteBuffer, 0, byteBuffer.Length);
+				tcpClient.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
 			}
 		}
 		catch (Exception ex)
 		{
 			//PrintBytes();
-			OnDisconnected(DisType.Exception, ex.Message);
+			OnDisconnect(DisconnectType.Exception, ex.Message);
 		}
 	}
 
-	/// <summary>
-	/// 丢失链接
-	/// </summary>
-	void OnDisconnected(DisType dis, string msg)
+	void OnDisconnect(DisconnectType dis, string msg)
 	{
-		Close();   //关掉客户端链接
-		int protocal = dis == DisType.Exception ?
-		Protocal.Exception : Protocal.Disconnect;
+		if (dis != DisconnectType.ClientClosing)
+			CloseClient();
+		int protocal = dis == DisconnectType.Exception ? Protocal.Exception : Protocal.Disconnect;
 
 		ByteBuffer buffer = new ByteBuffer();
 		buffer.WriteShort((ushort)protocal);
 		NetworkManager.AddEvent(protocal, buffer);
-		Debug.LogError("Connection was closed by the server:>" + msg + " Distype:>" + dis);
+		Debug.Log("Connection closed. Distype: " + dis + ". Msg: " + msg);
 	}
 
-	/// <summary>
-	/// 打印字节
-	/// </summary>
-	/// <param name="bytes"></param>
 	void PrintBytes()
 	{
 		string returnStr = string.Empty;
@@ -165,9 +143,6 @@ public class SocketClient
 		Debug.LogError(returnStr);
 	}
 
-	/// <summary>
-	/// 向链接写入数据流
-	/// </summary>
 	void OnWrite(IAsyncResult r)
 	{
 		try
@@ -180,25 +155,22 @@ public class SocketClient
 		}
 	}
 
-	/// <summary>
-	/// 接收到消息
-	/// </summary>
-	void OnReceive(byte[] bytes, int length)
+	void OnRecv(byte[] bytes, int length)
 	{
 		memStream.Seek(0, SeekOrigin.End);
 		memStream.Write(bytes, 0, length);
 		//Reset to beginning
 		memStream.Seek(0, SeekOrigin.Begin);
-		while (RemainingBytes() > 2)
+		while (GetRemainingBytesCount() > 2)
 		{
 			ushort messageLen = reader.ReadUInt16();
-			if (RemainingBytes() >= messageLen)
+			if (GetRemainingBytesCount() >= messageLen)
 			{
 				MemoryStream ms = new MemoryStream();
 				BinaryWriter writer = new BinaryWriter(ms);
 				writer.Write(reader.ReadBytes(messageLen));
 				ms.Seek(0, SeekOrigin.Begin);
-				OnReceivedMessage(ms);
+				HandleReceivedMessage(ms);
 			}
 			else
 			{
@@ -208,24 +180,17 @@ public class SocketClient
 			}
 		}
 		//Create a new stream with any leftover bytes
-		byte[] leftover = reader.ReadBytes((int)RemainingBytes());
+		byte[] leftover = reader.ReadBytes((int)GetRemainingBytesCount());
 		memStream.SetLength(0);     //Clear
 		memStream.Write(leftover, 0, leftover.Length);
 	}
 
-	/// <summary>
-	/// 剩余的字节
-	/// </summary>
-	private long RemainingBytes()
+	private long GetRemainingBytesCount()
 	{
 		return memStream.Length - memStream.Position;
 	}
 
-	/// <summary>
-	/// 接收到消息
-	/// </summary>
-	/// <param name="ms"></param>
-	void OnReceivedMessage(MemoryStream ms)
+	private void HandleReceivedMessage(MemoryStream ms)
 	{
 		BinaryReader r = new BinaryReader(ms);
 		byte[] message = r.ReadBytes((int)(ms.Length - ms.Position));
@@ -236,42 +201,25 @@ public class SocketClient
 		NetworkManager.AddEvent(mainId, buffer);
 	}
 
-
-	/// <summary>
-	/// 会话发送
-	/// </summary>
-	void SessionSend(byte[] bytes)
+	public void CloseClient()
 	{
-		WriteMessage(bytes);
-	}
-
-	/// <summary>
-	/// 关闭链接
-	/// </summary>
-	public void Close()
-	{
-		if (client != null)
+		if (tcpClient != null)
 		{
-			if (client.Connected) client.Close();
-			client = null;
+			if (tcpClient.Connected)
+				tcpClient.Close();
+			tcpClient = null;
 		}
 		loggedIn = false;
 	}
 
-	/// <summary>
-	/// 发送连接请求
-	/// </summary>
 	public void SendConnect()
 	{
 		ConnectServer(AppDefine.SocketAddress, AppDefine.SocketPort);
 	}
 
-	/// <summary>
-	/// 发送消息
-	/// </summary>
 	public void SendMessage(ByteBuffer buffer)
 	{
-		SessionSend(buffer.ToBytes());
+		WriteMessage(buffer.ToBytes());
 		buffer.Close();
 	}
 }

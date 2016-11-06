@@ -19,11 +19,21 @@ namespace Locke
 		public static ResourceManager	resManager = null;
 		public static LuaManager		luaManager = null;
 		public static UIManager			uiManager = null;
+		public static NetworkManager	networkManager = null;
 
 
 		public void Initialize()
 		{
-			InitManagers();
+			gameManager = this.AddManager<GameManager>();
+			eventManager = this.AddManager<EventManager>();
+			resManager = this.AddManager<ResourceManager>();
+			networkManager = this.AddManager<NetworkManager>();
+			luaManager = this.AddManager<LuaManager>();
+			uiManager = this.AddManager<UIManager>();
+			
+
+			foreach (var mgr in mManagerDic.Values)
+				mgr.Initialize();
 
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			Application.targetFrameRate = AppDefine.GameFrameRate;
@@ -40,51 +50,12 @@ namespace Locke
 			canUpdate = true;
 		}
 
-		private void InitManagers()
-		{
-			gameManager = this.AddManager<GameManager>();
-			eventManager = this.AddManager<EventManager>();
-			resManager = this.AddManager<ResourceManager>();
-			luaManager = this.AddManager<LuaManager>();
-			uiManager = this.AddManager<UIManager>();
-
-			foreach(var mgr in mManagerDic.Values)
-			{
-				mgr.Initialize();
-			}
-		}
-
-		private void DestroyManagers()
+		void OnDestroy()
 		{
 			foreach (var mgr in mManagerDic.Values)
 			{
 				mgr.Destroy();
 			}
-		}
-
-		/*public T GetManager<T>() where T : Manager
-		{
-			string name = typeof(T).ToString();
-			Manager mgr = null;
-			mManagerDic.TryGetValue(name, out mgr);
-			return mgr as T;
-		}*/
-
-		private T AddManager<T>() where T : Manager, new()
-		{
-			T mgr = null;
-			string name = typeof(T).ToString();
-			if (!mManagerDic.ContainsKey(name))
-			{
-				mgr = new T();
-				mManagerDic.Add(name, mgr);
-			}
-			return mgr;
-		}
-
-		void OnDestroy()
-		{
-			DestroyManagers();
 		}
 
 		void Update()
@@ -99,6 +70,27 @@ namespace Locke
 				mgr.Update();
 			}
 		}
+
+		private T AddManager<T>() where T : Manager, new()
+		{
+			T mgr = null;
+			string name = typeof(T).ToString();
+			if (!mManagerDic.ContainsKey(name))
+			{
+				mgr = new T();
+				mManagerDic.Add(name, mgr);
+			}
+			return mgr;
+		}
+
+
+		/*public T GetManager<T>() where T : Manager
+		{
+			string name = typeof(T).ToString();
+			Manager mgr = null;
+			mManagerDic.TryGetValue(name, out mgr);
+			return mgr as T;
+		}*/
 
 	}
 }

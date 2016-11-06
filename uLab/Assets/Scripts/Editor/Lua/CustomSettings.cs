@@ -45,8 +45,12 @@ public static class CustomSettings
 		_GT(typeof(Locke.Log)),
 		_GT(typeof(Locke.Util)),
 		_GT(typeof(Locke.App)),
+		_GT(typeof(Locke.Manager)),
 		_GT(typeof(Locke.UIManager)),
+		_GT(typeof(Locke.NetworkManager)),
+		_GT(typeof(Locke.ui.IWindow)),
 		_GT(typeof(Locke.ui.UIEventListener)),
+		_GT(typeof(Locke.ByteBuffer)),
 
 		//------------------------为例子导出--------------------------------
 		//_GT(typeof(TestEventListener)),
