@@ -197,8 +197,8 @@ public class SocketClient
 		//int msglen = message.Length;
 
 		ByteBuffer buffer = new ByteBuffer(message);
-		int mainId = buffer.ReadShort();
-		NetworkManager.AddEvent(mainId, buffer);
+		ushort msgId = buffer.ReadShort();
+		NetworkManager.AddEvent(msgId, buffer);
 	}
 
 	public void CloseClient()

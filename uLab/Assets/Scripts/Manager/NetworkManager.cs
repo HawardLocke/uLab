@@ -39,6 +39,11 @@ namespace Locke
 			Debug.Log("~NetworkManager was destroy");
 		}
 
+		public static void OnMessage(ushort msgId, byte[] data)
+		{
+			Util.CallMethod("Network", "onMessage", data);
+		}
+
 		public static void AddEvent(int _event, ByteBuffer data)
 		{
 			lock (m_lockObject)
@@ -55,6 +60,10 @@ namespace Locke
 				{
 					KeyValuePair<int, ByteBuffer> _event = mEvents.Dequeue();
 					App.eventManager.SendMessage(MessageDefine.DISPATCH_MESSAGE, _event);
+
+					ushort msgId = _event.Value.ReadShort();
+					byte[] data = _event.Value.ReadBytes();
+					NetworkManager.OnMessage(msgId, data);
 				}
 			}
 		}

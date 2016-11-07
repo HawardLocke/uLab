@@ -35,6 +35,14 @@ function Game.OnInitialize()
 
 	App.networkManager:SendConnect();
 
+	Network.RegisterMsgHandler(PBX.MsgID.Login, this.onLogin);
+
+end
+
+function onLogin(data)
+	local msg = login_pb.Login();
+	msg:ParseFromString(data);
+	print(msg.name +", " + msg.password);
 end
 
 
