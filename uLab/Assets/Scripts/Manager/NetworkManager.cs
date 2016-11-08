@@ -41,7 +41,7 @@ namespace Locke
 
 		public static void OnMessage(ushort msgId, byte[] data)
 		{
-			Util.CallMethod("Network", "onMessage", data);
+			Util.CallMethod("Network", "onMessage", msgId, data);
 		}
 
 		public static void AddEvent(int _event, ByteBuffer data)

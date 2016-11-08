@@ -32,6 +32,7 @@ function Network.onException()
 end
 
 function Network.onMessage(msgId, data)
+	print('msg id ', msgId);
 	if not this.handlerMap[msgId] then
 		print("no handler");
 	else

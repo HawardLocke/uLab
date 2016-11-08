@@ -61,7 +61,7 @@ public class SocketClient
 	{
 		outStream = tcpClient.GetStream();
 		tcpClient.GetStream().BeginRead(byteBuffer, 0, MAX_READ, new AsyncCallback(OnRead), null);
-		NetworkManager.AddEvent(Protocal.Connect, new ByteBuffer());
+		//NetworkManager.AddEvent(Protocal.Connect, new ByteBuffer());
 	}
 
 	void WriteMessage(byte[] message)
