@@ -125,11 +125,11 @@ public class SocketClient
 	{
 		if (dis != DisconnectType.ClientClosing)
 			CloseClient();
-		int protocal = dis == DisconnectType.Exception ? Protocal.Exception : Protocal.Disconnect;
+		ushort protocal = dis == DisconnectType.Exception ? Protocal.Exception : Protocal.Disconnect;
 
-		ByteBuffer buffer = new ByteBuffer();
+		/*ByteBuffer buffer = new ByteBuffer();
 		buffer.WriteShort((ushort)protocal);
-		NetworkManager.AddEvent(protocal, buffer);
+		NetworkManager.PushPacket(protocal, buffer);*/
 		Debug.Log("Connection closed. Distype: " + dis + ". Msg: " + msg);
 	}
 
@@ -194,11 +194,14 @@ public class SocketClient
 	{
 		BinaryReader r = new BinaryReader(ms);
 		byte[] message = r.ReadBytes((int)(ms.Length - ms.Position));
-		//int msglen = message.Length;
 
 		ByteBuffer buffer = new ByteBuffer(message);
-		ushort msgId = buffer.ReadShort();
-		NetworkManager.AddEvent(msgId, buffer);
+		Packet packet = new Packet();
+		packet.length = (ushort)message.Length;
+		packet.msgId = buffer.ReadShort();
+		packet.stamp = 0;
+		packet.data = buffer.ReadBytes();
+		NetworkManager.PushPacket(packet.msgId, packet);
 	}
 
 	public void CloseClient()

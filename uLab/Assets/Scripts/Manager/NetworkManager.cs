@@ -4,21 +4,24 @@ using System.Collections;
 using System.Collections.Generic;
 using LuaInterface;
 
+
 namespace Locke
 {
+	using PacketPair = KeyValuePair<ushort, Packet>;
+
 	public class NetworkManager : Manager
 	{
-		private SocketClient socket;
-		static readonly object m_lockObject = new object();
-		static Queue<KeyValuePair<int, ByteBuffer>> mEvents = new Queue<KeyValuePair<int, ByteBuffer>>();
+		private SocketClient mSocketClient;
+		static readonly object mLockObject = new object();
+		static Queue<PacketPair> mMessageQueue = new Queue<PacketPair>();
 
 		SocketClient SocketClient
 		{
 			get
 			{
-				if (socket == null)
-					socket = new SocketClient();
-				return socket;
+				if (mSocketClient == null)
+					mSocketClient = new SocketClient();
+				return mSocketClient;
 			}
 		}
 
@@ -39,31 +42,24 @@ namespace Locke
 			Debug.Log("~NetworkManager was destroy");
 		}
 
-		public static void OnMessage(ushort msgId, byte[] data)
+		public static void PushPacket(ushort msgId, Packet packet)
 		{
-			Util.CallMethod("Network", "onMessage", msgId, data);
-		}
-
-		public static void AddEvent(int _event, ByteBuffer data)
-		{
-			lock (m_lockObject)
+			lock (mLockObject)
 			{
-				mEvents.Enqueue(new KeyValuePair<int, ByteBuffer>(_event, data));
+				mMessageQueue.Enqueue(new PacketPair(msgId, packet));
 			}
 		}
 
 		public override void Update()
 		{
-			if (mEvents.Count > 0)
+			if (mMessageQueue.Count > 0)
 			{
-				while (mEvents.Count > 0)
+				while (mMessageQueue.Count > 0)
 				{
-					KeyValuePair<int, ByteBuffer> _event = mEvents.Dequeue();
-					App.eventManager.SendMessage(MessageDefine.DISPATCH_MESSAGE, _event);
-
-					ushort msgId = _event.Value.ReadShort();
-					byte[] data = _event.Value.ReadBytes();
-					NetworkManager.OnMessage(msgId, data);
+					PacketPair pair = mMessageQueue.Dequeue();
+					//App.eventManager.SendMessage(MessageDefine.DISPATCH_MESSAGE, pair);
+					Packet packet = pair.Value;
+					Util.CallMethod("Network", "onMessage", packet.msgId, packet.data);
 				}
 			}
 		}

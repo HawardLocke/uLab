@@ -39,7 +39,7 @@ function Game.OnInitialize()
 
 end
 
-function onLogin(data)
+function Game.onLogin(data)
 	local msg = login_pb.Login();
 	msg:ParseFromString(data);
 	print(msg.name +", " + msg.password);
