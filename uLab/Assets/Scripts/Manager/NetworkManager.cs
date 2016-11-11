@@ -2,10 +2,11 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using LuaInterface;
 
 
-namespace Locke
+namespace Lite
 {
 	using PacketPair = KeyValuePair<ushort, Packet>;
 
@@ -59,7 +60,7 @@ namespace Locke
 					PacketPair pair = mMessageQueue.Dequeue();
 					//App.eventManager.SendMessage(MessageDefine.DISPATCH_MESSAGE, pair);
 					Packet packet = pair.Value;
-					Util.CallMethod("Network", "onMessage", packet.msgId, packet.data);
+					Util.CallMethod("Network", "onMessage", packet.msgId, Encoding.UTF8.GetString(packet.data));
 				}
 			}
 		}
@@ -69,12 +70,31 @@ namespace Locke
 			SocketClient.SendConnect();
 		}
 
-		public void SendMessage(ushort msgId, LuaByteBuffer buffer)
+		public void SendBytes(ushort msgId, byte[] buffer)
 		{
 			var bb = new ByteBuffer();
 			bb.WriteShort(msgId);
-			bb.WriteBuffer(buffer);
+			bb.WriteBytes(buffer);
 			SocketClient.SendMessage(bb);
+		}
+
+		public void SendString(ushort msgId, string str)
+		{
+			var bb = new ByteBuffer();
+			bb.WriteShort(msgId);
+			bb.WriteString(str);
+			SocketClient.SendMessage(bb);
+
+			/*var message = bb.ToBytes();
+			ByteBuffer newbb = new ByteBuffer(message);
+			Packet packet = new Packet();
+			packet.length = (ushort)message.Length;
+			packet.msgId = newbb.ReadShort();
+			packet.stamp = 0;
+			//packet.data = newbb.ReadString();
+			Util.CallMethod("Network", "onMessage", packet.msgId, newbb.ReadString());
+			//NetworkManager.PushPacket(packet.msgId, packet);
+			*/
 		}
 
 	}

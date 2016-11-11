@@ -42,15 +42,15 @@ public static class CustomSettings
 	public static BindType[] customTypeList =
 	{
 		// for Locke
-		_GT(typeof(Locke.Log)),
-		_GT(typeof(Locke.Util)),
-		_GT(typeof(Locke.App)),
-		_GT(typeof(Locke.Manager)),
-		_GT(typeof(Locke.UIManager)),
-		_GT(typeof(Locke.NetworkManager)),
-		_GT(typeof(Locke.ui.IWindow)),
-		_GT(typeof(Locke.ui.UIEventListener)),
-		_GT(typeof(Locke.ByteBuffer)),
+		_GT(typeof(Lite.Log)),
+		_GT(typeof(Lite.Util)),
+		_GT(typeof(Lite.App)),
+		_GT(typeof(Lite.Manager)),
+		_GT(typeof(Lite.UIManager)),
+		_GT(typeof(Lite.NetworkManager)),
+		_GT(typeof(Lite.ui.IWindow)),
+		_GT(typeof(Lite.ui.UIEventListener)),
+		_GT(typeof(Lite.ByteBuffer)),
 
 		//------------------------为例子导出--------------------------------
 		//_GT(typeof(TestEventListener)),

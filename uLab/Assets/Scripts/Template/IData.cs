@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections;
 
 
-namespace Locke
+namespace Lite
 {
 	public class IData
 	{

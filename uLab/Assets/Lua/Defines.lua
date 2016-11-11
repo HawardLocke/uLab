@@ -1,10 +1,10 @@
 
 
 -- for quick access
-Util = Locke.Util;
-App = Locke.App;
-ByteBuffer = Locke.ByteBuffer;
-UIEventListener = Locke.ui.UIEventListener;
+Util = Lite.Util;
+App = Lite.App;
+ByteBuffer = Lite.ByteBuffer;
+UIEventListener = Lite.ui.UIEventListener;
 
 
 

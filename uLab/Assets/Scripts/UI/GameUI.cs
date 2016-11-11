@@ -5,9 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Locke.ui;
+using Lite.ui;
 
-namespace Locke.ui
+namespace Lite.ui
 {
 	public class GameUI
 	{

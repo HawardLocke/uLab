@@ -8,7 +8,7 @@ using UnityEditor;
 
 using Excel;
 
-using Locke;
+using Lite;
 
 
 public class Xlsx_To_X

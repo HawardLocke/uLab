@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using Locke;
-using Locke.ui;
+using Lite;
+using Lite.ui;
 
 /* 性能测试
  * 1.加载图片无压力，测试加载100个1024 png、bmp，对fps没有影响。飞快。

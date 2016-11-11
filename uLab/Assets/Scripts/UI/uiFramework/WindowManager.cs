@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace Locke.ui
+namespace Lite.ui
 {
 	public sealed class WindowManager
 	{

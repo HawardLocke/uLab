@@ -22,7 +22,7 @@
 
 using System;
 
-namespace Locke
+namespace Lite
 {
 	public class Converter
 	{

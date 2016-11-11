@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-using Locke;
+using Lite;
 
 public class MagicBox : MonoBehaviour
 {

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace Locke.ui
+namespace Lite.ui
 {
 
 	public enum ShowMode

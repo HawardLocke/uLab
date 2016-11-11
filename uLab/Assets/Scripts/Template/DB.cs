@@ -7,7 +7,7 @@ using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Locke
+namespace Lite
 {
 	using Data = Dictionary<int, IData>;
 	using StrData = Dictionary<string, IData>;

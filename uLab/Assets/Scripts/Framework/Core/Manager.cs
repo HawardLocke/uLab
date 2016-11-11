@@ -1,6 +1,6 @@
 
 
-namespace Locke
+namespace Lite
 {
 	public abstract class Manager : IListener
 	{

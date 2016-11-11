@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-using Locke;
+using Lite;
 
 
 public class StartUp : MonoBehaviour, IListener

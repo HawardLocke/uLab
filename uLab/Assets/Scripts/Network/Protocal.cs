@@ -1,5 +1,5 @@
 
-namespace Locke
+namespace Lite
 {
 	public class Protocal
 	{

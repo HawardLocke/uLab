@@ -1,9 +1,9 @@
 
 
-using Locke.ui;
+using Lite.ui;
 
 
-namespace Locke
+namespace Lite
 {
 
 	public class UIManager : Manager

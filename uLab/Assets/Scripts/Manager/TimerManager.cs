@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Locke
+namespace Lite
 {
 	public class TimerInfo
 	{

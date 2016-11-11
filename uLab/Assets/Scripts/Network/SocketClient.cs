@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Collections;
 using System.Collections.Generic;
-using Locke;
+using Lite;
 
 public enum DisconnectType
 {
@@ -125,9 +125,9 @@ public class SocketClient
 	{
 		if (dis != DisconnectType.ClientClosing)
 			CloseClient();
-		ushort protocal = dis == DisconnectType.Exception ? Protocal.Exception : Protocal.Disconnect;
+		/*ushort protocal = dis == DisconnectType.Exception ? Protocal.Exception : Protocal.Disconnect;
 
-		/*ByteBuffer buffer = new ByteBuffer();
+		ByteBuffer buffer = new ByteBuffer();
 		buffer.WriteShort((ushort)protocal);
 		NetworkManager.PushPacket(protocal, buffer);*/
 		Debug.Log("Connection closed. Distype: " + dis + ". Msg: " + msg);

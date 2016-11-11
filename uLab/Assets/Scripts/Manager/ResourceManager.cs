@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 
-namespace Locke
+namespace Lite
 {
 
 	public class ResourceManager : Manager

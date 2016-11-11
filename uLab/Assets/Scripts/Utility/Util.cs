@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using LuaInterface;
-using Locke;
+using Lite;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Locke
+namespace Lite
 {
 	public class Util
 	{

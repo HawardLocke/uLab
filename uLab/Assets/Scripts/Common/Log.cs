@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-namespace Locke
+namespace Lite
 {
 	public class Log
 	{

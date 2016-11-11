@@ -10,20 +10,20 @@ public static class LuaBinder
 		float t = Time.realtimeSinceStartup;
 		L.BeginModule(null);
 		LuaInterface_DebuggerWrap.Register(L);
-		L.BeginModule("Locke");
-		Locke_LogWrap.Register(L);
-		Locke_UtilWrap.Register(L);
-		Locke_AppWrap.Register(L);
-		Locke_ManagerWrap.Register(L);
-		Locke_UIManagerWrap.Register(L);
-		Locke_NetworkManagerWrap.Register(L);
-		Locke_ByteBufferWrap.Register(L);
-		Locke_SingletonMono_Locke_AppWrap.Register(L);
+		L.BeginModule("Lite");
+		Lite_LogWrap.Register(L);
+		Lite_UtilWrap.Register(L);
+		Lite_AppWrap.Register(L);
+		Lite_ManagerWrap.Register(L);
+		Lite_UIManagerWrap.Register(L);
+		Lite_NetworkManagerWrap.Register(L);
+		Lite_ByteBufferWrap.Register(L);
+		Lite_SingletonMono_Lite_AppWrap.Register(L);
 		L.BeginModule("ui");
-		Locke_ui_IWindowWrap.Register(L);
-		Locke_ui_UIEventListenerWrap.Register(L);
+		Lite_ui_IWindowWrap.Register(L);
+		Lite_ui_UIEventListenerWrap.Register(L);
 		L.BeginModule("UIEventListener");
-		L.RegFunction("VoidDelegate", Locke_ui_UIEventListener_VoidDelegate);
+		L.RegFunction("VoidDelegate", Lite_ui_UIEventListener_VoidDelegate);
 		L.EndModule();
 		L.EndModule();
 		L.EndModule();
@@ -143,7 +143,7 @@ public static class LuaBinder
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Locke_ui_UIEventListener_VoidDelegate(IntPtr L)
+	static int Lite_ui_UIEventListener_VoidDelegate(IntPtr L)
 	{
 		try
 		{
@@ -152,13 +152,13 @@ public static class LuaBinder
 
 			if (count == 1)
 			{
-				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(Locke.ui.UIEventListener.VoidDelegate), func);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(Lite.ui.UIEventListener.VoidDelegate), func);
 				ToLua.Push(L, arg1);
 			}
 			else
 			{
 				LuaTable self = ToLua.CheckLuaTable(L, 2);
-				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(Locke.ui.UIEventListener.VoidDelegate), func, self);
+				Delegate arg1 = DelegateFactory.CreateDelegate(typeof(Lite.ui.UIEventListener.VoidDelegate), func, self);
 				ToLua.Push(L, arg1);
 			}
 			return 1;

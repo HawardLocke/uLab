@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using System.IO;
 using System.Text;
-using System;
-using LuaInterface;
 
-namespace Locke
+namespace Lite
 {
 	public class ByteBuffer
 	{
@@ -49,6 +46,12 @@ namespace Locke
 			writer.Write(v);
 		}
 
+		public void WriteBytes(byte[] v)
+		{
+			writer.Write((int)v.Length);
+			writer.Write(v);
+		}
+
 		public void WriteInt(int v)
 		{
 			writer.Write((int)v);
@@ -81,24 +84,19 @@ namespace Locke
 		public void WriteString(string v)
 		{
 			byte[] bytes = Encoding.UTF8.GetBytes(v);
-			writer.Write((ushort)bytes.Length);
+			writer.Write((int)bytes.Length);
 			writer.Write(bytes);
-		}
-
-		public void WriteBytes(byte[] v)
-		{
-			writer.Write((int)v.Length);
-			writer.Write(v);
-		}
-
-		public void WriteBuffer(LuaByteBuffer strBuffer)
-		{
-			WriteBytes(strBuffer.buffer);
 		}
 
 		public byte ReadByte()
 		{
 			return reader.ReadByte();
+		}
+
+		public byte[] ReadBytes()
+		{
+			int count = ReadInt();
+			return reader.ReadBytes(count);
 		}
 
 		public int ReadInt()
@@ -132,22 +130,10 @@ namespace Locke
 
 		public string ReadString()
 		{
-			ushort len = ReadShort();
+			int len = ReadInt();
 			byte[] buffer = new byte[len];
 			buffer = reader.ReadBytes(len);
 			return Encoding.UTF8.GetString(buffer);
-		}
-
-		public byte[] ReadBytes()
-		{
-			int len = ReadInt();
-			return reader.ReadBytes(len);
-		}
-
-		public LuaByteBuffer ReadBuffer()
-		{
-			byte[] bytes = ReadBytes();
-			return new LuaByteBuffer(bytes);
 		}
 
 		public byte[] ToBytes()

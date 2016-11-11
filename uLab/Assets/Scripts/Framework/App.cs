@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Locke
+namespace Lite
 {
 	public class App : SingletonMono<App>
 	{

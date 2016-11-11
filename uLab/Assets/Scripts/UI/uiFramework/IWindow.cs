@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-namespace Locke.ui
+namespace Lite.ui
 {
 
 	public /*abstract*/ class IWindow : MonoBehaviour

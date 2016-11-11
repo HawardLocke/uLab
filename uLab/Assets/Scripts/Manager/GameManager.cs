@@ -7,7 +7,7 @@ using System.IO;
 using UnityEngine;
 
 
-namespace Locke
+namespace Lite
 {
 
 	public class GameManager : Manager

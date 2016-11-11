@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
 
-namespace Locke
+namespace Lite
 {
 	public class LuaBehaviour : MonoBehaviour
 	{

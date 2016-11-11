@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Locke
+namespace Lite
 {
 	public interface ITimerBehaviour
 	{

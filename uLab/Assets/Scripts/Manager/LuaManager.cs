@@ -7,7 +7,7 @@ using UnityEngine;
 using LuaInterface;
 
 
-namespace Locke
+namespace Lite
 {
 
 	public class LuaManager : Manager

@@ -11,7 +11,7 @@ using System.Data;
 using UnityEngine.UI;
 
 
-namespace Locke
+namespace Lite
 {
 	
 	public class XlsxReader : Singleton<XlsxReader>
