@@ -14,7 +14,11 @@ function Network.Destroy()
 
 end
 
-function Network.RegisterMsgHandler(msgId, func)
+function Network.SendMessage(msgId, data)
+	App.networkManager:SendString(msgId, data:SerializeToString());
+end
+
+function Network.RegisterHandler(msgId, func)
 	this.handlerMap[msgId] = func;
 end
 
@@ -32,10 +36,11 @@ function Network.onException()
 end
 
 function Network.onMessage(msgId, data)
-	print('msg id ', msgId);
-	if not this.handlerMap[msgId] then
-		print("no handler");
+	--print('msg id ', msgId);
+	local targetHandler = this.handlerMap[msgId];
+	if not targetHandler then
+		print("cannot find msg handler. msgId: ", msgId);
 	else
-		this.handlerMap[msgId](data);
+		targetHandler(data);
 	end
 end

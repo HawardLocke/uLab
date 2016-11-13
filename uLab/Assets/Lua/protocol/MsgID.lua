@@ -6,15 +6,17 @@ MsgID =
 {
 
 	-- chat.proto
-	Test1Msg1 = 1001,
-	Test1Msg2 = 1002,
-	Test1Msg3 = 1003,
+	sendMsg = 1001,
+	recvMsg = 1002,
 
 	-- login.proto
-	ExtraInfo = 2001,
-	Login = 2002,
-	TestMsg1 = 2003,
-	TestMsg2 = 2004,
-	TestMsg3 = 2005,
+	LoginRoleInfo = 2001,
+	LoginRequest = 2002,
+	LoginResponse = 2003,
+	EnterGameRequest = 2004,
+	EnterGameResponse = 2005,
+
+	-- scene.proto
+	MoveRequest = 3001,
 
 };

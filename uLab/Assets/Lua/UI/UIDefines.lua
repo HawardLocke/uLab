@@ -27,6 +27,7 @@ local UIBackgroundMode =
 
 GameUI =
 {
+	login = "LoginWindow",
 	main = "MainWindow",
 	bar = "BarWindow",
 	role = "RoleWindow",
@@ -35,6 +36,12 @@ GameUI =
 	tip = "TipWindow",
 	dialog = "DialogWindow",
 };
+
+RegisterWindow("ui/LoginWindow",
+	UIShowMode.Main,
+	UIOpenAction.DoNothing,
+	UIBackgroundMode.None
+	);
 
 RegisterWindow("ui/MainWindow",
 	UIShowMode.Main,

@@ -1,6 +1,6 @@
 
 using UnityEngine;
-
+using UnityEngine.UI;
 using Lite;
 
 
@@ -17,6 +17,8 @@ public class StartUp : MonoBehaviour, IListener
 		App.eventManager.RegisterListener(MessageDefine.UPDATE_DOWNLOAD, this);
 		App.eventManager.RegisterListener(MessageDefine.UPDATE_PROGRESS, this);
 
+		//InputField field = null;
+		//field.text;
 	}
 
 	void Start()

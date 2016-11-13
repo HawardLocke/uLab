@@ -61,8 +61,8 @@ function onBtnClick(go)
 end
 
 function MainWindow.SendChat()
-	local msg = login_pb.Login();
-	msg.name = "locke007";
+	local msg = login_pb.LoginRequest();
+	msg.account = "locke007";
 	msg.password = "2333";
-	App.networkManager:SendString(PBX.MsgID.Login, msg:SerializeToString());
+	App.networkManager:SendString(PBX.MsgID.LoginRequest, msg:SerializeToString());
 end
