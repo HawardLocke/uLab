@@ -19,8 +19,8 @@ function Game.OnInitialize()
 	SetMainWindow(GameUI.login);
 
 	App.networkManager:SendConnect();
-	Network.RegisterHandler(PBX.MsgID.LoginResponse, this.onLoginResult);
-	Network.RegisterHandler(PBX.MsgID.EnterGameResponse, this.onEnterGameResult);
+	Network.RegisterHandler(PBX.MsgID.gcLoginRet, this.onLoginResult);
+	Network.RegisterHandler(PBX.MsgID.gcEnterGameRet, this.onEnterGameResult);
 
 	--[[test...
 	local msg = login_pb.Login()
@@ -40,20 +40,20 @@ function Game.OnInitialize()
 end
 
 function Game.onLoginResult(data)
-	local msg = login_pb.LoginResponse();
+	local msg = login_pb.gcLoginRet();
 	msg:ParseFromString(data);
 	print("--recv login result: ", msg.result);
 	if  msg.result > 0 then
 		print("login failed. error code: ", msg.result);
 	else
-		local enterGameMsg = login_pb.EnterGameRequest();
+		local enterGameMsg = login_pb.cgEnterGame();
 		enterGameMsg.roleIndex = 1;
-		Network.SendMessage(PBX.MsgID.EnterGameRequest, enterGameMsg);
+		Network.SendMessage(PBX.MsgID.cgEnterGame, enterGameMsg);
 	end
 end
 
 function Game.onEnterGameResult(data)
-	local recvMsg = login_pb.EnterGameResponse();
+	local recvMsg = login_pb.gcEnterGameRet();
 	recvMsg:ParseFromString(data);
 	print("--recv enter game result: ", recvMsg.result);
 	if recvMsg.result > 0 then

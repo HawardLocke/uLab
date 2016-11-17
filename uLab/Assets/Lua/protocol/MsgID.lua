@@ -10,13 +10,23 @@ MsgID =
 	recvMsg = 1002,
 
 	-- login.proto
-	LoginRoleInfo = 2001,
-	LoginRequest = 2002,
-	LoginResponse = 2003,
-	EnterGameRequest = 2004,
-	EnterGameResponse = 2005,
+	gcLoginRoleInfo = 2001,
+	cgLogin = 2002,
+	gcLoginRet = 2003,
+	cgLogout = 2004,
+	gcLogoutRet = 2005,
+	cgEnterGame = 2006,
+	gcEnterGameRet = 2007,
 
 	-- scene.proto
-	MoveRequest = 3001,
+	gcPlayerInfo = 3001,
+	gcEnterScene = 3002,
+	cgEnterSceneDone = 3003,
+	cgExitScene = 3004,
+	gcExitSceneRet = 3005,
+	gcOtherEnterScene = 3006,
+	gcNearbyPlayerInfo = 3007,
+	cgMoveTo = 3008,
+	gcMoveTo = 3009,
 
 };
