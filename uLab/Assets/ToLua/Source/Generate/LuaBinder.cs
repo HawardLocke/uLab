@@ -9,6 +9,7 @@ public static class LuaBinder
 	{
 		float t = Time.realtimeSinceStartup;
 		L.BeginModule(null);
+		TestPlayerWrap.Register(L);
 		LuaInterface_DebuggerWrap.Register(L);
 		L.BeginModule("Lite");
 		Lite_LogWrap.Register(L);
@@ -17,7 +18,7 @@ public static class LuaBinder
 		Lite_ManagerWrap.Register(L);
 		Lite_UIManagerWrap.Register(L);
 		Lite_NetworkManagerWrap.Register(L);
-		Lite_ByteBufferWrap.Register(L);
+		Lite_EntityManagerWrap.Register(L);
 		Lite_SingletonMono_Lite_AppWrap.Register(L);
 		L.BeginModule("ui");
 		Lite_ui_IWindowWrap.Register(L);

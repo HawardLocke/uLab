@@ -48,9 +48,10 @@ public static class CustomSettings
 		_GT(typeof(Lite.Manager)),
 		_GT(typeof(Lite.UIManager)),
 		_GT(typeof(Lite.NetworkManager)),
+		_GT(typeof(Lite.EntityManager)),
 		_GT(typeof(Lite.ui.IWindow)),
 		_GT(typeof(Lite.ui.UIEventListener)),
-		_GT(typeof(Lite.ByteBuffer)),
+		_GT(typeof(TestPlayer)),
 
 		//------------------------为例子导出--------------------------------
 		//_GT(typeof(TestEventListener)),
