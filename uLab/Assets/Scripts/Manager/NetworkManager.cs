@@ -60,7 +60,10 @@ namespace Lite
 					PacketPair pair = mMessageQueue.Dequeue();
 					//App.eventManager.SendMessage(MessageDefine.DISPATCH_MESSAGE, pair);
 					Packet packet = pair.Value;
-					Util.CallMethod("Network", "onMessage", packet.msgId, Encoding.UTF8.GetString(packet.data));
+					string str = Encoding.UTF8.GetString(packet.data);
+					if (packet.msgId == 3006)
+						str = str;
+					Util.CallMethod("Network", "onMessage", packet.msgId, str);
 				}
 			}
 		}
@@ -95,6 +98,14 @@ namespace Lite
 			Util.CallMethod("Network", "onMessage", packet.msgId, newbb.ReadString());
 			//NetworkManager.PushPacket(packet.msgId, packet);
 			*/
+		}
+
+		public void TestString(string str)
+		{
+			var bb = new ByteBuffer();
+			bb.WriteString(str);
+			byte[] b = bb.ReadBytes();
+			Log.Info("TestString()"+str);
 		}
 
 	}

@@ -32,8 +32,18 @@ end
 function SceneHandler.OnOtherEnterScene(data)
 	local msg = scene_pb.gcOtherEnterScene();
 	msg:ParseFromString(data);
-	print("recv other enter scene.");
-	App.entityManager:AddPlayer(msg.playerInfo.playerGuid, msg.playerInfo.x, msg.playerInfo.y);
+	print("recv other enter scene.", msg);
+	--App.entityManager:AddPlayer(msg.playerInfo.playerGuid, msg.playerInfo.x, msg.playerInfo.y);
+	--[[local msg = scene_pb.gcOtherEnterScene();
+	msg.playerInfo.playerGuid = 1;
+	msg.playerInfo.name = "zhang_san";
+	msg.playerInfo.career = 233;
+	msg.playerInfo.level = 666;
+	local data = msg:SerializeToString();
+	local parse = scene_pb.gcOtherEnterScene();
+	parse:ParseFromString(data);
+	print("pares:",parse);
+	App.networkManager:TestString(data);]]--
 end
 
 function SceneHandler.OnNearbyPlayerInfo(data)

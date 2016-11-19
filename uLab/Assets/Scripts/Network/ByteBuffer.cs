@@ -131,8 +131,8 @@ namespace Lite
 		public string ReadString()
 		{
 			int len = ReadInt();
-			byte[] buffer = new byte[len];
-			buffer = reader.ReadBytes(len);
+			//byte[] buffer = new byte[len];
+			byte[] buffer = reader.ReadBytes(len);
 			return Encoding.UTF8.GetString(buffer);
 		}
 
