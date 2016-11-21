@@ -61,8 +61,6 @@ namespace Lite
 					//App.eventManager.SendMessage(MessageDefine.DISPATCH_MESSAGE, pair);
 					Packet packet = pair.Value;
 					string str = Encoding.UTF8.GetString(packet.data);
-					if (packet.msgId == 3006)
-						str = str;
 					Util.CallMethod("Network", "onMessage", packet.msgId, str);
 				}
 			}
@@ -102,10 +100,10 @@ namespace Lite
 
 		public void TestString(string str)
 		{
-			var bb = new ByteBuffer();
+			/*var bb = new ByteBuffer();
 			bb.WriteString(str);
 			byte[] b = bb.ReadBytes();
-			Log.Info("TestString()"+str);
+			Log.Info("TestString()"+str);*/
 		}
 
 	}
