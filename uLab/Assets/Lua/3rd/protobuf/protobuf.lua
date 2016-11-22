@@ -138,9 +138,9 @@ local NON_PACKABLE_TYPES = {
 
 local _VALUE_CHECKERS = {
     [FieldDescriptor.CPPTYPE_INT32] = type_checkers.Int32ValueChecker(),
-    [FieldDescriptor.CPPTYPE_INT64] = type_checkers.Int32ValueChecker(),
+    [FieldDescriptor.CPPTYPE_INT64] = type_checkers.Int64ValueChecker(),
     [FieldDescriptor.CPPTYPE_UINT32] = type_checkers.Uint32ValueChecker(),
-    [FieldDescriptor.CPPTYPE_UINT64] = type_checkers.Uint32ValueChecker(),
+    [FieldDescriptor.CPPTYPE_UINT64] = type_checkers.Uint64ValueChecker(),
     [FieldDescriptor.CPPTYPE_DOUBLE] = type_checkers.TypeChecker({number = true}),
     [FieldDescriptor.CPPTYPE_FLOAT] = type_checkers.TypeChecker({number = true}),
     [FieldDescriptor.CPPTYPE_BOOL] = type_checkers.TypeChecker({boolean = true, bool = true, int=true}),
@@ -344,6 +344,10 @@ local function _AddPropertiesForRepeatedField(field, message_meta)
             field_value = field._default_constructor(self)
 
             self._fields[field] = field_value
+
+            if not self._cached_byte_size_dirty then
+                message_meta._member._Modified(self)
+            end
         end
         return field_value
     end
@@ -364,6 +368,10 @@ local function _AddPropertiesForNonRepeatedCompositeField(field, message_meta)
             field_value:_SetListener(self._listener_for_children)
             
             self._fields[field] = field_value
+
+            if not self._cached_byte_size_dirty then
+                message_meta._member._Modified(self)
+            end
         end
         return field_value
     end
@@ -496,10 +504,28 @@ local function _IsPresent(descriptor, value)
     end
 end
 
+function sortFunc(a, b)
+    return a.index < b.index
+end
+function pairsByKeys (t, f)
+    local a = {}
+    for n in pairs(t) do table.insert(a, n) end
+    table.sort(a, f)
+    local i = 0                 -- iterator variable
+    local iter = function ()    -- iterator function
+       i = i + 1
+       if a[i] == nil then return nil
+       else return a[i], t[a[i]]
+       end
+    end
+    return iter
+end
+
 local function _AddListFieldsMethod(message_descriptor, message_meta)
     message_meta._member.ListFields = function (self)
         local list_field = function(fields)
-            local f, s, v = pairs(self._fields)
+            --local f, s, v = pairs(self._fields)
+            local f,s,v = pairsByKeys(self._fields, sortFunc)
             local iter = function(a, i)
                 while true do
                     local descriptor, value = f(a, i)
@@ -532,16 +558,25 @@ local function _AddHasFieldMethod(message_descriptor, message_meta)
             value = self._fields[field]
             return value ~= nil  and value._is_present_in_parent
         else
-            return self._fields[field]
+            local valueTmp =  self._fields[field]
+            return valueTmp ~= nil
         end
     end
 end
 
 local function _AddClearFieldMethod(message_descriptor, message_meta)
-    message_meta._member.ClearField = function(self, field_name)
-        if message_descriptor.fields_by_name[field_name] == nil then
-            error('Protocol message has no "' .. field_name .. '" field.')
+	local singular_fields = {}
+    for _, field in ipairs(message_descriptor.fields) do
+        if field.label ~= FieldDescriptor.LABEL_REPEATED then
+            singular_fields[field.name] = field
         end
+    end
+
+    message_meta._member.ClearField = function(self, field_name)
+		field = singular_fields[field_name]
+		if field == nil then
+				error('Protocol message has no singular "'.. field_name.. '" field.')
+		end
 
         if self._fields[field] then
             self._fields[field] = nil
@@ -599,7 +634,10 @@ end
 
 local function _AddByteSizeMethod(message_descriptor, message_meta)
     message_meta._member.ByteSize = function(self)
-        if not self._cached_byte_size_dirty then
+        --kaiser
+        --bug:这里在Repeat字段的结构体如果第一个字段不是int变量会产生_cached_byte_size_dirty为false而导致byte size为0
+        --如果bytesize为0让它强制计算byte size
+        if not self._cached_byte_size_dirty and self._cached_byte_size > 0 then
             return self._cached_byte_size
         end
         local size = 0

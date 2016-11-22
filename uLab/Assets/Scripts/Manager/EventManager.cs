@@ -36,7 +36,8 @@ namespace Lite
 				listenerList = new List<IListener>();
 				mListenerMap.Add(eventName, listenerList);
 			}
-			listenerList.Add(listener);
+			if (!listenerList.Contains(listener))
+				listenerList.Add(listener);
 		}
 
 		public void UnregisterListener(string eventName, IListener listener)
@@ -44,7 +45,8 @@ namespace Lite
 			List<IListener> listenerList = null;
 			if (mListenerMap.TryGetValue(eventName, out listenerList))
 			{
-				listenerList.Remove(listener);
+				if (listenerList.Contains(listener))
+					listenerList.Remove(listener);
 			}
 		}
 
@@ -61,7 +63,9 @@ namespace Lite
 			{
 				for (int i = 0; i < listenerList.Count; ++i)
 				{
-					listenerList[i].OnMessage(evnt);
+					IListener listener = listenerList[i];
+					if (listener != null)
+						listener.OnMessage(evnt);
 				}
 			}
 		}

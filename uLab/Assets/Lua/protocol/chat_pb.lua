@@ -11,7 +11,7 @@ local RECVMSG_NAME_FIELD = protobuf.FieldDescriptor();
 local RECVMSG_TEXT_FIELD = protobuf.FieldDescriptor();
 
 SENDMSG_TEXT_FIELD.name = "text"
-SENDMSG_TEXT_FIELD.full_name = ".Lite.sendMsg.text"
+SENDMSG_TEXT_FIELD.full_name = ".Lite.Protocol.sendMsg.text"
 SENDMSG_TEXT_FIELD.number = 1
 SENDMSG_TEXT_FIELD.index = 0
 SENDMSG_TEXT_FIELD.label = 1
@@ -21,14 +21,14 @@ SENDMSG_TEXT_FIELD.type = 9
 SENDMSG_TEXT_FIELD.cpp_type = 9
 
 SENDMSG.name = "sendMsg"
-SENDMSG.full_name = ".Lite.sendMsg"
+SENDMSG.full_name = ".Lite.Protocol.sendMsg"
 SENDMSG.nested_types = {}
 SENDMSG.enum_types = {}
 SENDMSG.fields = {SENDMSG_TEXT_FIELD}
 SENDMSG.is_extendable = false
 SENDMSG.extensions = {}
 RECVMSG_ROLEID_FIELD.name = "roleId"
-RECVMSG_ROLEID_FIELD.full_name = ".Lite.recvMsg.roleId"
+RECVMSG_ROLEID_FIELD.full_name = ".Lite.Protocol.recvMsg.roleId"
 RECVMSG_ROLEID_FIELD.number = 1
 RECVMSG_ROLEID_FIELD.index = 0
 RECVMSG_ROLEID_FIELD.label = 1
@@ -38,7 +38,7 @@ RECVMSG_ROLEID_FIELD.type = 3
 RECVMSG_ROLEID_FIELD.cpp_type = 2
 
 RECVMSG_NAME_FIELD.name = "name"
-RECVMSG_NAME_FIELD.full_name = ".Lite.recvMsg.name"
+RECVMSG_NAME_FIELD.full_name = ".Lite.Protocol.recvMsg.name"
 RECVMSG_NAME_FIELD.number = 2
 RECVMSG_NAME_FIELD.index = 1
 RECVMSG_NAME_FIELD.label = 1
@@ -48,7 +48,7 @@ RECVMSG_NAME_FIELD.type = 9
 RECVMSG_NAME_FIELD.cpp_type = 9
 
 RECVMSG_TEXT_FIELD.name = "text"
-RECVMSG_TEXT_FIELD.full_name = ".Lite.recvMsg.text"
+RECVMSG_TEXT_FIELD.full_name = ".Lite.Protocol.recvMsg.text"
 RECVMSG_TEXT_FIELD.number = 3
 RECVMSG_TEXT_FIELD.index = 2
 RECVMSG_TEXT_FIELD.label = 1
@@ -58,7 +58,7 @@ RECVMSG_TEXT_FIELD.type = 9
 RECVMSG_TEXT_FIELD.cpp_type = 9
 
 RECVMSG.name = "recvMsg"
-RECVMSG.full_name = ".Lite.recvMsg"
+RECVMSG.full_name = ".Lite.Protocol.recvMsg"
 RECVMSG.nested_types = {}
 RECVMSG.enum_types = {}
 RECVMSG.fields = {RECVMSG_ROLEID_FIELD, RECVMSG_NAME_FIELD, RECVMSG_TEXT_FIELD}

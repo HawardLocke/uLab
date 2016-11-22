@@ -16,10 +16,10 @@ namespace Lite.Protocol
     public gcPlayerInfo() {}
     
 
-    private long _playerGuid = default(long);
+    private int _playerGuid = default(int);
     [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"playerGuid", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(long))]
-    public long playerGuid
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int playerGuid
     {
       get { return _playerGuid; }
       set { _playerGuid = value; }
@@ -147,13 +147,22 @@ namespace Lite.Protocol
     public gcOtherEnterScene() {}
     
 
-    private Lite.Protocol.gcPlayerInfo _playerInfo = null;
-    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"playerInfo", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(null)]
-    public Lite.Protocol.gcPlayerInfo playerInfo
+    private int _ret = default(int);
+    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"ret", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int ret
     {
-      get { return _playerInfo; }
-      set { _playerInfo = value; }
+      get { return _ret; }
+      set { _ret = value; }
+    }
+
+    private int _guid = default(int);
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"guid", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
+    public int guid
+    {
+      get { return _guid; }
+      set { _guid = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

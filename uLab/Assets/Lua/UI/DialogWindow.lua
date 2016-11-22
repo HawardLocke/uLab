@@ -1,14 +1,14 @@
 
-local gameObject;
+local gameObject
 
-DialogWindow = {};
+DialogWindow = {}
 
 function DialogWindow.OnInit(obj)
-	gameObject = obj;
-	local ok = Util.FindGameObject(gameObject, 'buttons/button1');
-	UIEventListener.SetOnClick(ok, onOkClick);
-	local cancel = Util.FindGameObject(gameObject, 'buttons/back');
-	UIEventListener.SetOnClick(cancel, onCancelClick);
+	gameObject = obj
+	local ok = Util.FindGameObject(gameObject, 'buttons/button1')
+	UIEventListener.SetOnClick(ok, onOkClick)
+	local cancel = Util.FindGameObject(gameObject, 'buttons/back')
+	UIEventListener.SetOnClick(cancel, onCancelClick)
 end
 
 function DialogWindow.OnEnter()
@@ -28,9 +28,9 @@ function DialogWindow.OnResume()
 end
 
 function onOkClick(go)
-	CloseWindow(GameUI.dialog);
+	CloseWindow(GameUI.dialog)
 end
 
 function onCancelClick(go)
-	CloseWindow(GameUI.dialog);
+	CloseWindow(GameUI.dialog)
 end

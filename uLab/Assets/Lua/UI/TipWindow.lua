@@ -1,14 +1,14 @@
 
-local gameObject;
+local gameObject
 
-TipWindow = {};
+TipWindow = {}
 
 function TipWindow.OnInit(obj)
-	gameObject = obj;
-	local ok = Util.FindGameObject(gameObject, 'buttons/button1');
-	UIEventListener.SetOnClick(ok, onOkClick);
-	local cancel = Util.FindGameObject(gameObject, 'buttons/back');
-	UIEventListener.SetOnClick(cancel, onCancelClick);
+	gameObject = obj
+	local ok = Util.FindGameObject(gameObject, 'buttons/button1')
+	UIEventListener.SetOnClick(ok, onOkClick)
+	local cancel = Util.FindGameObject(gameObject, 'buttons/back')
+	UIEventListener.SetOnClick(cancel, onCancelClick)
 end
 
 function TipWindow.OnEnter()
@@ -28,9 +28,9 @@ function TipWindow.OnResume()
 end
 
 function onOkClick(go)
-	CloseWindow(GameUI.tip);
+	CloseWindow(GameUI.tip)
 end
 
 function onCancelClick(go)
-	CloseWindow(GameUI.tip);
+	CloseWindow(GameUI.tip)
 end
