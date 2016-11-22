@@ -94,6 +94,9 @@
  <Reference Include="Debugger">
  <HintPath>D:/Locke/GitHub/uLab/uLab/Assets/Plugins/Debugger.dll</HintPath>
  </Reference>
+ <Reference Include="protobuf-net">
+ <HintPath>D:/Locke/GitHub/uLab/uLab/Assets/Plugins/protobuf-net.dll</HintPath>
+ </Reference>
  <Reference Include="Excel">
  <HintPath>D:/Locke/GitHub/uLab/uLab/Assets/Plugins/Excel/Excel.dll</HintPath>
  </Reference>

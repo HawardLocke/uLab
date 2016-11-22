@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\Framework\Core\Singleton.cs" />
      <Compile Include="Assets\Scripts\Framework\Interface\IListener.cs" />
      <Compile Include="Assets\Scripts\Framework\Interface\ITimerBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Manager\EntityManager.cs" />
      <Compile Include="Assets\Scripts\Manager\EventManager.cs" />
      <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
      <Compile Include="Assets\Scripts\Manager\LuaManager.cs" />
@@ -69,6 +70,10 @@
      <Compile Include="Assets\Scripts\Network\Converter.cs" />
      <Compile Include="Assets\Scripts\Network\Packet.cs" />
      <Compile Include="Assets\Scripts\Network\Protocal.cs" />
+     <Compile Include="Assets\Scripts\Network\Protocol\auto_gen\MsgID.cs" />
+     <Compile Include="Assets\Scripts\Network\Protocol\auto_gen\chat_pb.cs" />
+     <Compile Include="Assets\Scripts\Network\Protocol\auto_gen\login_pb.cs" />
+     <Compile Include="Assets\Scripts\Network\Protocol\auto_gen\scene_pb.cs" />
      <Compile Include="Assets\Scripts\Network\SocketClient.cs" />
      <Compile Include="Assets\Scripts\StartUp.cs" />
      <Compile Include="Assets\Scripts\Template\DB.cs" />
@@ -77,6 +82,7 @@
      <Compile Include="Assets\Scripts\Template\auto\Npc0_Data.cs" />
      <Compile Include="Assets\Scripts\Test\MagicBox.cs" />
      <Compile Include="Assets\Scripts\Test\TestObjectPool.cs" />
+     <Compile Include="Assets\Scripts\Test\TestPlayer.cs" />
      <Compile Include="Assets\Scripts\UI\GameUI.cs" />
      <Compile Include="Assets\Scripts\UI\uiFramework\IWindow.cs" />
      <Compile Include="Assets\Scripts\UI\uiFramework\UIDefine.cs" />
@@ -138,7 +144,7 @@
      <Compile Include="Assets\ToLua\Reflection\LuaReflection.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\DelegateFactory.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\Lite_AppWrap.cs" />
-     <Compile Include="Assets\ToLua\Source\Generate\Lite_ByteBufferWrap.cs" />
+     <Compile Include="Assets\ToLua\Source\Generate\Lite_EntityManagerWrap.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\Lite_LogWrap.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\Lite_ManagerWrap.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\Lite_NetworkManagerWrap.cs" />
@@ -149,6 +155,7 @@
      <Compile Include="Assets\ToLua\Source\Generate\Lite_ui_UIEventListenerWrap.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\LuaBinder.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\LuaInterface_DebuggerWrap.cs" />
+     <Compile Include="Assets\ToLua\Source\Generate\TestPlayerWrap.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\UnityEngine_AnimationBlendModeWrap.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\UnityEngine_AnimationClipWrap.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\UnityEngine_AnimationStateWrap.cs" />
@@ -233,6 +240,9 @@
  </Reference>
  <Reference Include="Debugger">
  <HintPath>D:/Locke/GitHub/uLab/uLab/Assets/Plugins/Debugger.dll</HintPath>
+ </Reference>
+ <Reference Include="protobuf-net">
+ <HintPath>D:/Locke/GitHub/uLab/uLab/Assets/Plugins/protobuf-net.dll</HintPath>
  </Reference>
  <Reference Include="Excel">
  <HintPath>D:/Locke/GitHub/uLab/uLab/Assets/Plugins/Excel/Excel.dll</HintPath>
