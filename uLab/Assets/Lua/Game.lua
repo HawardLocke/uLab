@@ -7,6 +7,7 @@ require "Network"
 require "UI/UIDefines"
 
 require "protocol/MsgID"
+require "Common/functions"
 --require "protocol/login_pb"
 --require "protocol/scene_pb"
 
@@ -14,11 +15,11 @@ require "MsgHandlers/LoginHandler"
 require "MsgHandlers/SceneHandler"
 
 
-Game = {}
+Game = class("Game")
 local this = Game
 
 
-function Game.OnInitialize()
+function Game:OnInitialize()
 	this.RegisterPBC()
 	this.InitMsgHandlers()
 	OpenWindow(GameUI.login)
@@ -29,12 +30,12 @@ function Game.OnInitialize()
 end
 
 
-function Game.InitMsgHandlers()
+function Game:InitMsgHandlers()
 	LoginHandler.Register()
 	SceneHandler.Register()
 end
 
-function Game.RegisterPBC()
+function Game:RegisterPBC()
     local addr = io.open('D:/Locke/u/GitHub/uLab/uLab/Assets/Lua/'.."protocol/login.pb", "rb")
     local buffer = addr:read "*a"
     addr:close()
