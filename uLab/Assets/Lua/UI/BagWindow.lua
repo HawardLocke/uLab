@@ -2,13 +2,13 @@
 local gameObject
 local transform
 
-BagWindow = {}
+BagWindow = class("BagWindow",UIBase)
 --local this = BagWindow
 
 local buttonNames = { "bag", "role", "shop", "tip", "main"}
 
 
-function BagWindow.OnInit(obj)
+function BagWindow:OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 
@@ -24,19 +24,19 @@ function BagWindow.OnInit(obj)
 
 end
 
-function BagWindow.OnEnter()
+function BagWindow:OnEnter()
 	
 end
 
-function BagWindow.OnExit()
+function BagWindow:OnExit()
 	
 end
 
-function BagWindow.OnPause()
+function BagWindow:OnPause()
 	
 end
 
-function BagWindow.OnResume()
+function BagWindow:OnResume()
 	
 end
 

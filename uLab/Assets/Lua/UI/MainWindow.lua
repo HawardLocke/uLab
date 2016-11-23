@@ -2,13 +2,13 @@
 local gameObject
 local transform
 
-MainWindow = {}
+MainWindow = class("MainWindow",UIBase)
 local this = MainWindow
 
 local buttonNames = { "bag", "role", "shop", "tip", "dialog", "show main", "send chat", "??", "reset" }
 
 
-function MainWindow.OnInit(obj)
+function MainWindow:OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 	--LogInfo("Main OnInit")
@@ -20,19 +20,19 @@ function MainWindow.OnInit(obj)
 	end
 end
 
-function MainWindow.OnEnter()
+function MainWindow:OnEnter()
 	
 end
 
-function MainWindow.OnExit()
+function MainWindow:OnExit()
 	
 end
 
-function MainWindow.OnPause()
+function MainWindow:OnPause()
 	
 end
 
-function MainWindow.OnResume()
+function MainWindow:OnResume()
 	
 end
 
@@ -60,7 +60,7 @@ function onBtnClick(go)
 	end
 end
 
-function MainWindow.SendChat()
+function MainWindow:SendChat()
 	local login = {
         account = "locke007",
         password = "2333"

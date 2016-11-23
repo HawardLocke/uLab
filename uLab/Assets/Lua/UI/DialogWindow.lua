@@ -1,9 +1,9 @@
 
 local gameObject
 
-DialogWindow = {}
+DialogWindow = class("DialogWindow",UIBase)
 
-function DialogWindow.OnInit(obj)
+function DialogWindow:OnInit(obj)
 	gameObject = obj
 	local ok = Util.FindGameObject(gameObject, 'buttons/button1')
 	UIEventListener.SetOnClick(ok, onOkClick)
@@ -11,19 +11,19 @@ function DialogWindow.OnInit(obj)
 	UIEventListener.SetOnClick(cancel, onCancelClick)
 end
 
-function DialogWindow.OnEnter()
+function DialogWindow:OnEnter()
 	
 end
 
-function DialogWindow.OnExit()
+function DialogWindow:OnExit()
 	
 end
 
-function DialogWindow.OnPause()
+function DialogWindow:OnPause()
 	
 end
 
-function DialogWindow.OnResume()
+function DialogWindow:OnResume()
 	
 end
 

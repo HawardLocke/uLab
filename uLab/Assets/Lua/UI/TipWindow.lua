@@ -1,9 +1,9 @@
 
 local gameObject
 
-TipWindow = {}
+TipWindow = class("TipWindow",UIBase)
 
-function TipWindow.OnInit(obj)
+function TipWindow:OnInit(obj)
 	gameObject = obj
 	local ok = Util.FindGameObject(gameObject, 'buttons/button1')
 	UIEventListener.SetOnClick(ok, onOkClick)
@@ -11,19 +11,19 @@ function TipWindow.OnInit(obj)
 	UIEventListener.SetOnClick(cancel, onCancelClick)
 end
 
-function TipWindow.OnEnter()
+function TipWindow:OnEnter()
 	
 end
 
-function TipWindow.OnExit()
+function TipWindow:OnExit()
 	
 end
 
-function TipWindow.OnPause()
+function TipWindow:OnPause()
 	
 end
 
-function TipWindow.OnResume()
+function TipWindow:OnResume()
 	
 end
 

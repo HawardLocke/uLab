@@ -2,13 +2,13 @@
 local gameObject
 local transform
 
-ShopWindow = {}
+ShopWindow = class("ShopWindow",UIBase)
 --local this = ShopWindow
 
 local buttonNames = { "bag", "Shop", "shop", "tip", "dialog"}
 
 
-function ShopWindow.OnInit(obj)
+function ShopWindow:OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 
@@ -24,19 +24,19 @@ function ShopWindow.OnInit(obj)
 
 end
 
-function ShopWindow.OnEnter()
+function ShopWindow:OnEnter()
 	
 end
 
-function ShopWindow.OnExit()
+function ShopWindow:OnExit()
 	
 end
 
-function ShopWindow.OnPause()
+function ShopWindow:OnPause()
 	
 end
 
-function ShopWindow.OnResume()
+function ShopWindow:OnResume()
 	
 end
 

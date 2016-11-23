@@ -2,13 +2,13 @@
 local gameObject
 local transform
 
-RoleWindow = {}
+RoleWindow = class("RoleWindow",UIBase)
 --local this = RoleWindow
 
 local buttonNames = { "bag", "role", "shop", "tip", "dialog"}
 
 
-function RoleWindow.OnInit(obj)
+function RoleWindow:OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 
@@ -24,19 +24,19 @@ function RoleWindow.OnInit(obj)
 
 end
 
-function RoleWindow.OnEnter()
+function RoleWindow:OnEnter()
 	
 end
 
-function RoleWindow.OnExit()
+function RoleWindow:OnExit()
 	
 end
 
-function RoleWindow.OnPause()
+function RoleWindow:OnPause()
 	
 end
 
-function RoleWindow.OnResume()
+function RoleWindow:OnResume()
 	
 end
 

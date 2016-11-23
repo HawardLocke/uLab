@@ -1,10 +1,9 @@
 
-
-LoginHandler = {}
+LoginHandler = class("LoginHandler")
 local this = LoginHandler
 
 
-function LoginHandler.Register()
+function LoginHandler:Register()
 	Network.RegisterHandler(PBX.MsgID.gcLoginRet, this.OnLoginRet)
 	Network.RegisterHandler(PBX.MsgID.gcLogoutRet, this.OnLogoutRet)
 	Network.RegisterHandler(PBX.MsgID.gcEnterGameRet, this.OnEnterGameRet)
@@ -13,7 +12,7 @@ end
 
 --handlers
 
-function LoginHandler.OnLoginRet(data, len)
+function LoginHandler:OnLoginRet(data, len)
 	local msg = protobuf.decode("Lite.Protocol.gcLoginRet", data, len)
 	--local msg = login_pb.gcLoginRet()
 	--msg:ParseFromString(data)
@@ -30,7 +29,7 @@ function LoginHandler.OnLoginRet(data, len)
 	end
 end
 
-function LoginHandler.OnLogoutRet(data, len)
+function LoginHandler:OnLogoutRet(data, len)
 	local msg = login_pb.gcLogoutRet()
 	msg:ParseFromString(data)
 	print("--recv logout result: ", msg.result)
@@ -41,7 +40,7 @@ function LoginHandler.OnLogoutRet(data, len)
 	end
 end
 
-function LoginHandler.OnEnterGameRet(data, len)
+function LoginHandler:OnEnterGameRet(data, len)
 	local recvMsg = protobuf.decode("Lite.Protocol.gcEnterGameRet", data, len)
 	--local recvMsg = login_pb.gcEnterGameRet()
 	--recvMsg:ParseFromString(data)

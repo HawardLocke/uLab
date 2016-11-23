@@ -8,6 +8,7 @@ require "UI/UIDefines"
 
 require "protocol/MsgID"
 require "Common/functions"
+require "UI/UIBase"
 --require "protocol/login_pb"
 --require "protocol/scene_pb"
 

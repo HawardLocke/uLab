@@ -1,10 +1,10 @@
 
 
-SceneHandler = {}
+SceneHandler = class("SceneHandler")
 local this = SceneHandler
 
 
-function SceneHandler.Register()
+function SceneHandler:Register()
 	Network.RegisterHandler(PBX.MsgID.gcEnterScene, this.OnEnterScene)
 	Network.RegisterHandler(PBX.MsgID.gcExitSceneRet, this.OnExitSceneRet)
 	Network.RegisterHandler(PBX.MsgID.gcOtherEnterScene, this.OnOtherEnterScene)
@@ -16,7 +16,7 @@ end
 
 --handlers
 
-function SceneHandler.OnEnterScene(data, len)
+function SceneHandler:OnEnterScene(data, len)
 	local msg = protobuf.decode("Lite.Protocol.gcEnterScene", data, len)
 	--local msg = scene_pb.gcEnterScene()
 	--msg:ParseFromString(data)
@@ -24,13 +24,13 @@ function SceneHandler.OnEnterScene(data, len)
 	Util.LoadScene("LevelScene")
 end
 
-function SceneHandler.OnExitSceneRet(data, len)
+function SceneHandler:OnExitSceneRet(data, len)
 	local recvMsg = scene_pb.gcExitSceneRet()
 	recvMsg:ParseFromString(data)
 	print("recv exit scene.")
 end
 
-function SceneHandler.OnOtherEnterScene(data, len)
+function SceneHandler:OnOtherEnterScene(data, len)
 	local msg = protobuf.decode("Lite.Protocol.gcOtherEnterScene", data, len)
 	print('msg....',msg, data, len)
 	--local msg = scene_pb.gcOtherEnterScene()
@@ -38,7 +38,7 @@ function SceneHandler.OnOtherEnterScene(data, len)
 	print("recv other enter scene.", msg.ret, msg.guid)
 end
 
-function SceneHandler.OnNearbyPlayerInfo(data, len)
+function SceneHandler:OnNearbyPlayerInfo(data, len)
 	local msg = scene_pb.gcNearbyPlayerInfo()
 	msg:ParseFromString(data)
 	print("recv nearby player info.")
@@ -47,7 +47,7 @@ function SceneHandler.OnNearbyPlayerInfo(data, len)
 	end
 end
 
-function SceneHandler.OnMoveTo(data, len)
+function SceneHandler:OnMoveTo(data, len)
 	local msg = scene_pb.gcMoveTo()
 	msg:ParseFromString(data)
 	print("recv move to.")

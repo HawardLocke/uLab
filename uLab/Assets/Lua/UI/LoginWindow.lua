@@ -2,13 +2,13 @@
 local gameObject
 local transform
 
-LoginWindow = {}
+LoginWindow = class("LoginWindow",UIBase)
 local this = LoginWindow
 
 this.widgetTable = {}
 
 
-function LoginWindow.OnInit(obj)
+function LoginWindow:OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 
@@ -21,19 +21,19 @@ function LoginWindow.OnInit(obj)
 	this.widgetTable.passwordInput.text = "2333"
 end
 
-function LoginWindow.OnEnter()
+function LoginWindow:OnEnter()
 	
 end
 
-function LoginWindow.OnExit()
+function LoginWindow:OnExit()
 	
 end
 
-function LoginWindow.OnPause()
+function LoginWindow:OnPause()
 	
 end
 
-function LoginWindow.OnResume()
+function LoginWindow:OnResume()
 	
 end
 
