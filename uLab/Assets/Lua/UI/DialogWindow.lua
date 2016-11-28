@@ -3,7 +3,7 @@ local gameObject
 
 DialogWindow = class("DialogWindow",UIBase)
 
-function DialogWindow:OnInit(obj)
+function DialogWindow.OnInit(obj)
 	gameObject = obj
 	local ok = Util.FindGameObject(gameObject, 'buttons/button1')
 	UIEventListener.SetOnClick(ok, onOkClick)

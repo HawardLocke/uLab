@@ -8,7 +8,7 @@ local this = LoginWindow
 this.widgetTable = {}
 
 
-function LoginWindow:OnInit(obj)
+function LoginWindow.OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 

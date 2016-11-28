@@ -6,10 +6,6 @@ UIBase =  class("UIBase", function ()
 	
 end)
 
-function UIBase:OnInit(obj)
-
-end
-
 function UIBase:OnEnter()
 	
 end

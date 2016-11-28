@@ -8,7 +8,7 @@ ShopWindow = class("ShopWindow",UIBase)
 local buttonNames = { "bag", "Shop", "shop", "tip", "dialog"}
 
 
-function ShopWindow:OnInit(obj)
+function ShopWindow.OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 

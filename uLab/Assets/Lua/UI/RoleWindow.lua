@@ -8,7 +8,7 @@ RoleWindow = class("RoleWindow",UIBase)
 local buttonNames = { "bag", "role", "shop", "tip", "dialog"}
 
 
-function RoleWindow:OnInit(obj)
+function RoleWindow.OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 

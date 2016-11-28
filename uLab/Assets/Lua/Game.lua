@@ -1,14 +1,16 @@
 
 require "3rd/pbc/protobuf"
 
+require "Common/functions"
+require "UI/UIBase"
+
 require "Defines"
 require "Functions"
 require "Network"
 require "UI/UIDefines"
 
 require "protocol/MsgID"
-require "Common/functions"
-require "UI/UIBase"
+
 --require "protocol/login_pb"
 --require "protocol/scene_pb"
 
@@ -32,8 +34,8 @@ end
 
 
 function Game:InitMsgHandlers()
-	LoginHandler.Register()
-	SceneHandler.Register()
+	LoginHandler:Register()
+	SceneHandler:Register()
 end
 
 function Game:RegisterPBC()

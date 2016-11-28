@@ -8,7 +8,7 @@ local this = MainWindow
 local buttonNames = { "bag", "role", "shop", "tip", "dialog", "show main", "send chat", "??", "reset" }
 
 
-function MainWindow:OnInit(obj)
+function MainWindow.OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 	--LogInfo("Main OnInit")
