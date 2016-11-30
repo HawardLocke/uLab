@@ -345,9 +345,9 @@ namespace Lite
 		/// <summary>
 		/// 执行Lua方法
 		/// </summary>
-		public static object[] CallMethod(string module, string func, params object[] args)
+		public static object[] CallMethod(string func, params object[] args)
 		{
-			return App.luaManager.CallFunction(module + "." + func, args);
+			return App.luaManager.CallFunction(func, args);
 		}
 
 		public static GameObject GetGlobalGameObject()

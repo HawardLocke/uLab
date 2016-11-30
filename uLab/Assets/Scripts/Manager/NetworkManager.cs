@@ -33,12 +33,12 @@ namespace Lite
 
 		public override void Start()
 		{
-			Util.CallMethod("Network", "Start");
+			Util.CallMethod("CSharpPort.Network_OnStart");
 		}
 
 		public override void Destroy()
 		{
-			Util.CallMethod("Network", "Destroy");
+			Util.CallMethod("CSharpPort.Network_OnDestroy");
 			SocketClient.Destroy();
 			Debug.Log("~NetworkManager was destroy");
 		}
@@ -61,7 +61,7 @@ namespace Lite
 					//App.eventManager.SendMessage(MessageDefine.DISPATCH_MESSAGE, pair);
 					Packet packet = pair.Value;
 					//string str = Encoding.UTF8.GetString(packet.data);
-					Util.CallMethod("Network", "onMessage", packet.msgId, packet.data, packet.data.Length);
+					Util.CallMethod("CSharpPort.Network_OnMessage", packet.msgId, packet.data, packet.data.Length);
 				}
 			}
 		}

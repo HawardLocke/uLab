@@ -22,7 +22,7 @@ namespace Lite.ui
 
 		/// <summary>
 		/// Invoked when instantiated.
-		/// Do not call this manually ! Only called by UIManager.
+		/// Do not call this manually ! 
 		/// </summary>
 		public void _Instantiate()
 		{
@@ -31,7 +31,7 @@ namespace Lite.ui
 
 		/// <summary>
 		/// Invoked when open.
-		/// Do not call this manually ! Only called by UIManager.
+		/// Do not call this manually ! 
 		/// </summary>
 		/// <param name="context"></param>
 		public void _Enter(IContext context = null)
@@ -44,7 +44,7 @@ namespace Lite.ui
 		}
 
 		/// <summary>
-		/// Do not call this manually ! Only called by UIManager.
+		/// Do not call this manually ! 
 		/// </summary>
 		/// <param name="context"></param>
 		public void _Exit(IContext context = null)
@@ -55,7 +55,7 @@ namespace Lite.ui
 		}
 
 		/// <summary>
-		/// Do not call this manually ! Only called by UIManager.
+		/// Do not call this manually ! 
 		/// </summary>
 		/// <param name="context"></param>
 		public void _Pause(IContext context = null)
@@ -68,7 +68,7 @@ namespace Lite.ui
 		}
 
 		/// <summary>
-		/// Do not call this manually ! Only called by UIManager.
+		/// Do not call this manually ! 
 		/// </summary>
 		/// <param name="context"></param>
 		public void _Resume(IContext context = null)
@@ -82,34 +82,30 @@ namespace Lite.ui
 
 		#endregion
 
-		#region handlers to be override
-
 		protected virtual void OnInit() 
 		{
-			Util.CallMethod(name, "OnInit", gameObject);
+			Util.CallMethod("CSharpPort.Window_OnInit", name, gameObject);
 		}
 
 		protected virtual void OnEnter(IContext context) 
 		{
-			Util.CallMethod(name, "OnEnter");
+			Util.CallMethod("CSharpPort.Window_OnEnter", name);
 		}
 
 		protected virtual void OnExit(IContext context) 
 		{
-			Util.CallMethod(name, "OnExit");
+			Util.CallMethod("CSharpPort.Window_OnExit", name);
 		}
 
 		protected virtual void OnPause(IContext context) 
 		{
-			Util.CallMethod(name, "OnPause");
+			Util.CallMethod("CSharpPort.Window_OnPause", name);
 		}
 
 		protected virtual void OnResume(IContext context) 
 		{
-			Util.CallMethod(name, "OnResume");
+			Util.CallMethod("CSharpPort.Window_OnResume", name);
 		}
-
-		#endregion
 
 
 		/// <summary>

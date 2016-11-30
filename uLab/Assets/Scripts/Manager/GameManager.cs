@@ -221,12 +221,12 @@ namespace Lite
 		{
 			try
 			{
-				App.luaManager.RequireFile("Network");
+				App.luaManager.RequireFile("Main");
 
 				App.Instance.StartManagers();
 
-				App.luaManager.DoFile("Game.lua");
-				Util.CallMethod("Game", "OnInitialize");
+				App.luaManager.DoFile("Main.lua");
+				Util.CallMethod("CSharpPort.Game_OnInitialize");
 			}
 			catch (System.Exception e)
 			{

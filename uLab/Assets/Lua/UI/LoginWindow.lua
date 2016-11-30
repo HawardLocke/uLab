@@ -1,24 +1,20 @@
 
-local gameObject
-local transform
 
-LoginWindow = class("LoginWindow",UIBase)
-local this = LoginWindow
-
-this.widgetTable = {}
+LoginWindow = class("LoginWindow")
 
 
-function LoginWindow.OnInit(obj)
-	gameObject = obj
-	transform = obj.transform
+function LoginWindow:OnInit(obj)
+	self.gameObject = obj
+	--self.transform = obj.transform
 
-	this.widgetTable.loginButton = Util.FindGameObject(gameObject, 'loginButton')
-	UIEventListener.SetOnClick(this.widgetTable.loginButton, onLoginButtonClick)
-	this.widgetTable.accountInput = Util.FindComponent(gameObject, 'InputField', "accountInputField")
-	this.widgetTable.passwordInput = Util.FindComponent(gameObject, 'InputField', "passwordInputField")
+	self.widgetTable = {}
+	self.widgetTable.loginButton = Util.FindGameObject(self.gameObject, 'loginButton')
+	UIEventListener.SetOnClick(self.widgetTable.loginButton, self.onLoginButtonClick)
+	self.widgetTable.accountInput = Util.FindComponent(self.gameObject, 'InputField', "accountInputField")
+	self.widgetTable.passwordInput = Util.FindComponent(self.gameObject, 'InputField', "passwordInputField")
 	--
-	this.widgetTable.accountInput.text = "locke001"
-	this.widgetTable.passwordInput.text = "2333"
+	self.widgetTable.accountInput.text = "locke001"
+	self.widgetTable.passwordInput.text = "2333"
 end
 
 function LoginWindow:OnEnter()
@@ -37,9 +33,9 @@ function LoginWindow:OnResume()
 	
 end
 
-function onLoginButtonClick(go)
-	local account = this.widgetTable.accountInput.text
-	local password = this.widgetTable.passwordInput.text
+function LoginWindow:onLoginButtonClick(go)
+	local account = self.widgetTable.accountInput.text
+	local password = self.widgetTable.passwordInput.text
 	local canSend = true
 	if string.len(account) > 10 or string.len(account) < 1 then
 		print("Invalid Account!")
@@ -64,6 +60,6 @@ function onLoginButtonClick(go)
 end
 
 
-
+return LoginWindow
 
 

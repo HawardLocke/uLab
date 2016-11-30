@@ -37,6 +37,10 @@ GameUI =
 	dialog = "DialogWindow",
 }
 
+local function RegisterWindow(filePath, showMode, openAction, bgMode)
+	Lite.App.uiManager.RegisterWindow(filePath, showMode, openAction, bgMode)
+end
+
 RegisterWindow("ui/LoginWindow",
 	UIShowMode.Main,
 	UIOpenAction.DoNothing,

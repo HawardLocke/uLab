@@ -1,16 +1,15 @@
 
 
 SceneHandler = class("SceneHandler")
-local this = SceneHandler
 
 
-function SceneHandler:Register()
-	Network.RegisterHandler(PBX.MsgID.gcEnterScene, this.OnEnterScene)
-	Network.RegisterHandler(PBX.MsgID.gcExitSceneRet, this.OnExitSceneRet)
-	Network.RegisterHandler(PBX.MsgID.gcOtherEnterScene, this.OnOtherEnterScene)
-	Network.RegisterHandler(PBX.MsgID.gcNearbyPlayerInfo, this.OnNearbyPlayerInfo)
-	Network.RegisterHandler(PBX.MsgID.gcMoveTo, this.OnMoveTo)
-	print("SceneHandler.Register.")
+function SceneHandler:Register(network)
+	network:RegisterHandler(PBX.MsgID.gcEnterScene, self.OnEnterScene)
+	network:RegisterHandler(PBX.MsgID.gcExitSceneRet, self.OnExitSceneRet)
+	network:RegisterHandler(PBX.MsgID.gcOtherEnterScene, self.OnOtherEnterScene)
+	network:RegisterHandler(PBX.MsgID.gcNearbyPlayerInfo, self.OnNearbyPlayerInfo)
+	network:RegisterHandler(PBX.MsgID.gcMoveTo, self.OnMoveTo)
+	--print("SceneHandler.Register.")
 end
 
 

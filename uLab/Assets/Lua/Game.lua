@@ -6,27 +6,26 @@ require "UI/UIBase"
 
 require "Defines"
 require "Functions"
+require "Common/functions"
 require "Network"
 require "UI/UIDefines"
-
+require "UI/UIBase"
+require "UI/UIManager"
 require "protocol/MsgID"
 
---require "protocol/login_pb"
---require "protocol/scene_pb"
 
 require "MsgHandlers/LoginHandler"
 require "MsgHandlers/SceneHandler"
 
 
 Game = class("Game")
-local this = Game
 
 
 function Game:OnInitialize()
-	this.RegisterPBC()
-	this.InitMsgHandlers()
-	OpenWindow(GameUI.login)
-	SetMainWindow(GameUI.login)
+	self.RegisterPBC()
+	self.InitMsgHandlers()
+	gUIManager:OpenWindow(GameUI.login)
+	gUIManager:SetMainWindow(GameUI.login)
 
 	App.networkManager:SendConnect()
 
@@ -34,8 +33,8 @@ end
 
 
 function Game:InitMsgHandlers()
-	LoginHandler:Register()
-	SceneHandler:Register()
+	LoginHandler.new():Register(gNetwork)
+	SceneHandler.new():Register(gNetwork)
 end
 
 function Game:RegisterPBC()
@@ -49,12 +48,6 @@ function Game:RegisterPBC()
     addr:close()
     protobuf.register(buffer)
 end
-
-
-
-
-
-
 
 
 

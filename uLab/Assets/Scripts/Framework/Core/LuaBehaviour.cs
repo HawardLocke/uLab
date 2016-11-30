@@ -14,22 +14,22 @@ namespace Lite
 
 		protected void Awake()
 		{
-			Util.CallMethod(name, "Awake", gameObject);
+			Util.CallMethod(name+":Awake", gameObject);
 		}
 
 		protected void Start()
 		{
-			Util.CallMethod(name, "Start");
+			Util.CallMethod(name+":Start");
 		}
 
 		protected void OnClick()
 		{
-			Util.CallMethod(name, "OnClick");
+			Util.CallMethod(name+":OnClick");
 		}
 
 		protected void OnClickEvent(GameObject go)
 		{
-			Util.CallMethod(name, "OnClick", go);
+			Util.CallMethod(name+":OnClick", go);
 		}
 
 		public void AddClick(GameObject go, LuaFunction luafunc)

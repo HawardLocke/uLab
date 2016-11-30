@@ -454,9 +454,8 @@ public class Lite_UtilWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 			string arg0 = ToLua.CheckString(L, 1);
-			string arg1 = ToLua.CheckString(L, 2);
-			object[] arg2 = ToLua.ToParamsObject(L, 3, count - 2);
-			object[] o = Lite.Util.CallMethod(arg0, arg1, arg2);
+			object[] arg1 = ToLua.ToParamsObject(L, 2, count - 1);
+			object[] o = Lite.Util.CallMethod(arg0, arg1);
 			ToLua.Push(L, o);
 			return 1;
 		}

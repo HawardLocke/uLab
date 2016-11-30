@@ -1,12 +1,11 @@
 
 LoginHandler = class("LoginHandler")
-local this = LoginHandler
 
 
-function LoginHandler:Register()
-	Network.RegisterHandler(PBX.MsgID.gcLoginRet, this.OnLoginRet)
-	Network.RegisterHandler(PBX.MsgID.gcLogoutRet, this.OnLogoutRet)
-	Network.RegisterHandler(PBX.MsgID.gcEnterGameRet, this.OnEnterGameRet)
+function LoginHandler:Register(network)
+	network:RegisterHandler(PBX.MsgID.gcLoginRet, self.OnLoginRet)
+	network:RegisterHandler(PBX.MsgID.gcLogoutRet, self.OnLogoutRet)
+	network:RegisterHandler(PBX.MsgID.gcEnterGameRet, self.OnEnterGameRet)
 end
 
 
