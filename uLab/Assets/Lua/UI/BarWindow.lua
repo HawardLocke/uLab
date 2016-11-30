@@ -2,7 +2,7 @@
 local gameObject
 local transform
 
-BarWindow = class("BagWindow",UIBase)
+local BarWindow = class("BagWindow",UIBase)
 --local this = BarWindow
 
 function BarWindow.OnInit(obj)

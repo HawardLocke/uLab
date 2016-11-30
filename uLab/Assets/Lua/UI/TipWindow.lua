@@ -1,7 +1,7 @@
 
 local gameObject
 
-TipWindow = class("TipWindow",UIBase)
+local TipWindow = class("TipWindow",UIBase)
 
 function TipWindow.OnInit(obj)
 	gameObject = obj

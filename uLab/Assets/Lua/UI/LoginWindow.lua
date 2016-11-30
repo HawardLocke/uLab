@@ -1,6 +1,6 @@
 
 
-LoginWindow = class("LoginWindow")
+local LoginWindow = class("LoginWindow")
 
 
 function LoginWindow:OnInit(obj)

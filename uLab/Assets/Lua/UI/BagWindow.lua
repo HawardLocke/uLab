@@ -2,7 +2,7 @@
 local gameObject
 local transform
 
-BagWindow = class("BagWindow",UIBase)
+local BagWindow = class("BagWindow",UIBase)
 --local this = BagWindow
 
 local buttonNames = { "bag", "role", "shop", "tip", "main"}

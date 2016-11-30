@@ -2,7 +2,7 @@
 local gameObject
 local transform
 
-MainWindow = class("MainWindow",UIBase)
+local MainWindow = class("MainWindow",UIBase)
 local this = MainWindow
 
 local buttonNames = { "bag", "role", "shop", "tip", "dialog", "show main", "send chat", "??", "reset" }

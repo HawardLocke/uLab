@@ -25,6 +25,7 @@ function UIManager:BackToMainWindow()
 	Lite.App.uiManager:BackToMainWindow()
 end
 
+return UIManager
 
 
 

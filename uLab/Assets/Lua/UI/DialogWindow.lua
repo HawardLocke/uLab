@@ -1,7 +1,7 @@
 
 local gameObject
 
-DialogWindow = class("DialogWindow",UIBase)
+local DialogWindow = class("DialogWindow",UIBase)
 
 function DialogWindow.OnInit(obj)
 	gameObject = obj

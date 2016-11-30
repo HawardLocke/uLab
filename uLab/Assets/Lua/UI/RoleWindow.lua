@@ -2,7 +2,7 @@
 local gameObject
 local transform
 
-RoleWindow = class("RoleWindow",UIBase)
+local RoleWindow = class("RoleWindow",UIBase)
 --local this = RoleWindow
 
 local buttonNames = { "bag", "role", "shop", "tip", "dialog"}
