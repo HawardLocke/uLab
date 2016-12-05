@@ -75,6 +75,9 @@
      <Compile Include="Assets\Scripts\Network\Protocol\auto_gen\login_pb.cs" />
      <Compile Include="Assets\Scripts\Network\Protocol\auto_gen\scene_pb.cs" />
      <Compile Include="Assets\Scripts\Network\SocketClient.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\AStarEngine.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\AStarMap.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\AStarNode.cs" />
      <Compile Include="Assets\Scripts\StartUp.cs" />
      <Compile Include="Assets\Scripts\Template\DB.cs" />
      <Compile Include="Assets\Scripts\Template\IData.cs" />
