@@ -21,8 +21,8 @@ namespace AStar
 		public void BuildMap()
 		{
 			nodeIdCounter = 0;
-			width = 50;
-			height = 30;
+			width = 100;
+			height = 100;
 
 			if (nodes != null)
 				nodes.Clear();
@@ -45,7 +45,7 @@ namespace AStar
 
 					if (x % 2 == 0 && x > 0 && x < width - 1 && y > 0 && y < height - 1 && y != height / 3 && y != 2 * height / 3)
 					{
-						node.blockValue = ran.Next(1, 3) > 1 ? 1 : 0;
+						node.blockValue = ran.Next(1, 5) > 1 ? 1 : 0;
 					}
 					if (x > 0 && x < width && y > 0 && y < height && (y == 1 * height / 3 || y == 2 * height / 3))
 					{

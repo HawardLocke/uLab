@@ -27,8 +27,6 @@ namespace AStar
 
 		public Point2D[] FindPath(int startX, int startY, int endX, int endY)
 		{
-			Reset();
-
 			this.startX = endX;
 			this.startY = endY;
 			this.endX = startX;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Diagnostics;
 
 using Lite;
 using AStar;
@@ -18,8 +19,12 @@ public class TestPathFinder : MonoBehaviour
 		pathFinder = new GridPathFinder();
 		pathFinder.Setup(map);
 
-		path = pathFinder.FindPath(0, 0, 49, 29);
-		//Debug.LogError("length: " + path.Length + ", " + path.ToString());
+		Stopwatch watch = new Stopwatch();
+		watch.Start();
+		for (int i = 0; i < 1; ++i)
+			path = pathFinder.FindPath(0, 0, 99, 99);
+		watch.Stop();
+		UnityEngine.Debug.LogError("cost/ms : " + watch.ElapsedMilliseconds);
 	}
 
 	void OnGUI()
@@ -27,12 +32,19 @@ public class TestPathFinder : MonoBehaviour
 		if (GUI.Button(new Rect(10, 10, 20, 20), "T"))
 		{
 			System.Random rand = new System.Random(System.DateTime.Now.Millisecond);
-			int x1 = rand.Next(0,24)*2+1;
-			int y1 = rand.Next(0, 14) * 2 + 1;
-			int x2 = rand.Next(0, 24) * 2 + 1;
-			int y2 = rand.Next(0, 14) * 2 + 1;
+			int x1 = rand.Next(0, 48) * 2 + 1;
+			int y1 = rand.Next(0, 48) * 2 + 1;
+			int x2 = rand.Next(0, 48) * 2 + 1;
+			int y2 = rand.Next(0, 48) * 2 + 1;
 			path = pathFinder.FindPath(x1, y1, x2, y2);
 		}
+
+		Stopwatch watch = new Stopwatch();
+		watch.Start();
+		for (int i = 0; i < 1; ++i)
+			path = pathFinder.FindPath(0, 0, 99, 99);
+		watch.Stop();
+		GUI.Label(new Rect(50, 0, 100, 30), "" + watch.ElapsedMilliseconds);
 
 		int gw = 20;
 		int gh = 20;

@@ -20,14 +20,11 @@ namespace AStar
 			this.map = map;
 		}
 
-		public void Reset()
+		protected Node DoAStar(Node startNode)
 		{
 			openList = null;
 			closedList = null;
-		}
 
-		protected Node DoAStar(Node startNode)
-		{
 			startNode.g = 0;
 			startNode.h = CalCostH(startNode);
 			startNode.f = startNode.g + startNode.h;
