@@ -16,7 +16,7 @@ namespace AStar
 		}
 	}
 
-	public class GridPathFinder : PathFinder
+	public class GridPathPlanner : PathPlanner
 	{
 		private int startX;
 		private int startY;

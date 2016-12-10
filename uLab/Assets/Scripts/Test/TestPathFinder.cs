@@ -10,21 +10,21 @@ public class TestPathFinder : MonoBehaviour
 {
 	GridMap map;
 	Point2D[] path = null;
-	GridPathFinder pathFinder;
+	GridPathPlanner pathFinder;
 
 	void Start()
 	{
 		map = new GridMap();
 		map.BuildMap();
-		pathFinder = new GridPathFinder();
+		pathFinder = new GridPathPlanner();
 		pathFinder.Setup(map);
 
-		Stopwatch watch = new Stopwatch();
+		/*Stopwatch watch = new Stopwatch();
 		watch.Start();
 		for (int i = 0; i < 1; ++i)
 			path = pathFinder.FindPath(0, 0, 99, 99);
 		watch.Stop();
-		UnityEngine.Debug.LogError("cost/ms : " + watch.ElapsedMilliseconds);
+		UnityEngine.Debug.LogError("cost/ms : " + watch.ElapsedMilliseconds);*/
 	}
 
 	void OnGUI()
@@ -42,9 +42,9 @@ public class TestPathFinder : MonoBehaviour
 		Stopwatch watch = new Stopwatch();
 		watch.Start();
 		for (int i = 0; i < 1; ++i)
-			path = pathFinder.FindPath(0, 0, 99, 99);
+			path = pathFinder.FindPath(0, 0, 29, 29);
 		watch.Stop();
-		GUI.Label(new Rect(50, 0, 100, 30), "" + watch.ElapsedMilliseconds);
+		//GUI.Label(new Rect(50, 0, 100, 30), "" + watch.ElapsedMilliseconds);
 
 		int gw = 20;
 		int gh = 20;
@@ -67,6 +67,7 @@ public class TestPathFinder : MonoBehaviour
 				GUI.Box(new Rect(path[i].x * gw + 0.3f * gw, path[i].y * gh + 0.3f * gh, 0.4f * gw, 0.4f * gh), "");
 			}
 		}
-			
+
+		GUI.Label(new Rect(50, 0, 100, 30), "" + watch.ElapsedMilliseconds);
 	}
 }

@@ -12,7 +12,7 @@ namespace AStar
 		private readonly int[] xOffset = { -1, -1, -1, 0, 1, 1, 1, 0 };
 		private readonly int[] yOffset = { -1, 0, 1, 1, 1, 0, -1, -1 };
 
-		private List<List<GridNode>> nodes;
+		private GridNode[,] nodes;
 		private int width;
 		private int height;
 
@@ -25,21 +25,19 @@ namespace AStar
 			height = 100;
 
 			if (nodes != null)
-				nodes.Clear();
+				nodes = null;
 
-			nodes = new List<List<GridNode>>();
+			nodes = new GridNode[width,height];
 
 			Random ran=new Random(DateTime.Now.Millisecond);
 			
 
 			for (int x = 0; x < width; ++x)
 			{
-				List<GridNode> columnNodes = new List<GridNode>();
-				nodes.Add(columnNodes);
 				for (int y = 0; y < height; ++y)
 				{
 					GridNode node = new GridNode(nodeIdCounter++);
-					columnNodes.Add(node);
+					nodes[x,y] = node;
 					node.x = x;
 					node.y = y;
 
@@ -69,7 +67,11 @@ namespace AStar
 				int x = gridNode.x + xOffset[index];
 				int y = gridNode.y + yOffset[index];
 				if (x >= 0 && x < width && y >= 0 && y < height)
-					return nodes[x][y];
+				{
+					GridNode toNode = nodes[x, y] as GridNode;
+					if (IsPassable(gridNode, toNode))
+						return toNode;
+				}
 			}
 			return null;
 		}
@@ -78,7 +80,7 @@ namespace AStar
 		{
 			if (x >=0 && x < width && y >= 0 && y < height)
 			{
-				return nodes[x][y] as GridNode;
+				return nodes[x,y] as GridNode;
 			}
 			return null;
 		}
@@ -91,6 +93,11 @@ namespace AStar
 		public int GetHeight()
 		{
 			return height;
+		}
+
+		private bool IsPassable(GridNode from, GridNode to)
+		{
+			return (from.x == to.x || from.y == to.y) || (nodes[from.x, to.y].blockValue < 1 && nodes[to.x, from.y].blockValue < 1);
 		}
 
 	}

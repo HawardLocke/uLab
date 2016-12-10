@@ -11,7 +11,7 @@ namespace AStar
 		public float f;
 		public Node prev;
 		public Node next;	// for linked list
-		public float blockValue;
+		public int blockValue;
 
 		public Node(int id)
 		{

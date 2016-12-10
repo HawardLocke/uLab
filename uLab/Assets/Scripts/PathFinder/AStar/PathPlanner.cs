@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace AStar
 {
 
-	public abstract class PathFinder
+	public abstract class PathPlanner
 	{
 		private Node openList;
 
