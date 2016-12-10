@@ -18,40 +18,47 @@ namespace AStar
 
 		private int nodeIdCounter;
 
-		public void BuildMap()
+		public void InitMap(int width, int height)
 		{
 			nodeIdCounter = 0;
-			width = 100;
-			height = 100;
+			this.width = width;
+			this.height = height;
 
 			if (nodes != null)
 				nodes = null;
 
-			nodes = new GridNode[width,height];
-
-			Random ran=new Random(DateTime.Now.Millisecond);
-			
+			nodes = new GridNode[width, height];
 
 			for (int x = 0; x < width; ++x)
 			{
 				for (int y = 0; y < height; ++y)
 				{
 					GridNode node = new GridNode(nodeIdCounter++);
-					nodes[x,y] = node;
+					nodes[x, y] = node;
 					node.x = x;
 					node.y = y;
-
-					if (x % 2 == 0 && x > 0 && x < width - 1 && y > 0 && y < height - 1 && y != height / 3 && y != 2 * height / 3)
-					{
-						node.blockValue = ran.Next(1, 5) > 1 ? 1 : 0;
-					}
-					if (x > 0 && x < width && y > 0 && y < height && (y == 1 * height / 3 || y == 2 * height / 3))
-					{
-						node.blockValue = ran.Next(1,5) > 1 ? 1 : 0;
-					}
-
 				}
 			}
+
+		}
+
+		public void SetNodePassable(int x, int y, bool passable)
+		{
+			if (x >= 0 && x < width && y >= 0 && y <= height)
+			{
+				GridNode node = nodes[x, y];
+				node.blockValue = passable ? 0 : 1;
+			}
+		}
+
+		public bool IsNodePassable(int x, int y)
+		{
+			if (x >= 0 && x < width && y >= 0 && y <= height)
+			{
+				GridNode node = nodes[x, y];
+				return node.blockValue == 0;
+			}
+			return false;
 		}
 
 		public override int GetNeighbourNodeCount(Node node)
@@ -69,7 +76,7 @@ namespace AStar
 				if (x >= 0 && x < width && y >= 0 && y < height)
 				{
 					GridNode toNode = nodes[x, y] as GridNode;
-					if (IsPassable(gridNode, toNode))
+					if (IsNeighbourPassable(gridNode, toNode))
 						return toNode;
 				}
 			}
@@ -95,7 +102,7 @@ namespace AStar
 			return height;
 		}
 
-		private bool IsPassable(GridNode from, GridNode to)
+		private bool IsNeighbourPassable(GridNode from, GridNode to)
 		{
 			return (from.x == to.x || from.y == to.y) || (nodes[from.x, to.y].blockValue < 1 && nodes[to.x, from.y].blockValue < 1);
 		}

@@ -62,19 +62,31 @@ namespace AStar
 			return node.id == targetNode.id;
 		}
 
-		protected override float CalCostG(Node prevNode, Node currentNode)
+		protected override int CalCostG(Node prevNode, Node currentNode)
 		{
 			int dx = Math.Abs(((GridNode)prevNode).x - ((GridNode)currentNode).x);
 			int dy = Math.Abs(((GridNode)prevNode).y - ((GridNode)currentNode).y);
-			float dist = dx > dy ? 1.4f * dy + 1.0f * (dx - dy) : 1.4f * dx + 1.0f * (dy - dx);
+			int dist = dx > dy ? 14 * dy + 10 * (dx - dy) : 14 * dx + 10 * (dy - dx);
 			return prevNode.g + dist;
 		}
 
-		protected override float CalCostH(Node node)
+		protected override int CalCostH(Node node)
 		{
 			int dx = Math.Abs(endX - ((GridNode)node).x);
 			int dy = Math.Abs(endY - ((GridNode)node).y);
-			float dist = dx > dy ? 1.4f * dy + 1.0f * (dx - dy) : 1.4f * dx + 1.0f * (dy - dx);
+			int dist = dx > dy ? 14 * dy + 10 * (dx - dy) : 14 * dx + 10 * (dy - dx);
+			switch(this.pathQuality)
+			{
+				case PathQuality.Low:
+					dist *= 1;
+					break;
+				case PathQuality.Normal:
+					dist *= 1;
+					break;
+				case PathQuality.High:
+					dist *= 1;
+					break;
+			}
 			return dist;
 		}
 

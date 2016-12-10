@@ -6,9 +6,9 @@ namespace AStar
 	public abstract class Node
 	{
 		public int id;
-		public float g;
-		public float h;
-		public float f;
+		public int g;
+		public int h;
+		public int f;
 		public Node prev;
 		public Node next;	// for linked list
 		public int blockValue;

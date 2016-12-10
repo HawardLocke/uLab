@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 namespace AStar
 {
+	public enum PathQuality
+	{
+		Low,
+		Normal,
+		High
+	}
 
 	public abstract class PathPlanner
 	{
@@ -14,10 +20,13 @@ namespace AStar
 
 		protected Map map;
 
+		protected PathQuality pathQuality;
 
-		public void Setup(Map map)
+
+		public void Setup(Map map, PathQuality pathQuality = PathQuality.Normal)
 		{
 			this.map = map;
+			this.pathQuality = pathQuality;
 		}
 
 		protected Node DoAStar(Node startNode)
@@ -53,9 +62,9 @@ namespace AStar
 
 		protected abstract bool CheckArrived(Node node);
 
-		protected abstract float CalCostG(Node prevNode, Node currentNode);
+		protected abstract int CalCostG(Node prevNode, Node currentNode);
 
-		protected abstract float CalCostH(Node node);
+		protected abstract int CalCostH(Node node);
 
 		private void EvaluateAllNeighbours(Node node)
 		{
@@ -74,9 +83,9 @@ namespace AStar
 			if (blockValue > 0.9)
 				return;
 
-			float g = CalCostG(currentNode, neighbourNode);
-			float h = CalCostH(neighbourNode);
-			float f = g + h;
+			int g = CalCostG(currentNode, neighbourNode);
+			int h = CalCostH(neighbourNode);
+			int f = g + h;
 
 			Node findNode = FindInOpenList(neighbourNode);
 			if (findNode != null)
