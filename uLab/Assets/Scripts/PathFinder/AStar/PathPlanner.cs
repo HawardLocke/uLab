@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AStar
+namespace Lite.AStar
 {
 	public enum PathQuality
 	{
@@ -14,22 +14,22 @@ namespace AStar
 
 	public abstract class PathPlanner
 	{
-		private Node openList;
+		private AStarNode openList;
 
-		private Node closedList;
+		private AStarNode closedList;
 
-		protected Map map;
+		protected AStarMap map;
 
 		protected PathQuality pathQuality;
 
 
-		public void Setup(Map map, PathQuality pathQuality = PathQuality.Normal)
+		public void Setup(AStarMap map, PathQuality pathQuality = PathQuality.Normal)
 		{
 			this.map = map;
 			this.pathQuality = pathQuality;
 		}
 
-		protected Node DoAStar(Node startNode)
+		protected AStarNode DoAStar(AStarNode startNode)
 		{
 			openList = null;
 			closedList = null;
@@ -42,11 +42,11 @@ namespace AStar
 
 			AddToOpenList(startNode);
 
-			Node arriveNode = null;
+			AStarNode arriveNode = null;
 
 			while (openList != null)
 			{
-				Node curNode = openList;
+				AStarNode curNode = openList;
 				if (CheckArrived(curNode))
 				{
 					arriveNode = curNode;
@@ -60,24 +60,24 @@ namespace AStar
 			return arriveNode;
 		}
 
-		protected abstract bool CheckArrived(Node node);
+		protected abstract bool CheckArrived(AStarNode node);
 
-		protected abstract int CalCostG(Node prevNode, Node currentNode);
+		protected abstract int CalCostG(AStarNode prevNode, AStarNode currentNode);
 
-		protected abstract int CalCostH(Node node);
+		protected abstract int CalCostH(AStarNode node);
 
-		private void EvaluateAllNeighbours(Node node)
+		private void EvaluateAllNeighbours(AStarNode node)
 		{
 			int neighbourCount = map.GetNeighbourNodeCount(node);
 			for (int i = 0; i < neighbourCount; ++i)
 			{
-				Node neighbour = map.GetNeighbourNode(node, i);
+				AStarNode neighbour = map.GetNeighbourNode(node, i);
 				if (neighbour != null)
 					EvaluateNeighbour(node, neighbour);
 			}
 		}
 
-		private void EvaluateNeighbour(Node currentNode, Node neighbourNode)
+		private void EvaluateNeighbour(AStarNode currentNode, AStarNode neighbourNode)
 		{
 			float blockValue = neighbourNode.blockValue;
 			if (blockValue > 0.9)
@@ -87,7 +87,7 @@ namespace AStar
 			int h = CalCostH(neighbourNode);
 			int f = g + h;
 
-			Node findNode = FindInOpenList(neighbourNode);
+			AStarNode findNode = FindInOpenList(neighbourNode);
 			if (findNode != null)
 			{
 				if (f < findNode.f)
@@ -115,7 +115,7 @@ namespace AStar
 				}
 				else
 				{
-					Node newNode = neighbourNode;
+					AStarNode newNode = neighbourNode;
 					newNode.g = g;
 					newNode.h = h;
 					newNode.f = f;
@@ -126,7 +126,7 @@ namespace AStar
 
 		}
 
-		private void AddToOpenList(Node node)
+		private void AddToOpenList(AStarNode node)
 		{
 			if (openList == null)
 			{
@@ -135,8 +135,8 @@ namespace AStar
 			}
 			else
 			{
-				Node prevNode = null;
-				Node curNode = openList;
+				AStarNode prevNode = null;
+				AStarNode curNode = openList;
 				while (curNode != null)
 				{
 					if (node.f < curNode.f)
@@ -160,7 +160,7 @@ namespace AStar
 			}
 		}
 
-		private void AddToClosedList(Node node)
+		private void AddToClosedList(AStarNode node)
 		{
 			if (closedList == null)
 			{
@@ -169,8 +169,8 @@ namespace AStar
 			}
 			else
 			{
-				Node prevNode = null;
-				Node curNode = closedList;
+				AStarNode prevNode = null;
+				AStarNode curNode = closedList;
 				while (curNode != null)
 				{
 					if (node.f < curNode.f)
@@ -194,15 +194,15 @@ namespace AStar
 			}
 		}
 
-		private void RemoveFromOpenList(Node node)
+		private void RemoveFromOpenList(AStarNode node)
 		{
 			if (openList != null)
 			{
-				Node prevNode = null;
-				Node curNode = openList;
+				AStarNode prevNode = null;
+				AStarNode curNode = openList;
 				while (curNode != null)
 				{
-					if (node.id == curNode.id)
+					if (node.index == curNode.index)
 					{
 						if (prevNode != null)
 							prevNode.next = curNode.next;
@@ -217,15 +217,15 @@ namespace AStar
 			}
 		}
 
-		private void RemoveFromClosedList(Node node)
+		private void RemoveFromClosedList(AStarNode node)
 		{
 			if (closedList != null)
 			{
-				Node prevNode = null;
-				Node curNode = closedList;
+				AStarNode prevNode = null;
+				AStarNode curNode = closedList;
 				while (curNode != null)
 				{
-					if (node.id == curNode.id)
+					if (node.index == curNode.index)
 					{
 						if (prevNode != null)
 							prevNode.next = curNode.next;
@@ -240,7 +240,7 @@ namespace AStar
 			}
 		}
 
-		private Node FindInOpenList(Node node)
+		private AStarNode FindInOpenList(AStarNode node)
 		{
 			if (openList == null)
 			{
@@ -248,10 +248,10 @@ namespace AStar
 			}
 			else
 			{
-				Node curNode = openList;
+				AStarNode curNode = openList;
 				while (curNode != null)
 				{
-					if (curNode.id == node.id)
+					if (curNode.index == node.index)
 						return curNode;
 					
 					curNode = curNode.next;
@@ -261,7 +261,7 @@ namespace AStar
 			}
 		}
 
-		private Node FindInClosedList(Node node)
+		private AStarNode FindInClosedList(AStarNode node)
 		{
 			if (closedList == null)
 			{
@@ -269,10 +269,10 @@ namespace AStar
 			}
 			else
 			{
-				Node curNode = closedList; 
+				AStarNode curNode = closedList; 
 				while (curNode != null)
 				{
-					if (curNode.id == node.id)
+					if (curNode.index == node.index)
 						return curNode;
 					
 					curNode = curNode.next;

@@ -7,34 +7,48 @@ using Lite;
 using Lite.AStar;
 
 
-public class GridPathTest : MonoBehaviour
+public class GraphPathTest : MonoBehaviour
 {
-	GridAStarMap map;
+	GraphAStarMap map;
 	Point2D[] path = null;
-	GridPathPlanner pathFinder;
+	GraphPathPlanner pathFinder;
 
-	public int x1 = 0;
-	public int y1 = 0;
-	public int x2 = 0;
-	public int y2 = 0;
+	public int startIndex = 0;
+	public int endIndex = 0;
+
+	int width = 50;
+	int height = 30;
+
+	int gw = 20;
+	int gh = 20;
 
 	void Start()
 	{
-		map = new GridAStarMap();
-		map.InitMap(50, 30);
-		int width = map.GetWidth();
-		int height = map.GetHeight();
+		map = new GraphAStarMap();
+
+		for (int x = 0; x < width; ++x)
+		{
+			for (int y = 0; y < height; ++y)
+			{
+				GraphAStarNode node = map.AddNode<GraphAStarNode>();
+				node.x = x;
+				node.y = y;
+			}
+		}
 		int[,] nodeMarkList = new int[width, height];
 		MapEditor.Load(Application.dataPath + "/../map.txt", nodeMarkList);
 		for (int x = 0; x < width; ++x)
+		{
 			for (int y = 0; y < height; ++y)
-				map.SetNodePassable(x, y, nodeMarkList[x,y]==0);
+			{
+				GraphAStarNode node = map.AddNode<GraphAStarNode>();
+				map.SetNodePassable(x, y, nodeMarkList[x, y] == 0);
+			}
+		}
 
-		pathFinder = new GridPathPlanner();
+		pathFinder = new GraphPathPlanner();
 		pathFinder.Setup(map);
 
-		x2 = width - 1;
-		y2 = height - 1;
 	}
 
 	
@@ -44,18 +58,15 @@ public class GridPathTest : MonoBehaviour
 		{
 			Stopwatch watch = new Stopwatch();
 			watch.Start();
-			path = pathFinder.FindPath(x1, y1, x2, y2);
+			path = pathFinder.FindPath(startIndex, endIndex);
 			watch.Stop();
 			GUI.Label(new Rect(50, 0, 100, 30), "" + watch.ElapsedMilliseconds);
 		}
 
-		int gw = 20;
-		int gh = 20;
-		int w = map.GetWidth();
-		int h = map.GetHeight();
-		for (int i = 0; i < w; ++i)
+		
+		for (int i = 0; i < width; ++i)
 		{
-			for (int j = 0; j < h; ++j)
+			for (int j = 0; j < height; ++j)
 			{
 				if (!map.IsNodePassable(i, j))
 					GUI.Box(new Rect(i * gw + 0.05f * gw, j * gh + 0.05f * gh, 0.9f * gw, 0.9f * gh), "");

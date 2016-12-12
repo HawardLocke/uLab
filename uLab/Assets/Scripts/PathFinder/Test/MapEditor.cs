@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 
 using Lite;
-using AStar;
+using Lite.AStar;
 
 
 public class MapEditor : MonoBehaviour

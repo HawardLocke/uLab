@@ -4,15 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AStar
+namespace Lite.AStar
 {
-	public class GridMap : Map
+	public class GridAStarMap : AStarMap
 	{
 		private const int NEIGHBOUR_COUNT = 8;
 		private readonly int[] xOffset = { -1, -1, -1, 0, 1, 1, 1, 0 };
 		private readonly int[] yOffset = { -1, 0, 1, 1, 1, 0, -1, -1 };
 
-		private GridNode[,] nodes;
+		private GridAStarNode[,] nodes;
 		private int width;
 		private int height;
 
@@ -27,13 +27,13 @@ namespace AStar
 			if (nodes != null)
 				nodes = null;
 
-			nodes = new GridNode[width, height];
+			nodes = new GridAStarNode[width, height];
 
 			for (int x = 0; x < width; ++x)
 			{
 				for (int y = 0; y < height; ++y)
 				{
-					GridNode node = new GridNode(nodeIdCounter++);
+					GridAStarNode node = new GridAStarNode(nodeIdCounter++);
 					nodes[x, y] = node;
 					node.x = x;
 					node.y = y;
@@ -46,7 +46,7 @@ namespace AStar
 		{
 			if (x >= 0 && x < width && y >= 0 && y <= height)
 			{
-				GridNode node = nodes[x, y];
+				GridAStarNode node = nodes[x, y];
 				node.blockValue = passable ? 0 : 1;
 			}
 		}
@@ -55,27 +55,27 @@ namespace AStar
 		{
 			if (x >= 0 && x < width && y >= 0 && y <= height)
 			{
-				GridNode node = nodes[x, y];
+				GridAStarNode node = nodes[x, y];
 				return node.blockValue == 0;
 			}
 			return false;
 		}
 
-		public override int GetNeighbourNodeCount(Node node)
+		public override int GetNeighbourNodeCount(AStarNode node)
 		{
 			return NEIGHBOUR_COUNT;
 		}
 
-		public override Node GetNeighbourNode(Node node, int index)
+		public override AStarNode GetNeighbourNode(AStarNode node, int index)
 		{
 			if (index >= 0 && index < NEIGHBOUR_COUNT && node != null)
 			{
-				GridNode gridNode = node as GridNode;
+				GridAStarNode gridNode = node as GridAStarNode;
 				int x = gridNode.x + xOffset[index];
 				int y = gridNode.y + yOffset[index];
 				if (x >= 0 && x < width && y >= 0 && y < height)
 				{
-					GridNode toNode = nodes[x, y] as GridNode;
+					GridAStarNode toNode = nodes[x, y] as GridAStarNode;
 					if (IsNeighbourPassable(gridNode, toNode))
 						return toNode;
 				}
@@ -83,11 +83,11 @@ namespace AStar
 			return null;
 		}
 
-		public GridNode GetNode(int x, int y)
+		public GridAStarNode GetNode(int x, int y)
 		{
 			if (x >=0 && x < width && y >= 0 && y < height)
 			{
-				return nodes[x,y] as GridNode;
+				return nodes[x,y] as GridAStarNode;
 			}
 			return null;
 		}
@@ -102,7 +102,7 @@ namespace AStar
 			return height;
 		}
 
-		private bool IsNeighbourPassable(GridNode from, GridNode to)
+		private bool IsNeighbourPassable(GridAStarNode from, GridAStarNode to)
 		{
 			return (from.x == to.x || from.y == to.y) || (nodes[from.x, to.y].blockValue < 1 && nodes[to.x, from.y].blockValue < 1);
 		}

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace AStar
+namespace Lite.AStar
 {
 	public struct Point2D
 	{
@@ -22,8 +22,8 @@ namespace AStar
 		private int startY;
 		private int endX;
 		private int endY;
-		private GridNode startNode;
-		private GridNode targetNode;
+		private GridAStarNode startNode;
+		private GridAStarNode targetNode;
 
 		public Point2D[] FindPath(int startX, int startY, int endX, int endY)
 		{
@@ -32,19 +32,19 @@ namespace AStar
 			this.endX = startX;
 			this.endY = startY;
 
-			GridMap gridMap = (GridMap)map;
+			GridAStarMap gridMap = (GridAStarMap)map;
 			startNode = gridMap.GetNode(this.startX, this.startY);
 			targetNode = gridMap.GetNode(this.endX, this.endY);
 
-			GridNode endNode = DoAStar(startNode) as GridNode;
+			GridAStarNode endNode = DoAStar(startNode) as GridAStarNode;
 
 			// build path points.
 			int pointCount = 0;
-			GridNode pathNode = endNode;
+			GridAStarNode pathNode = endNode;
 			while (pathNode != null)
 			{
 				pointCount++;
-				pathNode = pathNode.prev as GridNode;
+				pathNode = pathNode.prev as GridAStarNode;
 			}
 			Point2D[] pointArray = new Point2D[pointCount];
 			pathNode = endNode;
@@ -52,28 +52,28 @@ namespace AStar
 			while (pathNode != null)
 			{
 				pointArray[index++] = new Point2D(pathNode.x, pathNode.y);
-				pathNode = pathNode.prev as GridNode;
+				pathNode = pathNode.prev as GridAStarNode;
 			}
 			return pointArray;
 		}
 
-		protected override bool CheckArrived(Node node)
+		protected override bool CheckArrived(AStarNode node)
 		{
-			return node.id == targetNode.id;
+			return node.index == targetNode.index;
 		}
 
-		protected override int CalCostG(Node prevNode, Node currentNode)
+		protected override int CalCostG(AStarNode prevNode, AStarNode currentNode)
 		{
-			int dx = Math.Abs(((GridNode)prevNode).x - ((GridNode)currentNode).x);
-			int dy = Math.Abs(((GridNode)prevNode).y - ((GridNode)currentNode).y);
+			int dx = Math.Abs(((GridAStarNode)prevNode).x - ((GridAStarNode)currentNode).x);
+			int dy = Math.Abs(((GridAStarNode)prevNode).y - ((GridAStarNode)currentNode).y);
 			int dist = dx > dy ? 14 * dy + 10 * (dx - dy) : 14 * dx + 10 * (dy - dx);
 			return prevNode.g + dist;
 		}
 
-		protected override int CalCostH(Node node)
+		protected override int CalCostH(AStarNode node)
 		{
-			int dx = Math.Abs(endX - ((GridNode)node).x);
-			int dy = Math.Abs(endY - ((GridNode)node).y);
+			int dx = Math.Abs(endX - ((GridAStarNode)node).x);
+			int dy = Math.Abs(endY - ((GridAStarNode)node).y);
 			int dist = dx > dy ? 14 * dy + 10 * (dx - dy) : 14 * dx + 10 * (dy - dx);
 			switch(this.pathQuality)
 			{
