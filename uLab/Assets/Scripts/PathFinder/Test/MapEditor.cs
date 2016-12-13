@@ -187,7 +187,7 @@ public class MapEditor : MonoBehaviour
 	{
 		int x = posx / gridWidth;
 		int y = posy / gridHeight;
-		if (x < 0 || x >= width || y < 0 || y >= 2)
+		if (x < 0 || x >= width || y < 0 || y >= height)
 			return true;
 		return nodeMarkList[x,y] == 1;
 	}
@@ -246,22 +246,25 @@ public class MapEditor : MonoBehaviour
 				GraphAStarNode toNode = graph.GetNodeByID(edge.to) as GraphAStarNode;
 				int dx = toNode.x - node.x;
 				int dy = toNode.y - node.y;
+				int minx = Mathf.Min(toNode.x, node.x) + offsetX;
+				int miny = Mathf.Min(toNode.y, node.y) + offsetY;
+				Rect screenRect = new Rect(minx, miny, stepx, stepy);
 				if (dx < 0 && dy < 0)
-					Graphics.DrawTexture(new Rect(offsetX + toNode.x, offsetY + node.y - stepy, stepx, stepy), lineTex, new Rect(0.5f, 0.0f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 				else if (dx < 0 && dy == 0)
-					Graphics.DrawTexture(new Rect(offsetX + toNode.x, offsetY + toNode.y, stepx, stepy), lineTex, new Rect(0.0f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 				else if (dx < 0 && dy > 0)
-					Graphics.DrawTexture(new Rect(offsetX + toNode.x, offsetY + toNode.y, stepx, stepy), lineTex, new Rect(0.0f, 0.0f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 				else if (dx == 0 && dy > 0)
-					Graphics.DrawTexture(new Rect(offsetX + toNode.x, offsetY + node.y, stepx, stepy), lineTex, new Rect(0.5f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 				else if (dx > 0 && dy > 0)
-					Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y, stepx, stepy), lineTex, new Rect(0.5f, 0.0f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 				else if (dx > 0 && dy == 0)
-					Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y, stepx, stepy), lineTex, new Rect(0.0f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 				else if (dx > 0 && dy < 0)
-					Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - stepy, stepx, stepy), lineTex, new Rect(0.0f, 0.0f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 				else if (dx == 0 && dy < 0)
-					Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + toNode.y, stepx, stepy), lineTex, new Rect(0.5f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 			}
 			Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - 2, 4, 4), dotBlueTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
 		}
