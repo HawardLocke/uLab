@@ -42,7 +42,7 @@ public class GraphPathTest : MonoBehaviour
 			for (int y = 0; y < height; ++y)
 			{
 				GraphAStarNode node = map.AddNode<GraphAStarNode>();
-				map.SetNodePassable(x, y, nodeMarkList[x, y] == 0);
+				//map.SetNodePassable(x, y, nodeMarkList[x, y] == 0);
 			}
 		}
 
@@ -68,8 +68,8 @@ public class GraphPathTest : MonoBehaviour
 		{
 			for (int j = 0; j < height; ++j)
 			{
-				if (!map.IsNodePassable(i, j))
-					GUI.Box(new Rect(i * gw + 0.05f * gw, j * gh + 0.05f * gh, 0.9f * gw, 0.9f * gh), "");
+				//if (!map.IsNodePassable(i, j))
+				//	GUI.Box(new Rect(i * gw + 0.05f * gw, j * gh + 0.05f * gh, 0.9f * gw, 0.9f * gh), "");
 			}
 		}
 

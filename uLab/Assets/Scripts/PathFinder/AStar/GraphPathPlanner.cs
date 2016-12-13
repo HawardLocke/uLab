@@ -19,8 +19,8 @@ namespace Lite.AStar
 			this.start = end;
 			this.end = start;
 
-			startNode = map.GetNode(this.start) as GraphAStarNode;
-			targetNode = map.GetNode(this.end) as GraphAStarNode;
+			startNode = map.GetNodeByID(this.start) as GraphAStarNode;
+			targetNode = map.GetNodeByID(this.end) as GraphAStarNode;
 
 			GridAStarNode endNode = DoAStar(startNode) as GridAStarNode;
 
@@ -45,12 +45,12 @@ namespace Lite.AStar
 
 		protected override bool CheckArrived(AStarNode node)
 		{
-			return node.index == targetNode.index;
+			return node.id == targetNode.id;
 		}
 
 		protected override int CalCostG(AStarNode prevNode, AStarNode currentNode)
 		{
-			return prevNode.g + map.GetEdge(prevNode.index, currentNode.index).cost;
+			return prevNode.g + map.GetEdge(prevNode.id, currentNode.id).cost;
 		}
 
 		protected override int CalCostH(AStarNode node)

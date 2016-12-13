@@ -14,7 +14,7 @@ namespace Lite.AStar
 
 		public AStarNode(int id)
 		{
-			this.index = id;
+			this.id = id;
 			g = h = f = 0;
 			prev = null;
 			next = null;
@@ -23,7 +23,7 @@ namespace Lite.AStar
 
 		public AStarNode()
 		{
-			this.index = -1;
+			this.id = -1;
 			g = h = f = 0;
 			prev = null;
 			next = null;

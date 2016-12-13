@@ -7,72 +7,88 @@ using System.Collections.Generic;
 namespace Lite.Graph
 {
 	using NodeList = List<GraphNode>;
+	using NodeTable = Dictionary<int,GraphNode>;
 	using EdgeList = List<GraphEdge>;
+	using EdgeListTable = Dictionary<int,List<GraphEdge>>;
 
 	public class SparseGraph
 	{
-		private NodeList nodeList;
-		private List<EdgeList> edgeListList;
+		protected NodeTable nodeTable;
+		protected EdgeListTable edgeListTable;
 
-		private int nodeIndexCounter;
+		private int nodeIdCounter;
 
 		public SparseGraph()
 		{
-			nodeList = new List<GraphNode>();
-			edgeListList = new List<EdgeList>();
-			nodeIndexCounter = 0;
+			nodeTable = new NodeTable();
+			edgeListTable = new EdgeListTable();
+			nodeIdCounter = 0;
+		}
+
+		public int GetNodeCount()
+		{
+			return nodeTable.Count;
 		}
 
 		public T AddNode<T>() where T : GraphNode, new()
 		{
 			T node = new T();
-			node.index = nodeIndexCounter++;
-			nodeList.Add(node);
-			edgeListList.Add(new EdgeList());
+			node.id = nodeIdCounter++;
+			nodeTable.Add(node.id, node);
+			edgeListTable.Add(node.id, new EdgeList());
 			return node;
 		}
 
-		public void RemoveNode(int index)
+		public void RemoveNodeByID(int id)
 		{
-			GraphNode node = GetNode(index);
-			if (node != null)
+			for (int i = 0; i < nodeTable.Count; ++i)
 			{
-				nodeList.RemoveAt(index);
-				EdgeList edgeList = edgeListList[index];
-				for (int i = 0; i < edgeList.Count; ++i)
+				if (nodeTable[i].id == id)
 				{
-					GraphEdge edge = edgeList[i];
-					RemoveEdge(edge.to, edge.from);
+					nodeTable.Remove(id);
+					EdgeList edgeList = edgeListTable[id];
+					for (int j = 0; j < edgeList.Count; ++j)
+					{
+						GraphEdge edge = edgeList[j];
+						RemoveEdge(edge.to, edge.from);
+					}
+					edgeList.Clear();
+					edgeListTable.Remove(id);
+					break;
 				}
-				edgeList.Clear();
-				edgeListList.RemoveAt(index);
+			}
+
+		}
+
+		public NodeList GetNodeList()
+		{
+			return new NodeList(nodeTable.Values);
+		}
+
+		public GraphNode GetNodeByID(int id)
+		{
+			GraphNode node = null;
+			nodeTable.TryGetValue(id, out node);
+			return node;
+		}
+
+		public void AddEdge(int fromId, int toId, int cost)
+		{
+			if (IsNodeIDValid(fromId) && IsNodeIDValid(toId) && !IsEdgePresent(fromId, toId))
+			{
+				GraphEdge edge = new GraphEdge(fromId, toId, cost);
+				edgeListTable[fromId].Add(edge);
 			}
 		}
 
-		public GraphNode GetNode(int index)
+		public void RemoveEdge(int fromId, int toId)
 		{
-			if (IsIndexValid(index))
-				return nodeList[index];
-			return null;
-		}
-
-		public void AddEdge(int from, int to, int cost)
-		{
-			if (IsIndexValid(from) && IsIndexValid(to) && !IsEdgePresent(from, to))
+			if (edgeListTable.ContainsKey(fromId))
 			{
-				GraphEdge edge = new GraphEdge(from, to, cost);
-				edgeListList[from].Add(edge);
-			}
-		}
-
-		public void RemoveEdge(int from, int to)
-		{
-			if (IsIndexValid(from) && IsIndexValid(to))
-			{
-				EdgeList edgeList = edgeListList[from];
+				EdgeList edgeList = edgeListTable[fromId];
 				for (int i = 0; i < edgeList.Count; ++i)
 				{
-					if (edgeList[i].to == to)
+					if (edgeList[i].to == toId)
 					{
 						edgeList.RemoveAt(i);
 						break;
@@ -81,53 +97,49 @@ namespace Lite.Graph
 			}
 		}
 
-		public GraphEdge GetEdge(int from, int to)
+		public GraphEdge GetEdge(int fromId, int toId)
 		{
-			if (IsIndexValid(from) && IsIndexValid(to))
+			if (edgeListTable.ContainsKey(fromId))
 			{
-				EdgeList edgeList = edgeListList[from];
+				EdgeList edgeList = edgeListTable[fromId];
 				for (int i = 0; i < edgeList.Count; ++i)
 				{
-					if (edgeList[i].to == to)
+					if (edgeList[i].to == toId)
 						return edgeList[i];
 				}
 			}
 			return null;
 		}
 
-		public void SetEdgeCost(int from, int to, int cost)
+		public void SetEdgeCost(int fromId, int toId, int cost)
 		{
-			GraphEdge edge = GetEdge(from, to);
+			GraphEdge edge = GetEdge(fromId, toId);
 			if (edge != null)
 				edge.cost = cost;
 		}
 
-		public bool IsNodePresent(int index)
+		public bool IsNodePresent(int id)
 		{
-			if (IsIndexValid(index))
-			{
-				return true;
-			}
-			return false;
+			return IsNodeIDValid(id);
 		}
 
-		public bool IsEdgePresent(int from, int to)
+		public bool IsEdgePresent(int fromId, int toId)
 		{
-			if (IsIndexValid(from) && IsIndexValid(to))
+			if (edgeListTable.ContainsKey(fromId))
 			{
-				EdgeList edgeList = edgeListList[from];
+				EdgeList edgeList = edgeListTable[fromId];
 				for (int i = 0; i < edgeList.Count; ++i)
 				{
-					if (edgeList[i].to == to)
+					if (edgeList[i].to == toId)
 						return true;
 				}
 			}
 			return false;
 		}
 
-		private bool IsIndexValid(int index)
+		private bool IsNodeIDValid(int id)
 		{
-			return index >= 0 && index < nodeList.Count;
+			return nodeTable.ContainsKey(id);
 		}
 
 	}

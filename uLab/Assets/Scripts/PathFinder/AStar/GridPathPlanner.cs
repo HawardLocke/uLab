@@ -33,8 +33,8 @@ namespace Lite.AStar
 			this.endY = startY;
 
 			GridAStarMap gridMap = (GridAStarMap)map;
-			startNode = gridMap.GetNode(this.startX, this.startY);
-			targetNode = gridMap.GetNode(this.endX, this.endY);
+			startNode = gridMap.GetNodeByIndex(this.startX, this.startY);
+			targetNode = gridMap.GetNodeByIndex(this.endX, this.endY);
 
 			GridAStarNode endNode = DoAStar(startNode) as GridAStarNode;
 
@@ -59,7 +59,7 @@ namespace Lite.AStar
 
 		protected override bool CheckArrived(AStarNode node)
 		{
-			return node.index == targetNode.index;
+			return node.id == targetNode.id;
 		}
 
 		protected override int CalCostG(AStarNode prevNode, AStarNode currentNode)

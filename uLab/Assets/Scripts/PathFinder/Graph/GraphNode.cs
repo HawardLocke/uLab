@@ -4,13 +4,13 @@ namespace Lite.Graph
 {
 	public class GraphNode
 	{
-		public int index;
+		public int id;
 
 		public System.Object extData;
 
 		public GraphNode()
 		{
-			index = -1;
+			id = -1;
 			extData = null;
 		}
 	}

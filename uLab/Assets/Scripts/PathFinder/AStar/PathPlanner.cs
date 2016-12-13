@@ -202,7 +202,7 @@ namespace Lite.AStar
 				AStarNode curNode = openList;
 				while (curNode != null)
 				{
-					if (node.index == curNode.index)
+					if (node.id == curNode.id)
 					{
 						if (prevNode != null)
 							prevNode.next = curNode.next;
@@ -225,7 +225,7 @@ namespace Lite.AStar
 				AStarNode curNode = closedList;
 				while (curNode != null)
 				{
-					if (node.index == curNode.index)
+					if (node.id == curNode.id)
 					{
 						if (prevNode != null)
 							prevNode.next = curNode.next;
@@ -251,7 +251,7 @@ namespace Lite.AStar
 				AStarNode curNode = openList;
 				while (curNode != null)
 				{
-					if (curNode.index == node.index)
+					if (curNode.id == node.id)
 						return curNode;
 					
 					curNode = curNode.next;
@@ -272,7 +272,7 @@ namespace Lite.AStar
 				AStarNode curNode = closedList; 
 				while (curNode != null)
 				{
-					if (curNode.index == node.index)
+					if (curNode.id == node.id)
 						return curNode;
 					
 					curNode = curNode.next;
