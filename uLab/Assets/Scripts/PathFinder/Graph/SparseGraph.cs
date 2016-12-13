@@ -97,6 +97,13 @@ namespace Lite.Graph
 			}
 		}
 
+		public EdgeList GetEdgeList(int fromId)
+		{
+			EdgeList list = null;
+			edgeListTable.TryGetValue(fromId, out list);
+			return list;
+		}
+
 		public GraphEdge GetEdge(int fromId, int toId)
 		{
 			if (edgeListTable.ContainsKey(fromId))

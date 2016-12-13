@@ -18,6 +18,8 @@ public class GridPathTest : MonoBehaviour
 	public int x2 = 0;
 	public int y2 = 0;
 
+	Texture dotRedTex;
+
 	void Start()
 	{
 		map = new GridAStarMap();
@@ -35,6 +37,8 @@ public class GridPathTest : MonoBehaviour
 
 		x2 = width - 1;
 		y2 = height - 1;
+
+		dotRedTex = Resources.Load("Textures/dotRed") as Texture;
 	}
 
 	
@@ -66,7 +70,8 @@ public class GridPathTest : MonoBehaviour
 		{
 			for (int i = 0; i < path.Length; ++i)
 			{
-				GUI.Box(new Rect(path[i].x * gw + 0.3f * gw, path[i].y * gh + 0.3f * gh, 0.4f * gw, 0.4f * gh), "");
+				//GUI.Box(new Rect(path[i].x * gw + 0.3f * gw, path[i].y * gh + 0.3f * gh, 0.4f * gw, 0.4f * gh), "");
+				Graphics.DrawTexture(new Rect(path[i].x * gw + 0.4f * gw, path[i].y * gh + 0.4f * gh, 0.2f * gw, 0.2f * gh), dotRedTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
 			}
 		}
 

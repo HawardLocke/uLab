@@ -17,7 +17,25 @@ public class MapEditor : MonoBehaviour
 	int[,] nodeMarkList;
 	string savePath;
 	bool floodMode;
+
 	GraphAStarMap graph;
+	int nodeCount = 0;
+	int edgeCount = 0;
+
+	Texture lineTex;
+	Texture dotBlueTex;
+	Texture dotRedTex;
+
+	private int gridWidth = 20;
+	private int gridHeight = 20;
+
+	private int stepx = 20;
+	private int stepy = 20;
+
+	int offsetX = 120;
+	int offsetY = 10;
+	int gw = 20;
+	int gh = 20;
 
 	void Start()
 	{
@@ -32,58 +50,44 @@ public class MapEditor : MonoBehaviour
 		savePath = Application.dataPath + "/../map.txt";
 		Load(savePath, nodeMarkList);
 		floodMode = false;
+		lineTex = Resources.Load("Textures/line") as Texture;
+		dotBlueTex = Resources.Load("Textures/dotBlue") as Texture;
+		dotRedTex = Resources.Load("Textures/dotRed") as Texture;
 	}
 
 	
 	void OnGUI()
 	{
-		int offsetX = 50;
-		int offsetY = 10;
-		int gw = 20;
-		int gh = 20;
-		for (int x = 0; x < width; ++x)
+		if (Event.current.type.Equals(EventType.Repaint))
 		{
-			for (int y = 0; y < height; ++y)
+			if (floodMode)
 			{
-				if (floodMode)
-				{
-					if (nodeMarkList[x, y] == 1)
-						GUI.Button(new Rect(offsetX + x * gw + 0.05f * gw, offsetY + y * gh + 0.05f * gh, 0.9f * gw, 0.9f * gh), "1");
-				}
-				else
-				{
-					if (GUI.Button(new Rect(offsetX + x * gw + 0.05f * gw, offsetY + y * gh + 0.05f * gh, 0.9f * gw, 0.9f * gh), nodeMarkList[x, y] == 0 ? "" : "1"))
-					{
-						nodeMarkList[x, y] = nodeMarkList[x, y] == 0 ? 1 : 0;
-					}
-				}
-				
+				DrawBlock();
+				DrawGraph();
+			}
+			else
+			{
+				DrawEditorMode();
 			}
 		}
 
-		if (floodMode)
-		{
-			var list = graph.GetNodeList();
-			for (int i = 0; i < list.Count; ++i)
-			{
-				GraphAStarNode node = list[i] as GraphAStarNode;
-				GUI.Box(new Rect(offsetX + node.x, offsetY + node.y, 4, 4), "");
-			}
-		}
+		GUI.Label(new Rect(5, 10, 100, 20), "node " + nodeCount);
+		GUI.Label(new Rect(5, 30, 100, 20), "edge " + edgeCount);
 
-		if (GUI.Button(new Rect(5, 10, 40, 20), "save"))
+		if (GUI.Button(new Rect(5, 110, 40, 20), "save"))
 		{
 			floodMode = false;
 			Save();
 		}
-		if (GUI.Button(new Rect(5, 35, 40, 20), "fill"))
+		if (GUI.Button(new Rect(5, 135, 40, 20), "fill"))
 		{
 			floodMode = true;
 			Fill();
 		}
 
-		//Graphics.DrawTexture(new Rect(200, 100, 128, 128), tex, new Rect(0.0f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
 	}
+
+	#region editor
 
 	static public void Load(string path, int[,] data)
 	{
@@ -120,14 +124,10 @@ public class MapEditor : MonoBehaviour
 		UnityEngine.Debug.Log("Saved to " + savePath);
 	}
 
+	#endregion
 
-	#region Flood Graph
 
-	private int gridWidth = 20;
-	private int gridHeight = 20;
-
-	private int stepx = 20;
-	private int stepy = 20;
+	#region generate Graph
 
 	void Fill()
 	{
@@ -136,7 +136,13 @@ public class MapEditor : MonoBehaviour
 		graph = new GraphAStarMap();
 		DoFlood(graph, seedx, seedy);
 
-		UnityEngine.Debug.Log("node count " + graph.GetNodeCount());
+		nodeCount = graph.GetNodeCount();
+		edgeCount = 0;
+		var list = graph.GetNodeList();
+		for (int i = 0; i < list.Count; ++i)
+		{
+			edgeCount += graph.GetEdgeList(list[i].id).Count;
+		}
 	}
 
 	private void DoFlood(GraphAStarMap graph, int x, int y)
@@ -149,23 +155,28 @@ public class MapEditor : MonoBehaviour
 		node = graph.AddNode<GraphAStarNode>();
 		node.x = x;
 		node.y = y;
-		// 4 dir
+		
 		int x1 = x - stepx;
 		int y1 = y;
-		GraphAStarNode neighbour = graph.GetNodeAt(x, y);
-		if (neighbour != null)
-		{
-			graph.AddEdge(node.id, neighbour.id, 10);
-		}
-		DoFlood(graph, x1, y1);
 		int x2 = x;
 		int y2 = y + stepy;
-		DoFlood(graph, x2, y2);
 		int x3 = x + stepx;
 		int y3 = y;
-		DoFlood(graph, x3, y3);
 		int x4 = x;
 		int y4 = y - stepy;
+
+		TryAddEdge(node, x1, y1, 10);
+		TryAddEdge(node, x2, y2, 10);
+		TryAddEdge(node, x3, y3, 10);
+		TryAddEdge(node, x4, y4, 10);
+		TryAddEdge(node, x1, y4, 14);
+		TryAddEdge(node, x1, y2, 14);
+		TryAddEdge(node, x3, y2, 14);
+		TryAddEdge(node, x3, y4, 14);
+
+		DoFlood(graph, x1, y1);
+		DoFlood(graph, x2, y2);
+		DoFlood(graph, x3, y3);
 		DoFlood(graph, x4, y4);
 	}
 
@@ -173,11 +184,85 @@ public class MapEditor : MonoBehaviour
 	{
 		int x = posx / gridWidth;
 		int y = posy / gridHeight;
-		if (x < 0 || x >= width || y < 0 || y >= height)
+		if (x < 0 || x >= width || y < 0 || y >= 1)
 			return true;
 		return nodeMarkList[x,y] == 1;
 	}
 
+	private void TryAddEdge(GraphAStarNode node, int x, int y, int cost)
+	{
+		GraphAStarNode neighbour = graph.GetNodeAt(x, y);
+		if (neighbour != null)
+		{
+			graph.AddEdge(node.id, neighbour.id, cost);
+			graph.AddEdge(neighbour.id, node.id, cost);
+		}
+	}
+
 	#endregion
 
+	#region draw GUI
+
+	void DrawEditorMode()
+	{
+		for (int x = 0; x < width; ++x)
+		{
+			for (int y = 0; y < height; ++y)
+			{
+				if (GUI.Button(new Rect(offsetX + x * gw + 0.05f * gw, offsetY + y * gh + 0.05f * gh, 0.9f * gw, 0.9f * gh), nodeMarkList[x, y] == 0 ? "" : "1"))
+				{
+					nodeMarkList[x, y] = nodeMarkList[x, y] == 0 ? 1 : 0;
+					}
+			}
+		}
+	}
+
+	void DrawBlock()
+	{
+		for (int x = 0; x < width; ++x)
+		{
+			for (int y = 0; y < height; ++y)
+			{
+				if (nodeMarkList[x, y] == 1)
+					GUI.Button(new Rect(offsetX + x * gw + 0.05f * gw, offsetY + y * gh + 0.05f * gh, 0.9f * gw, 0.9f * gh), "");
+			}
+		}
+	}
+
+	void DrawGraph()
+	{
+		var list = graph.GetNodeList();
+		for (int i = 0; i < list.Count; ++i)
+		{
+			GraphAStarNode node = list[i] as GraphAStarNode;
+
+			List<GraphEdge> edges = graph.GetEdgeList(node.id);
+			for (int e = 0; e < edges.Count; ++e)
+			{
+				GraphEdge edge = edges[e];
+				GraphAStarNode toNode = graph.GetNodeByID(edge.to) as GraphAStarNode;
+				int dx = toNode.x - node.x;
+				int dy = toNode.y - node.y;
+				if (dx < 0 && dy < 0)
+					Graphics.DrawTexture(new Rect(offsetX + toNode.x, offsetY + node.y, stepx, stepy), lineTex, new Rect(0.5f, 0.0f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+				else if (dx < 0 && dy == 0)
+					Graphics.DrawTexture(new Rect(offsetX + toNode.x, offsetY + toNode.y, stepx, stepx), lineTex, new Rect(0.0f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+				else if (dx < 0 && dy > 0)
+					Graphics.DrawTexture(new Rect(offsetX + toNode.x, offsetY + toNode.y, stepx, stepx), lineTex, new Rect(0.0f, 0.0f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+				else if (dx == 0 && dy > 0)
+					Graphics.DrawTexture(new Rect(offsetX + toNode.x, offsetY + toNode.y, stepx, stepx), lineTex, new Rect(0.5f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+				else if (dx > 0 && dy > 0)
+					Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y, stepx, stepx), lineTex, new Rect(0.5f, 0.0f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+				else if (dx > 0 && dy == 0)
+					Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y, stepx, stepx), lineTex, new Rect(0.0f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+				else if (dx > 0 && dy < 0)
+					Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y, stepx, stepx), lineTex, new Rect(0.0f, 0.0f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+				else if (dx == 0 && dy < 0)
+					Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y, stepx, stepx), lineTex, new Rect(0.5f, 0.5f, 0.5f, 0.5f), 0, 0, 0, 0, null);
+			}
+			Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - 2, 4, 4), dotBlueTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
+		}
+	}
+
+	#endregion
 }
