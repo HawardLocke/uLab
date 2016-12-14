@@ -22,15 +22,15 @@ namespace Lite.AStar
 			startNode = map.GetNodeByID(this.start) as GraphAStarNode;
 			targetNode = map.GetNodeByID(this.end) as GraphAStarNode;
 
-			GridAStarNode endNode = DoAStar(startNode) as GridAStarNode;
+			GraphAStarNode endNode = DoAStar(startNode) as GraphAStarNode;
 
 			// build path points.
 			int pointCount = 0;
-			GridAStarNode pathNode = endNode;
+			GraphAStarNode pathNode = endNode;
 			while (pathNode != null)
 			{
 				pointCount++;
-				pathNode = pathNode.prev as GridAStarNode;
+				pathNode = pathNode.prev as GraphAStarNode;
 			}
 			Point2D[] pointArray = new Point2D[pointCount];
 			pathNode = endNode;
@@ -38,7 +38,7 @@ namespace Lite.AStar
 			while (pathNode != null)
 			{
 				pointArray[index++] = new Point2D(pathNode.x, pathNode.y);
-				pathNode = pathNode.prev as GridAStarNode;
+				pathNode = pathNode.prev as GraphAStarNode;
 			}
 			return pointArray;
 		}
@@ -55,7 +55,10 @@ namespace Lite.AStar
 
 		protected override int CalCostH(AStarNode node)
 		{
-			return 0;
+			int dx = Math.Abs(targetNode.x - ((GraphAStarNode)node).x);
+			int dy = Math.Abs(targetNode.y - ((GraphAStarNode)node).y);
+			int dist = (int)(dx > dy ? 1.4f * dy + (dx - dy) : 1.4f * dx + (dy - dx));
+			return dist;
 		}
 
 	}

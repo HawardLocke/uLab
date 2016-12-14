@@ -27,7 +27,7 @@ public class GridPathTest : MonoBehaviour
 		int width = map.GetWidth();
 		int height = map.GetHeight();
 		int[,] nodeMarkList = new int[width, height];
-		MapEditor.Load(Application.dataPath + "/../map.txt", nodeMarkList);
+		MapEditor.LoadMap(Application.dataPath + "/../map.txt", nodeMarkList);
 		for (int x = 0; x < width; ++x)
 			for (int y = 0; y < height; ++y)
 				map.SetNodePassable(x, y, nodeMarkList[x,y]==0);

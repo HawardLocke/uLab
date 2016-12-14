@@ -15,8 +15,9 @@ public class MapEditor : MonoBehaviour
 	int width = 50;
 	int height = 30;
 	int[,] nodeMarkList;
-	string savePath;
-	bool floodMode;
+	string mapSavePath;
+	string navSavePath;
+	bool navMode;
 
 	GraphAStarMap graph;
 	int nodeCount = 0;
@@ -47,23 +48,33 @@ public class MapEditor : MonoBehaviour
 				nodeMarkList[x, y] = 0;
 			}
 		}
-		savePath = Application.dataPath + "/../map.txt";
-		Load(savePath, nodeMarkList);
-		floodMode = false;
+
+		graph = new GraphAStarMap();
+
+		mapSavePath = Application.dataPath + "/../map.txt";
+		LoadMap(mapSavePath, nodeMarkList);
+		navSavePath = Application.dataPath + "/../nav.txt";
+		LoadNav(navSavePath, graph);
+		CalcNavCount();
+
 		lineTex = Resources.Load("Textures/line") as Texture;
 		dotBlueTex = Resources.Load("Textures/dotBlue") as Texture;
 		dotRedTex = Resources.Load("Textures/dotRed") as Texture;
 		//
-		floodMode = true;
-		Fill();
+		navMode = true;
 	}
 
 	
 	void OnGUI()
 	{
+		if (GUI.Button(new Rect(5, 85, 60, 20), "switch"))
+		{
+			navMode = !navMode;
+		}
+
 		if (Event.current.type.Equals(EventType.Repaint))
 		{
-			if (floodMode)
+			if (navMode)
 			{
 				DrawBlock();
 				DrawGraph();
@@ -74,25 +85,32 @@ public class MapEditor : MonoBehaviour
 			}
 		}
 
-		GUI.Label(new Rect(5, 10, 100, 20), "node " + nodeCount);
-		GUI.Label(new Rect(5, 30, 100, 20), "edge " + edgeCount);
-
-		if (GUI.Button(new Rect(5, 110, 40, 20), "save"))
+		if (navMode)
 		{
-			floodMode = false;
-			Save();
+			GUI.Label(new Rect(5, 10, 100, 20), "node " + nodeCount);
+			GUI.Label(new Rect(5, 30, 100, 20), "edge " + edgeCount);
+			if (GUI.Button(new Rect(5, 110, 60, 20), "fill"))
+			{
+				Fill();
+			}
+			if (GUI.Button(new Rect(5, 135, 60, 20), "save"))
+			{
+				SaveNav();
+			}
 		}
-		if (GUI.Button(new Rect(5, 135, 40, 20), "fill"))
+		else
 		{
-			floodMode = true;
-			Fill();
+			if (GUI.Button(new Rect(5, 110, 60, 20), "save"))
+			{
+				SaveMap();
+			}
 		}
 
 	}
 
 	#region editor
 
-	static public void Load(string path, int[,] data)
+	static public void LoadMap(string path, int[,] data)
 	{
 		StreamReader sr = new StreamReader(path, Encoding.ASCII);
 		string line;
@@ -107,7 +125,7 @@ public class MapEditor : MonoBehaviour
 		sr.Close();
 	}
 
-	void Save()
+	void SaveMap()
 	{
 		StringBuilder builder = new StringBuilder();
 		for (int y = 0; y < height; ++y)
@@ -119,12 +137,61 @@ public class MapEditor : MonoBehaviour
 			if (y != height-1) builder.Append("\n");
 		}
 		
-		FileStream fs = new FileStream(savePath, FileMode.Create);
+		FileStream fs = new FileStream(mapSavePath, FileMode.Create);
 		StreamWriter sw = new StreamWriter(fs, Encoding.ASCII);
 		sw.Write(builder.ToString());
 		sw.Close();
 		fs.Close();
-		UnityEngine.Debug.Log("Saved to " + savePath);
+		UnityEngine.Debug.Log("Saved map to " + mapSavePath);
+	}
+
+	static public void LoadNav(string path, GraphAStarMap graph)
+	{
+		StreamReader sr = new StreamReader(path, Encoding.ASCII);
+		string line;
+		while ((line = sr.ReadLine()) != null)
+		{
+			string[] nodeInfoArray = line.Split(',');
+			if (nodeInfoArray.Length != 4)
+				continue;
+			GraphAStarNode node = graph.AddNode<GraphAStarNode>();
+			node.id = int.Parse(nodeInfoArray[0]);
+			node.x = int.Parse(nodeInfoArray[1]);
+			node.y = int.Parse(nodeInfoArray[2]);
+			int edgeCount = int.Parse(nodeInfoArray[3]);
+			for (int i = 0; i < edgeCount; i++)
+			{
+				line = sr.ReadLine();
+				string[] edgeInfoArray = line.Split(',');
+				graph.AddEdge(int.Parse(edgeInfoArray[0]), int.Parse(edgeInfoArray[1]), int.Parse(edgeInfoArray[2]));
+			}
+		}
+		sr.Close();
+	}
+
+	void SaveNav()
+	{
+		StringBuilder builder = new StringBuilder();
+
+		var list = graph.GetNodeList();
+		for (int i = 0; i < list.Count; ++i)
+		{
+			GraphAStarNode node = list[i] as GraphAStarNode;
+			List<GraphEdge> edges = graph.GetEdgeList(node.id);
+			builder.Append(string.Format("{0},{1},{2},{3}\n", node.id, node.x, node.y, edges.Count));
+			for (int e = 0; e < edges.Count; ++e)
+			{
+				GraphEdge edge = edges[e];
+				builder.Append(string.Format("{0},{1},{2}\n", edge.from, edge.to, edge.cost));
+			}
+		}
+		
+		FileStream fs = new FileStream(navSavePath, FileMode.Create);
+		StreamWriter sw = new StreamWriter(fs, Encoding.ASCII);
+		sw.Write(builder.ToString());
+		sw.Close();
+		fs.Close();
+		UnityEngine.Debug.Log("Saved nav to " + navSavePath);
 	}
 
 	#endregion
@@ -136,16 +203,10 @@ public class MapEditor : MonoBehaviour
 	{
 		int seedx = 0;
 		int seedy = 0;
-		graph = new GraphAStarMap();
+		//graph = new GraphAStarMap();
 		DoFlood(graph, seedx, seedy);
 
-		nodeCount = graph.GetNodeCount();
-		edgeCount = 0;
-		var list = graph.GetNodeList();
-		for (int i = 0; i < list.Count; ++i)
-		{
-			edgeCount += graph.GetEdgeList(list[i].id).Count;
-		}
+		CalcNavCount();
 	}
 
 	private void DoFlood(GraphAStarMap graph, int x, int y)
@@ -206,6 +267,17 @@ public class MapEditor : MonoBehaviour
 
 	#region draw GUI
 
+	void CalcNavCount()
+	{
+		nodeCount = graph.GetNodeCount();
+		edgeCount = 0;
+		var list = graph.GetNodeList();
+		for (int i = 0; i < list.Count; ++i)
+		{
+			edgeCount += graph.GetEdgeList(list[i].id).Count;
+		}
+	}
+
 	void DrawEditorMode()
 	{
 		for (int x = 0; x < width; ++x)
@@ -215,7 +287,7 @@ public class MapEditor : MonoBehaviour
 				if (GUI.Button(new Rect(offsetX + x * gw + 0.05f * gw, offsetY + y * gh + 0.05f * gh, 0.9f * gw, 0.9f * gh), nodeMarkList[x, y] == 0 ? "" : "1"))
 				{
 					nodeMarkList[x, y] = nodeMarkList[x, y] == 0 ? 1 : 0;
-					}
+				}
 			}
 		}
 	}

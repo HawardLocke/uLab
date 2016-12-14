@@ -75,18 +75,6 @@ namespace Lite.AStar
 			int dx = Math.Abs(endX - ((GridAStarNode)node).x);
 			int dy = Math.Abs(endY - ((GridAStarNode)node).y);
 			int dist = dx > dy ? 14 * dy + 10 * (dx - dy) : 14 * dx + 10 * (dy - dx);
-			switch(this.pathQuality)
-			{
-				case PathQuality.Low:
-					dist *= 1;
-					break;
-				case PathQuality.Normal:
-					dist *= 1;
-					break;
-				case PathQuality.High:
-					dist *= 1;
-					break;
-			}
 			return dist;
 		}
 

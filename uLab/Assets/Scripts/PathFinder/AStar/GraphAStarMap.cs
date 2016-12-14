@@ -3,28 +3,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using Lite.Graph;
+
 
 namespace Lite.AStar
 {
 	public class GraphAStarMap : AStarMap
 	{
-		private const int NEIGHBOUR_COUNT = 8;
-
-
-		public void InitMap()
-		{
-
-
-		}
-
 		public override int GetNeighbourNodeCount(AStarNode node)
 		{
-			return NEIGHBOUR_COUNT;
+			List<GraphEdge> edgeList = GetEdgeList(node.id);
+			return edgeList != null ? edgeList.Count : 0;
 		}
 
 		public override AStarNode GetNeighbourNode(AStarNode node, int index)
 		{
-			return null;
+			List<GraphEdge> edgeList = GetEdgeList(node.id);
+			return GetNodeByID(edgeList[index].to) as AStarNode;
 		}
 
 		public GraphAStarNode GetNodeAt(int posx, int posy)

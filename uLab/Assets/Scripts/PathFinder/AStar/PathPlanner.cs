@@ -5,13 +5,6 @@ using System.Collections.Generic;
 
 namespace Lite.AStar
 {
-	public enum PathQuality
-	{
-		Low,
-		Normal,
-		High
-	}
-
 	public abstract class PathPlanner
 	{
 		private AStarNode openList;
@@ -20,13 +13,10 @@ namespace Lite.AStar
 
 		protected AStarMap map;
 
-		protected PathQuality pathQuality;
 
-
-		public void Setup(AStarMap map, PathQuality pathQuality = PathQuality.Normal)
+		public void Setup(AStarMap map)
 		{
 			this.map = map;
-			this.pathQuality = pathQuality;
 		}
 
 		protected AStarNode DoAStar(AStarNode startNode)
