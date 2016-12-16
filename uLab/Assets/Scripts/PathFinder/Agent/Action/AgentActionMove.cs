@@ -5,17 +5,17 @@ namespace Lite
 
 	public class AgentActionMove : AgentAction
 	{
-		public void OnActive()
+		public override void OnActive()
 		{
 
 		}
 
-		public void OnUpdate()
+		public override void OnUpdate()
 		{
 
 		}
 
-		public void OnTerminate()
+		public override void OnTerminate()
 		{
 
 		}

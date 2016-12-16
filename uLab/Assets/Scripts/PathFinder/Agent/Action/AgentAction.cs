@@ -27,9 +27,9 @@ namespace Lite
 
 		public abstract void OnTerminate();
 
-		public virtual bool IsFinished() { return isFinished; }
+		public bool IsFinished() { return isFinished; }
 
-		public virtual bool SetFinished(bool value) { isFinished = value; }
+		public void SetFinished(bool value) { isFinished = value; }
 
 	}
 
