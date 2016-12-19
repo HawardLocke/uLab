@@ -14,7 +14,7 @@ namespace Lite
 		WallAvoidance = 16,
 	}
 
-	public class SteeringBehaviors
+	public class SteeringComponent : IComponent
 	{
 		private KinematicComponent m_kinematic;
 
@@ -24,31 +24,55 @@ namespace Lite
 
 		private Dictionary<SteeringType, Steering> m_steeringMap;
 
+		private const float updateForceInterval = 0.2f;
 
-		public SteeringBehaviors(KinematicComponent kinm)
+		private float updateForceTimer;
+
+		public override void OnAwake()
 		{
-			m_kinematic = kinm;
 			m_steeringForce = new Vector3(0,0,0);
 			m_steeringPriority = new List<Steering>();
 			m_steeringMap = new Dictionary<SteeringType, Steering>();
-			//
-			Steering st;
-			st = new Seeking(kinm);
-			m_steeringPriority.Add(st);
-			m_steeringMap.Add(SteeringType.Seek, st);
-			st = new Arriving(kinm);
-			m_steeringPriority.Add(st);
-			m_steeringMap.Add(SteeringType.Arrive, st);
-			st = new Wandering(kinm);
-			m_steeringPriority.Add(st);
-			m_steeringMap.Add(SteeringType.Wander, st);
-			st = new Seperating(kinm);
-			m_steeringPriority.Add(st);
-			m_steeringMap.Add(SteeringType.Separation, st);
-			st = new WallAvoiding(kinm);
-			m_steeringPriority.Add(st);
-			m_steeringMap.Add(SteeringType.WallAvoidance, st);
-			// ...
+
+			updateForceTimer = 0;
+		}
+
+		public override void OnStart()
+		{
+			KinematicComponent kinm = GetComponent<KinematicComponent>();
+			m_kinematic = kinm;
+
+			if (kinm != null)
+			{
+				// register steerings
+				Steering st;
+				st = new Seeking(kinm);
+				m_steeringPriority.Add(st);
+				m_steeringMap.Add(SteeringType.Seek, st);
+				st = new Arriving(kinm);
+				m_steeringPriority.Add(st);
+				m_steeringMap.Add(SteeringType.Arrive, st);
+				st = new Wandering(kinm);
+				m_steeringPriority.Add(st);
+				m_steeringMap.Add(SteeringType.Wander, st);
+				st = new Separating(kinm);
+				m_steeringPriority.Add(st);
+				m_steeringMap.Add(SteeringType.Separation, st);
+				st = new WallAvoiding(kinm);
+				m_steeringPriority.Add(st);
+				m_steeringMap.Add(SteeringType.WallAvoidance, st);
+				// ...
+			}
+		}
+
+		public override void OnUpdate()
+		{
+			updateForceTimer += Time.deltaTime;
+			if (updateForceTimer > updateForceInterval)
+			{
+				Calculate();
+				updateForceTimer = 0;
+			}
 		}
 
 		public KinematicComponent GetKinematic()
@@ -93,20 +117,31 @@ namespace Lite
 			}
 		}
 
-		public void TurnSteeringOn(SteeringType st)
+		public Vector3 GetSteeringForce()
 		{
-			Steering ster = null;
-			m_steeringMap.TryGetValue(st, out ster);
-			if (ster != null)
-				ster.Enable();
+			return m_steeringForce;
 		}
 
-		public void TurnSteeringOff(SteeringType st)
+		public void TurnSteeringOn(SteeringType st, bool isOn)
 		{
 			Steering ster = null;
 			m_steeringMap.TryGetValue(st, out ster);
 			if (ster != null)
-				ster.Disable();
+			{
+				if (isOn)
+					ster.Enable();
+				else
+					ster.Disable();
+			}
+		}
+
+		public bool IsSteeringOn(SteeringType st)
+		{
+			Steering ster = null;
+			m_steeringMap.TryGetValue(st, out ster);
+			if (ster != null)
+				return ster.IsEnabled();
+			return false;
 		}
 
 	}

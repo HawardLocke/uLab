@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Lite
 {
-	public class Seperating : Steering
+	public class Separating : Steering
 	{
 
-		public Seperating(KinematicComponent kinm) : 
+		public Separating(KinematicComponent kinm) : 
 			base(kinm)
 		{
 

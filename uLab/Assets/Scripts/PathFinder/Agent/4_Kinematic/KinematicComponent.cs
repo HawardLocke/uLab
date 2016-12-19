@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Lite
 {
-	public class KinematicComponent
+	public class KinematicComponent : IComponent
 	{
 		public float mass;
 
@@ -29,32 +29,39 @@ namespace Lite
 		public float wanderRadius;
 
 
-		private SteeringBehaviors steering;
+		private SteeringComponent steering;
+
+		
 
 
-		public KinematicComponent()
+		public override void OnAwake()
 		{
 			mass = 1;
-			position = new Vector3(0,0,0);
+			position = new Vector3(0, 0, 0);
 			velocity = new Vector3(0, 0, 0);
 			acceleration = new Vector3(0, 0, 0);
 			steeringForce = new Vector3(0, 0, 0);
-			maxForce = 10;
-			maxSpeed = 10;
+			maxForce = 1;
+			maxSpeed = 2;
 			isPlanar = true;
 			targetPosition = new Vector3(0, 0, 0);
-			wanderRadius = 5;
-
-			steering = new SteeringBehaviors(this);
+			wanderRadius = 2;
 		}
 
-		public void UpdateSteering()
+		public override void OnStart()
 		{
-			steeringForce = steering.Calculate();
+			steering = GetComponent<SteeringComponent>();
 		}
 
-		public void UpdatePosition(float deltaTime)
+		public override void OnUpdate()
 		{
+			UpdatePosition();
+		}
+
+		private void UpdatePosition()
+		{
+			float deltaTime = Time.deltaTime;
+			steeringForce = steering.GetSteeringForce();
 			acceleration = steeringForce / mass;
 			velocity += acceleration * deltaTime;
 			if (velocity.sqrMagnitude > maxSpeed * maxSpeed)
@@ -65,7 +72,13 @@ namespace Lite
 			{
 				velocity.Set(velocity.x, 0, velocity.z);
 			}
-			position += velocity * deltaTime;
+			//position += velocity * deltaTime;
+		}
+
+		public void SetPosition(float x, float y, float z)
+		{
+			position.Set(x, y, z);
+			gameObject.transform.position = position;
 		}
 
 	}

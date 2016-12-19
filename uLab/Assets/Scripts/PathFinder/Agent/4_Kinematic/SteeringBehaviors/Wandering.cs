@@ -22,29 +22,13 @@ namespace Lite
 
 		public override Vector3 Calculate()
 		{
-			//first, add a small random vector to the target's position
-			m_vWanderTarget += new Vector3(MathUtil.RandClamp() * m_dWanderJitter,
-										0, MathUtil.RandClamp() * m_dWanderJitter);
+			m_vWanderTarget += new Vector3(MathUtil.RandClamp() * m_dWanderJitter, 0, MathUtil.RandClamp() * m_dWanderJitter);
 
-			//reproject this new vector back on to a unit circle
-			m_vWanderTarget.Normalize();
+			m_vWanderTarget = m_vWanderTarget.normalized * GetKinematic().wanderRadius;
 
-			//increase the length of the vector to the same as the radius
-			//of the wander circle
-			m_vWanderTarget *= GetKinematic().wanderRadius;
+			Vector3 Target = m_vWanderTarget + GetKinematic().velocity.normalized * GetKinematic().maxSpeed;
 
-			//move the target into a position WanderDist in front of the agent
-			Vector3 target = m_vWanderTarget + new Vector3(m_dWanderDistance, 0, 0);
-
-			//project the target into world space
-			Vector3 Target = GetKinematic().position + target;// GetKinematic().forward;
-			/*PointToWorldSpace(target,
-												 m_pRaven_Bot->Heading(),
-												 m_pRaven_Bot->Side(),
-												 m_pRaven_Bot->Pos());*/
-
-			//and steer towards it
-			return Target - GetKinematic().position;
+			return Target.normalized * GetKinematic().maxSpeed - GetKinematic().velocity;
 		}
 
 	}

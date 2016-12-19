@@ -14,32 +14,43 @@ public class SteeringTest : MonoBehaviour
 
 	void OnGUI()
 	{
-		if (GUI.Button(new Rect(20, 20, 100, 30), "spawn"))
+		if (GUI.Button(new Rect(20, 20, 60, 30), "spawn"))
 		{
 			if (testBot == null)
 				testBot = AddBot();
 		}
 
-		if (GUI.Button(new Rect(20, 20, 100, 30), "wander"))
+		if (GUI.Button(new Rect(20, 60, 60, 30), "wander"))
 		{
-			testBot.GetKinematic().tur
+			bool isOn = testBot.GetSteering().IsSteeringOn(SteeringType.Wander);
+			testBot.GetSteering().TurnSteeringOn(SteeringType.Wander, !isOn);
 		}
 
-		if (GUI.Button(new Rect(20, 20, 100, 30), "seek"))
+		if (GUI.Button(new Rect(20, 100, 60, 30), "seek"))
 		{
-
+			testBot.GetKinematic().targetPosition = new Vector3(0, 1, 0);
+			bool isOn = testBot.GetSteering().IsSteeringOn(SteeringType.Seek);
+			testBot.GetSteering().TurnSteeringOn(SteeringType.Seek, !isOn);
 		}
 
 	}
 
 	Agent AddBot()
 	{
-		var prefab = Resources.Load("prefabs/bot1");
+		var prefab = Resources.Load("Prefabs/Bot1");
 		GameObject go = GameObject.Instantiate(prefab) as GameObject;
 		Agent agent = go.AddComponent<Agent>();
+		SteeringComponent steer = go.AddComponent<SteeringComponent>();
+		KinematicComponent kinm = go.AddComponent<KinematicComponent>();
 		Locomotion loco = go.AddComponent<Locomotion>();
+
+		float x = MathUtil.RandFloat() * 10;
+		float y = 1;
+		float z = MathUtil.RandFloat() * 10;
+		kinm.SetPosition(x, y, z);
 
 		return agent;
 	}
+
 
 }

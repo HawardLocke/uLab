@@ -5,31 +5,45 @@ using UnityEngine;
 namespace Lite
 {
 
-	public class Agent : MonoBehaviour
+	public class Agent : IComponent
 	{
-		public Blackborad blackboard;
+		private Blackborad blackboard;
 
 		private KinematicComponent kinematic;
 
-		public Agent()
+		private SteeringComponent steering;
+
+
+		public override void OnAwake()
 		{
 			blackboard = new Blackborad(this);
 		}
 
-		void Update()
+		public override void OnStart()
+		{
+			kinematic = GetComponent<KinematicComponent>();
+
+			steering = GetComponent<SteeringComponent>();
+		}
+
+		public override void OnUpdate()
 		{
 			
 		}
 
+		public Blackborad GetBlackborad()
+		{
+			return blackboard;
+		}
+
 		public KinematicComponent GetKinematic()
 		{
-			if (kinematic == null)
-			{
-				var loco = GetComponent<Locomotion>();
-				if (loco != null)
-					kinematic = loco.GetKinematic();
-			}
 			return kinematic;
+		}
+
+		public SteeringComponent GetSteering()
+		{
+			return steering;
 		}
 
 	}
