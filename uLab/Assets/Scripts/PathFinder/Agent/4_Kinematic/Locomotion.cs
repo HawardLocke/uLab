@@ -1,66 +1,83 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Locomotion : Movable 
+namespace Lite
 {
-	private CharacterController controller;
-	private Rigidbody theRigidbody;
-	private Vector3 moveDistance;
-	public bool displayTrack;
 
-	void Start () 
+	public class Locomotion : MonoBehaviour
 	{
-		controller = GetComponent<CharacterController>();
-		theRigidbody = GetComponent<Rigidbody>();
-		moveDistance = new Vector3(0,0,0);
-		base.Start();
+		private KinematicComponent m_kinematic;
+
+		public bool displayTrack;
+
+		public float computeInterval = 0.2f;
+
+		public float damping = 0.9f;
+
+		private float timer;
+
+		private CharacterController controller;
+		private Rigidbody theRigidbody;
+
+
+		void Awake()
+		{
+			m_kinematic = new KinematicComponent();
+		}
+
+		void Start()
+		{
+			timer = 0;
+			controller = GetComponent<CharacterController>();
+			theRigidbody = GetComponent<Rigidbody>();
+		}
+
+		void Update()
+		{
+			timer += Time.deltaTime;
+			if (timer > computeInterval)
+			{
+				m_kinematic.UpdateSteering();
+
+				timer = 0;
+			}
+		}
+
+		void FixedUpdate()
+		{
+			m_kinematic.UpdatePosition(Time.fixedDeltaTime);
+
+			Vector3 velocity = m_kinematic.velocity;
+
+			Vector3 moveDistance = velocity * Time.fixedDeltaTime;
+
+			if (displayTrack)
+				Debug.DrawLine(transform.position, transform.position + moveDistance, Color.black, 30.0f);
+
+			if (controller != null)
+			{
+				controller.SimpleMove(velocity);
+			}
+			else if (theRigidbody == null || theRigidbody.isKinematic)
+			{
+				transform.position += moveDistance;
+			}
+			else
+			{
+				theRigidbody.MovePosition(theRigidbody.position + moveDistance);
+			}
+
+			// force position
+			m_kinematic.position = transform.position;
+
+			// turning
+			if (velocity.sqrMagnitude > 0.00001)
+			{
+				Vector3 newForward = Vector3.Slerp(transform.forward, velocity, damping * Time.deltaTime);
+				transform.forward = newForward;
+			}
+
+		}
 	}
-	
 
-	void FixedUpdate()
-	{
-		velocity += acceleration * Time.fixedDeltaTime; 
-		
-		if (velocity.sqrMagnitude > sqrMaxSpeed)
-			velocity = velocity.normalized * maxSpeed;
-		
-		moveDistance = velocity * Time.fixedDeltaTime;
-		
-		if (isPlanar)
-		{
-			velocity.y = 0;
-			moveDistance.y = 0;
-		}
-
-		if (displayTrack)
-			//Debug.DrawLine(transform.position, transform.position + moveDistance, Color.red,30.0f);
-			Debug.DrawLine(transform.position, transform.position + moveDistance, Color.black, 30.0f);
-		
-		if (controller != null)
-		{
-			//if (displayTrack)
-				//Debug.DrawLine(transform.position, transform.position + moveDistance, Color.blue,20.0f);
-			controller.SimpleMove(velocity);
-
-		}
-		else if (theRigidbody == null || theRigidbody.isKinematic)
-		{
-			transform.position += moveDistance;
-		}
-		else
-		{
-			theRigidbody.MovePosition(theRigidbody.position + moveDistance);		
-		}
-		
-		//updata facing direction
-		if (velocity.sqrMagnitude > 0.00001)
-		{
-			Vector3 newForward = Vector3.Slerp(transform.forward, velocity, damping * Time.deltaTime);
-			if (isPlanar)
-				newForward.y = 0;
-			transform.forward = newForward;
-		}
-
-		//gameObject.animation.Play("walk");
-	}
 }
