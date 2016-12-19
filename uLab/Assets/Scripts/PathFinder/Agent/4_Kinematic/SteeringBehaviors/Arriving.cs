@@ -15,7 +15,7 @@ namespace Lite
 
 		public override Vector3 Calculate()
 		{
-			Vector3 toTarget = m_kinematic.targetPosition - m_kinematic.position;
+			Vector3 toTarget = GetKinematic().targetPosition - GetKinematic().position;
 
 			double distSqr = toTarget.sqrMagnitude;
 
@@ -27,11 +27,11 @@ namespace Lite
 
 				float speed = dist / (DecelerationTweaker);
 
-				speed = System.Math.Min(speed, m_kinematic.maxSpeed);
+				speed = System.Math.Min(speed, GetKinematic().maxSpeed);
 
 				Vector3 desiredVelocity = toTarget / dist * speed;
 
-				return (desiredVelocity - m_kinematic.velocity);
+				return (desiredVelocity - GetKinematic().velocity);
 			}
 
 			return Vector3.zero;

@@ -10,6 +10,8 @@ namespace Lite
 
 		public Vector3 position;
 
+		public Vector3 forward;
+
 		public Vector3 velocity;
 
 		public Vector3 acceleration;
@@ -23,6 +25,8 @@ namespace Lite
 		public bool isPlanar;
 
 		public Vector3 targetPosition;
+
+		public float wanderRadius;
 
 
 		private SteeringBehaviors steering;
@@ -39,6 +43,7 @@ namespace Lite
 			maxSpeed = 10;
 			isPlanar = true;
 			targetPosition = new Vector3(0, 0, 0);
+			wanderRadius = 5;
 
 			steering = new SteeringBehaviors(this);
 		}

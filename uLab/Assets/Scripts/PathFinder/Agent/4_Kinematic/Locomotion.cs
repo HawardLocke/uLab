@@ -37,7 +37,7 @@ namespace Lite
 			timer += Time.deltaTime;
 			if (timer > computeInterval)
 			{
-				m_kinematic.UpdateSteering();
+				GetKinematic().UpdateSteering();
 
 				timer = 0;
 			}
@@ -45,9 +45,9 @@ namespace Lite
 
 		void FixedUpdate()
 		{
-			m_kinematic.UpdatePosition(Time.fixedDeltaTime);
+			GetKinematic().UpdatePosition(Time.fixedDeltaTime);
 
-			Vector3 velocity = m_kinematic.velocity;
+			Vector3 velocity = GetKinematic().velocity;
 
 			Vector3 moveDistance = velocity * Time.fixedDeltaTime;
 
@@ -68,7 +68,8 @@ namespace Lite
 			}
 
 			// force position
-			m_kinematic.position = transform.position;
+			GetKinematic().position = transform.position;
+			GetKinematic().forward = transform.forward;
 
 			// turning
 			if (velocity.sqrMagnitude > 0.00001)
@@ -77,6 +78,11 @@ namespace Lite
 				transform.forward = newForward;
 			}
 
+		}
+
+		public KinematicComponent GetKinematic()
+		{
+			return m_kinematic;
 		}
 	}
 

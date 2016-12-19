@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -15,11 +16,14 @@ namespace Lite
 
 		public override Vector3 Calculate()
 		{
-			Vector3 desiredVelocity = 
-				Vector3.Normalize(m_kinematic.position - m_kinematic.targetPosition)
-				* m_kinematic.maxSpeed;
-
-			return (desiredVelocity - m_kinematic.velocity);
+			Vector3 SteeringForce = new Vector3(0,0,0);
+			List<KinematicComponent> neighbors = new List<KinematicComponent>();
+			foreach(var kinm in neighbors)
+			{
+				Vector3 ToAgent = GetKinematic().position - kinm.position;
+				SteeringForce += ToAgent.normalized / ToAgent.magnitude;
+			}
+			return SteeringForce;
 		}
 
 	}

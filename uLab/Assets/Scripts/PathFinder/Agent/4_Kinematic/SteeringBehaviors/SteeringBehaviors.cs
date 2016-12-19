@@ -25,20 +25,35 @@ namespace Lite
 		private Dictionary<SteeringType, Steering> m_steeringMap;
 
 
-		public SteeringBehaviors(KinematicComponent agent)
+		public SteeringBehaviors(KinematicComponent kinm)
 		{
-			m_kinematic = agent;
+			m_kinematic = kinm;
 			m_steeringForce = new Vector3(0,0,0);
 			m_steeringPriority = new List<Steering>();
 			m_steeringMap = new Dictionary<SteeringType, Steering>();
 			//
-			m_steeringPriority.Add(new Seeking(agent));
-			m_steeringMap.Add(SteeringType.Seek, new Seeking(agent));
-			m_steeringPriority.Add(new Arriving(agent));
-			m_steeringMap.Add(SteeringType.Arrive, new Arriving(agent));
-			m_steeringPriority.Add(new Wandering(agent));
-			m_steeringMap.Add(SteeringType.Wander, new Wandering(agent));
+			Steering st;
+			st = new Seeking(kinm);
+			m_steeringPriority.Add(st);
+			m_steeringMap.Add(SteeringType.Seek, st);
+			st = new Arriving(kinm);
+			m_steeringPriority.Add(st);
+			m_steeringMap.Add(SteeringType.Arrive, st);
+			st = new Wandering(kinm);
+			m_steeringPriority.Add(st);
+			m_steeringMap.Add(SteeringType.Wander, st);
+			st = new Seperating(kinm);
+			m_steeringPriority.Add(st);
+			m_steeringMap.Add(SteeringType.Separation, st);
+			st = new WallAvoiding(kinm);
+			m_steeringPriority.Add(st);
+			m_steeringMap.Add(SteeringType.WallAvoidance, st);
 			// ...
+		}
+
+		public KinematicComponent GetKinematic()
+		{
+			return m_kinematic;
 		}
 
 		public Vector3 Calculate()
@@ -49,7 +64,7 @@ namespace Lite
 
 			foreach (Steering s in m_steeringPriority)
 			{
-				if (!s.isOn)
+				if (!s.IsEnabled())
 					continue;
 				force = s.Calculate() * s.weight;
 				if (!AccumulateForce(ref m_steeringForce, ref force))
@@ -62,28 +77,36 @@ namespace Lite
 		private bool AccumulateForce(ref Vector3 forceNow, ref Vector3 addForce)
 		{
 			float lenNow = forceNow.magnitude;
-			if (lenNow >= m_kinematic.maxForce)
+			if (lenNow >= GetKinematic().maxForce)
 			{
 				return false;
 			}
 			else
 			{
 				float lenAdd = addForce.magnitude;
-				if (lenNow + lenAdd > m_kinematic.maxForce)
+				if (lenNow + lenAdd > GetKinematic().maxForce)
 				{
-					addForce = addForce * ((m_kinematic.maxForce - lenNow) / lenAdd);
+					addForce = addForce * ((GetKinematic().maxForce - lenNow) / lenAdd);
 				}
 				forceNow += addForce;
 				return true;
 			}
 		}
 
-		public void SetSteeringOn(SteeringType st, bool isOn)
+		public void TurnSteeringOn(SteeringType st)
 		{
 			Steering ster = null;
 			m_steeringMap.TryGetValue(st, out ster);
 			if (ster != null)
-				ster.isOn = isOn;
+				ster.Enable();
+		}
+
+		public void TurnSteeringOff(SteeringType st)
+		{
+			Steering ster = null;
+			m_steeringMap.TryGetValue(st, out ster);
+			if (ster != null)
+				ster.Disable();
 		}
 
 	}
