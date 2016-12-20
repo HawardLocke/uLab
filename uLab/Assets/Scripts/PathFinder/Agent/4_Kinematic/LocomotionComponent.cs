@@ -4,10 +4,8 @@ using System.Collections;
 namespace Lite
 {
 
-	public class Locomotion : IComponent
+	public class LocomotionComponent : KinematicComponent
 	{
-		private KinematicComponent m_kinematic;
-
 		public bool displayTrack;
 
 		public float damping = 0.9f;
@@ -17,37 +15,30 @@ namespace Lite
 		private Rigidbody theRigidbody;
 
 
-		public override void OnAwake()
-		{
-			
-		}
-
 		public override void OnStart()
 		{
-			m_kinematic = GetComponent<KinematicComponent>();
 			controller = GetComponent<CharacterController>();
 			theRigidbody = GetComponent<Rigidbody>();
 		}
 
 		public override void OnUpdate()
 		{
+			base.OnUpdate();
 			UpdateMovement();
 		}
 
 		private void UpdateMovement()
 		{
-			Vector3 velocity = GetKinematic().velocity;
-
-			if (velocity.sqrMagnitude > 0.00001)
+			if (this.velocity.sqrMagnitude > 0.00001)
 			{
-				Vector3 moveDistance = velocity * Time.fixedDeltaTime;
+				Vector3 moveDistance = this.velocity * Time.fixedDeltaTime;
 
 				if (displayTrack)
 					Debug.DrawLine(transform.position, transform.position + moveDistance, Color.black, 30.0f);
 
 				if (controller != null)
 				{
-					controller.SimpleMove(velocity);
+					controller.SimpleMove(this.velocity);
 				}
 				else if (theRigidbody == null || theRigidbody.isKinematic)
 				{
@@ -59,22 +50,17 @@ namespace Lite
 				}
 
 				// force position
-				GetKinematic().position = transform.position;
-				GetKinematic().forward = transform.forward;
+				this.position = transform.position;
+				this.forward = transform.forward;
 			}
 
 			// turning
-			if (velocity.sqrMagnitude > 0.00001)
+			if (this.velocity.sqrMagnitude > 0.00001)
 			{
-				Vector3 newForward = Vector3.Slerp(transform.forward, velocity, damping * Time.deltaTime);
+				Vector3 newForward = Vector3.Slerp(transform.forward, this.velocity, damping * Time.deltaTime);
 				transform.forward = newForward;
 			}
 
-		}
-
-		public KinematicComponent GetKinematic()
-		{
-			return m_kinematic;
 		}
 
 	}

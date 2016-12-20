@@ -18,8 +18,6 @@ namespace Lite
 	{
 		private KinematicComponent m_kinematic;
 
-		private Vector3 m_steeringForce;
-
 		private List<Steering> m_steeringPriority;
 
 		private Dictionary<SteeringType, Steering> m_steeringMap;
@@ -30,7 +28,6 @@ namespace Lite
 
 		public override void OnAwake()
 		{
-			m_steeringForce = new Vector3(0,0,0);
 			m_steeringPriority = new List<Steering>();
 			m_steeringMap = new Dictionary<SteeringType, Steering>();
 
@@ -75,51 +72,41 @@ namespace Lite
 			}
 		}
 
-		public KinematicComponent GetKinematic()
-		{
-			return m_kinematic;
-		}
-
 		public Vector3 Calculate()
 		{
-			m_steeringForce = new Vector3(0, 0, 0);
-
-			Vector3 force;
+			Vector3 steeringForce = new Vector3(0, 0, 0);
 
 			foreach (Steering s in m_steeringPriority)
 			{
 				if (!s.IsEnabled())
 					continue;
-				force = s.Calculate() * s.weight;
-				if (!AccumulateForce(ref m_steeringForce, ref force))
+				Vector3 force = s.Calculate() * s.weight;
+				if (!AccumulateForce(ref steeringForce, ref force))
 					break;
 			}
 
-			return m_steeringForce;
+			m_kinematic.steeringForce = steeringForce;
+
+			return steeringForce;
 		}
 
 		private bool AccumulateForce(ref Vector3 forceNow, ref Vector3 addForce)
 		{
 			float lenNow = forceNow.magnitude;
-			if (lenNow >= GetKinematic().maxForce)
+			if (lenNow >= m_kinematic.maxForce)
 			{
 				return false;
 			}
 			else
 			{
 				float lenAdd = addForce.magnitude;
-				if (lenNow + lenAdd > GetKinematic().maxForce)
+				if (lenNow + lenAdd > m_kinematic.maxForce)
 				{
-					addForce = addForce * ((GetKinematic().maxForce - lenNow) / lenAdd);
+					addForce = addForce * ((m_kinematic.maxForce - lenNow) / lenAdd);
 				}
 				forceNow += addForce;
 				return true;
 			}
-		}
-
-		public Vector3 GetSteeringForce()
-		{
-			return m_steeringForce;
 		}
 
 		public void TurnSteeringOn(SteeringType st, bool isOn)

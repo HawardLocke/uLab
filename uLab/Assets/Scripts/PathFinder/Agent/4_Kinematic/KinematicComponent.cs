@@ -29,11 +29,6 @@ namespace Lite
 		public float wanderRadius;
 
 
-		private SteeringComponent steering;
-
-		
-
-
 		public override void OnAwake()
 		{
 			mass = 1;
@@ -48,11 +43,6 @@ namespace Lite
 			wanderRadius = 2;
 		}
 
-		public override void OnStart()
-		{
-			steering = GetComponent<SteeringComponent>();
-		}
-
 		public override void OnUpdate()
 		{
 			UpdatePosition();
@@ -61,7 +51,6 @@ namespace Lite
 		private void UpdatePosition()
 		{
 			float deltaTime = Time.deltaTime;
-			steeringForce = steering.GetSteeringForce();
 			acceleration = steeringForce / mass;
 			velocity += acceleration * deltaTime;
 			if (velocity.sqrMagnitude > maxSpeed * maxSpeed)
