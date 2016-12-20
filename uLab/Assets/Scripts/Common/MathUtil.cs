@@ -9,7 +9,7 @@ namespace Lite
 
 		private static Random rnd = new Random();
 
-		public static float RandInt(int min, int max)
+		public static int RandInt(int min, int max)
 		{
 			return rnd.Next(min, max);
 		}

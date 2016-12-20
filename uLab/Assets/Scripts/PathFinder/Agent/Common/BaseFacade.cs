@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lite
 {
-	public abstract class LayeredFacade<T> where T : Agent
+	public abstract class BaseFacade<T> where T : Agent
 	{
 		private Dictionary<long, T> m_agentMap;
 
@@ -19,15 +19,22 @@ namespace Lite
 
 		public virtual void AddAgent(T agent)
 		{
-			if (!m_agentMap.ContainsKey(agent.GUID))
+			if (!m_agentMap.ContainsKey(agent.Guid))
 			{
-				m_agentMap.Add(agent.GUID, agent);
+				m_agentMap.Add(agent.Guid, agent);
 			}
 		}
 
 		public virtual void DeleteAgent(T agent)
 		{
-			m_agentMap.Remove(agent.GUID);
+			m_agentMap.Remove(agent.Guid);
+		}
+
+		public T FindAgent(long guid)
+		{
+			T agent;
+			m_agentMap.TryGetValue(guid, out agent);
+			return agent;
 		}
 
 

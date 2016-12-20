@@ -10,38 +10,47 @@ using Lite.Graph;
 
 public class SteeringTest : MonoBehaviour
 {
-	KinematicAgent bot1 = null;
+	long bot1_id;
 
-	KinematicAgent bot2 = null;
+	long bot2_id;
 
-	KinematicAgent bot3 = null;
+	long bot3_id;
+
+	string[] botFilePath = { "Prefabs/Bot1", "Prefabs/Bot2", "Prefabs/Bot3" };
 
 	void OnGUI()
 	{
 		if (GUI.Button(new Rect(20, 20, 60, 30), "spawn"))
 		{
-			if (bot1 == null)
-				bot1 = AddBot();
+			if (bot1_id == 0)
+				bot1_id = AddBot().Guid;
+			else if (bot2_id == 0)
+				bot2_id = AddBot().Guid;
+			else if (bot3_id == 0)
+				bot3_id = AddBot().Guid;
 		}
 
 		if (GUI.Button(new Rect(20, 60, 60, 30), "wander"))
 		{
-			bool isOn = bot1.GetSteering().IsSteeringOn(SteeringType.Wander);
-			bot1.GetSteering().TurnSteeringOn(SteeringType.Wander, !isOn);
+			KinematicAgent kinAgent = KinematicFacade.Instance.FindAgent(bot1_id);
+			bool isOn = kinAgent.GetSteering().IsSteeringOn(SteeringType.Wander);
+			kinAgent.GetSteering().TurnSteeringOn(SteeringType.Wander, !isOn);
 		}
 
 		if (GUI.Button(new Rect(20, 100, 60, 30), "seek"))
 		{
-			bot1.GetKinematic().targetPosition = new Vector3(0, 1, 0);
-			bool isOn = bot1.GetSteering().IsSteeringOn(SteeringType.Seek);
-			bot1.GetSteering().TurnSteeringOn(SteeringType.Seek, !isOn);
+			KinematicAgent kinAgent = KinematicFacade.Instance.FindAgent(bot1_id);
+			kinAgent.GetKinematic().targetPosition = new Vector3(0, 1, 0);
+			bool isOn = kinAgent.GetSteering().IsSteeringOn(SteeringType.Seek);
+			kinAgent.GetSteering().TurnSteeringOn(SteeringType.Seek, !isOn);
 		}
 
 		if (GUI.Button(new Rect(20, 140, 60, 30), "arrive"))
 		{
-			bot1.GetKinematic().targetPosition = new Vector3(0, 1, 0);
-			bool isOn = bot1.GetSteering().IsSteeringOn(SteeringType.Arrive);
-			bot1.GetSteering().TurnSteeringOn(SteeringType.Arrive, !isOn);
+			KinematicAgent kinAgent = KinematicFacade.Instance.FindAgent(bot1_id);
+			kinAgent.GetKinematic().targetPosition = new Vector3(0, 1, 0);
+			bool isOn = kinAgent.GetSteering().IsSteeringOn(SteeringType.Arrive);
+			kinAgent.GetSteering().TurnSteeringOn(SteeringType.Arrive, !isOn);
 		}
 
 	}
@@ -56,7 +65,7 @@ public class SteeringTest : MonoBehaviour
 		KinematicAgent kinAgent = new KinematicAgent(GuidGenerator.NextLong());
 		KinematicFacade.Instance.AddAgent(kinAgent);
 
-		var prefab = Resources.Load("Prefabs/Bot1");
+		var prefab = Resources.Load(botFilePath[MathUtil.RandInt(0,2)]);
 		GameObject go = GameObject.Instantiate(prefab) as GameObject;
 		AgentComponent agentCom = go.AddComponent<AgentComponent>();
 		agentCom.agent = kinAgent;

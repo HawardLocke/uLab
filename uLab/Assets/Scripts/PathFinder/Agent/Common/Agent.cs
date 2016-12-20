@@ -17,7 +17,7 @@ namespace Lite
 			m_blackboard = new Blackborad(this);
 		}
 
-		public long GUID
+		public long Guid
 		{
 			get { return m_guid; }
 		}

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Lite
 {
-	public class KinematicFacade : LayeredFacade<KinematicAgent>
+	public class KinematicFacade : BaseFacade<KinematicAgent>
 	{
 		private static KinematicFacade _inst;
 		public static KinematicFacade Instance
@@ -16,8 +16,9 @@ namespace Lite
 					_inst = new KinematicFacade();
 				return _inst;
 			}
-			
 		}
+
+
 
 	}
 

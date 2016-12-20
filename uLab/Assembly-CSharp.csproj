@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Common\GuidGenerator.cs" />
      <Compile Include="Assets\Scripts\Common\Log.cs" />
      <Compile Include="Assets\Scripts\Common\MathUtil.cs" />
      <Compile Include="Assets\Scripts\Common\RuntimeStatus.cs" />
@@ -95,12 +96,19 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Goal.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Planner.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\WorldState.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\Request\GoToRequest.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\Request\Request.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\RequestList.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\RequestManager.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behavior\BehaviorAgent.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behavior\BehaviorFacade.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behavior\IRequestHandler.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behavior\RequestHandlerManager.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AgentComponent.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\KinematicAgent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\KinematicComponent.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\Locomotion.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\KinematicFacade.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\LocomotionComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\SteeringBehaviors\Arriving.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\SteeringBehaviors\Seeking.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\SteeringBehaviors\Separating.cs" />
@@ -108,8 +116,9 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\SteeringBehaviors\SteeringComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\SteeringBehaviors\WallAvoiding.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\SteeringBehaviors\Wandering.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Agent.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Blackborad.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Agent.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BaseFacade.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Blackborad.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphEdge.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphNode.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\SparseGraph.cs" />
