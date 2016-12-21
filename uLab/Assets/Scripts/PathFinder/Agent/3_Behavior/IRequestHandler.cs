@@ -6,7 +6,7 @@ namespace Lite
 {
 	public interface IRequestHandler
 	{
-		void OnRequest();
+		void OnRequest(Request request);
 	}
 
 }

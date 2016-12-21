@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Lite
 {
-	public class RequestHandlerManager : Singleton<RequestHandlerManager>
+	public class RequestHandlerManager
 	{
 		private Dictionary<int, IRequestHandler> m_handlerMap;
 
@@ -13,19 +13,23 @@ namespace Lite
 			m_handlerMap = new Dictionary<int, IRequestHandler>();
 		}
 
-		public void AddHandler(int requestID, IRequestHandler handler)
+		public void RegisterHandler(int requestType, IRequestHandler handler)
 		{
-			m_handlerMap.Add(requestID, handler);
+			m_handlerMap.Add(requestType, handler);
 		}
 
-		public void HandleRequest()
+		public void UnregisterHandler(int requestType)
 		{
-			int requestID = 0xfff;
+			m_handlerMap.Remove(requestType);
+		}
+
+		public void HandleRequest(Request request)
+		{
 			IRequestHandler handler = null;
-			m_handlerMap.TryGetValue(requestID, out handler);
+			m_handlerMap.TryGetValue(request.typeID, out handler);
 			if (handler != null)
 			{
-				handler.OnRequest();
+				handler.OnRequest(request);
 			}
 		}
 

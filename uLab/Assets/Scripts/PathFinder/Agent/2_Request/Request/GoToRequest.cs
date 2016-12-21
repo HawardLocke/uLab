@@ -10,7 +10,7 @@ namespace Lite
 	[Serializable]
 	public class GoToRequest : Request
 	{
-		public int ID;
+		
 	}
 
 }

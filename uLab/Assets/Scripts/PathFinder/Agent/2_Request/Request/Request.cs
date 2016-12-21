@@ -10,7 +10,9 @@ namespace Lite
 	[Serializable]
 	public abstract class Request
 	{
-		public int ID;
+		public int typeID;
+
+		public long ownerGuid;
 
 		public byte[] Serialize()
 		{

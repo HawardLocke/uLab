@@ -6,12 +6,14 @@ namespace Lite
 {
 	public abstract class BaseFacade<T> where T : Agent
 	{
-		private Dictionary<long, T> m_agentMap;
+		protected Dictionary<long, T> m_agentMap;
 
-		public virtual void Init() 
+		public BaseFacade()
 		{
 			m_agentMap = new Dictionary<long, T>();
 		}
+
+		public virtual void Init() { }
 
 		public virtual void Update() { }
 
@@ -25,9 +27,9 @@ namespace Lite
 			}
 		}
 
-		public virtual void DeleteAgent(T agent)
+		public virtual void DeleteAgent(long guid)
 		{
-			m_agentMap.Remove(agent.Guid);
+			m_agentMap.Remove(guid);
 		}
 
 		public T FindAgent(long guid)

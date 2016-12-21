@@ -10,7 +10,7 @@ namespace Lite
 
 		private float m_dWanderJitter = 2;
 
-		private float m_dWanderDistance = 1;
+		//private float m_dWanderDistance = 1;
 
 		public Wandering(KinematicComponent kinm) : 
 			base(kinm)
