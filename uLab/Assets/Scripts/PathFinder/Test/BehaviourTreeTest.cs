@@ -48,10 +48,10 @@ public class BehaviourTreeTest : MonoBehaviour
 		tree.title = "test tree";
 		tree.description = "just for test..";
 		tree.root = new Repeater(
-			new Selector(
+			new Wait(new Selector(
 				new Action1(),
 				new Action2(),
-				new Action3()),
+				new Action3()), 5),
 			5);
 		tree.context.data = 2333;
 	}

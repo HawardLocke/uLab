@@ -1,4 +1,5 @@
 
+using System.Collections;
 using System.Collections.Generic;
 
 
@@ -37,55 +38,6 @@ namespace Lite.BevTree
 			byte[] buffer = System.Guid.NewGuid().ToByteArray();
 			return System.BitConverter.ToInt64(buffer, 0);
 		}
-	}
-
-	public class BehaviourTree
-	{
-		public long guid;
-		public string title;
-		public string description;
-		public BehaviourNode root;
-		public Context context;
-		public Blackborad balckboard;
-
-		private Dictionary<long, BehaviourNode> m_openNodes;
-		
-		public BehaviourTree()
-		{
-			guid = GuidGen.NextLong();
-			context = new Context(this);
-			balckboard = new Blackborad(this);
-			m_openNodes = new Dictionary<long, BehaviourNode>();
-		}
-
-		public RunningState Tick()
-		{
-			RunningState ret = RunningState.Running;
-			if (root != null)
-				ret = root.Tick(context);
-			return ret;
-		}
-
-		public bool IsInOpenNodes(BehaviourNode node)
-		{
-			return m_openNodes.ContainsKey(node.guid);
-		}
-
-		public void AddToOpenNodes(BehaviourNode node)
-		{
-			m_openNodes.Add(node.guid, node);
-		}
-
-		public void RemoveFromOpenNodes(BehaviourNode node)
-		{
-			m_openNodes.Remove(node.guid);
-		}
-
-		public void Dump()
-		{
-
-		}
-
 	}
 
 	public class Blackborad
@@ -139,6 +91,80 @@ namespace Lite.BevTree
 
 	}
 
+	public class BehaviourTree
+	{
+		public long guid;
+		public string title;
+		public string description;
+		public BehaviourNode root;
+		public Context context;
+		public Blackborad balckboard;
+
+		private Dictionary<long, BehaviourNode> m_lastOpenNodes;
+		private Dictionary<long, BehaviourNode> m_openNodes;
+		//private Dictionary<long, BehaviourNode> m_openNodes;
+		
+		public BehaviourTree()
+		{
+			guid = GuidGen.NextLong();
+			context = new Context(this);
+			balckboard = new Blackborad(this);
+			m_lastOpenNodes = new Dictionary<long, BehaviourNode>();
+			m_openNodes = new Dictionary<long, BehaviourNode>();
+		}
+
+		public RunningState Tick()
+		{
+			RunningState ret = RunningState.Running;
+
+			if (root != null)
+			{
+				m_openNodes.Clear();
+				ret = root._Tick(context);
+			}
+
+			IDictionaryEnumerator itor = m_lastOpenNodes.GetEnumerator();
+
+			while (itor.MoveNext())
+			{
+				long guid = (long)itor.Entry.Key;
+				if (!m_openNodes.ContainsKey(guid))
+				{
+					m_lastOpenNodes[guid]._Close(context);
+				}
+			}
+
+			UnityEngine.Debug.Log(string.Format("{0}, {1}", m_lastOpenNodes.Count, m_openNodes.Count));
+
+			m_lastOpenNodes.Clear();
+
+			itor = m_openNodes.GetEnumerator();
+
+			while (itor.MoveNext())
+			{
+				m_lastOpenNodes.Add((long)itor.Entry.Key, (BehaviourNode)itor.Entry.Value);
+			}
+
+			return ret;
+		}
+
+		public bool _IsNodeOpen(BehaviourNode node)
+		{
+			return m_lastOpenNodes.ContainsKey(node.guid);
+		}
+
+		public void _AddOpenNode(BehaviourNode node)
+		{
+			m_openNodes.Add(node.guid, node);
+		}
+
+		public void Dump()
+		{
+
+		}
+
+	}
+
 
 	public abstract class BehaviourNode
 	{
@@ -160,12 +186,19 @@ namespace Lite.BevTree
 		protected virtual void OnExit(Context context) { }
 
 		protected abstract RunningState OnTick(Context context);
-		
-		public RunningState Tick(Context context) 
+
+		public void _Close(Context context)
 		{
-			if (!context.tree.IsInOpenNodes(this))
+			UnityEngine.Debug.Log("_close");
+			OnClose(context);
+		}
+		
+		public RunningState _Tick(Context context) 
+		{
+			bool newOpen = false;
+			if (!context.tree._IsNodeOpen(this))
 			{
-				context.tree.AddToOpenNodes(this);
+				newOpen = true;
 				OnOpen(context);
 			}
 
@@ -177,9 +210,11 @@ namespace Lite.BevTree
 
 			if (ret != RunningState.Running)
 			{
-				context.tree.RemoveFromOpenNodes(this);
-				OnClose(context);
+				newOpen = false;
 			}
+
+			if (newOpen)
+				context.tree._AddOpenNode(this);
 
 			return ret;
 		}
@@ -223,7 +258,7 @@ namespace Lite.BevTree
 		{
 			for (int i = 0; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i].Tick(context);
+				RunningState ret = m_children[i]._Tick(context);
 				if (ret != RunningState.Failure)
 					return ret;
 			}
@@ -250,7 +285,7 @@ namespace Lite.BevTree
 		{
 			for (int i = currentNodeIndex; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i].Tick(context);
+				RunningState ret = m_children[i]._Tick(context);
 				if (ret != RunningState.Success || currentNodeIndex == m_children.Count - 1)
 					return ret;
 				currentNodeIndex++;
@@ -271,7 +306,7 @@ namespace Lite.BevTree
 		{
 			for (int i = 0; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i].Tick(context);
+				RunningState ret = m_children[i]._Tick(context);
 				if (ret != RunningState.Running)
 					return ret;
 			}
@@ -297,7 +332,7 @@ namespace Lite.BevTree
 
 		protected override RunningState OnTick(Context context)
 		{
-			return m_children[randomIndex].Tick(context);
+			return m_children[randomIndex]._Tick(context);
 		}
 
 	}
@@ -320,7 +355,7 @@ namespace Lite.BevTree
 
 		protected override RunningState OnTick(Context context)
 		{
-			RunningState ret = m_child.Tick(context);
+			RunningState ret = m_child._Tick(context);
 			if (ret == RunningState.Success)
 				return RunningState.Failure;
 			else if (ret == RunningState.Failure)
@@ -345,11 +380,12 @@ namespace Lite.BevTree
 		protected override void OnOpen(Context context)
 		{
 			m_count = 0;
+			UnityEngine.Debug.Log("repeat open");
 		}
 
 		protected override RunningState OnTick(Context context)
 		{
-			RunningState ret = m_child.Tick(context);
+			RunningState ret = m_child._Tick(context);
 			if (ret == RunningState.Success)
 			{
 				m_count++;
@@ -377,6 +413,7 @@ namespace Lite.BevTree
 
 		protected override void OnOpen(Context context)
 		{
+			UnityEngine.Debug.Log("wait open");
 			m_beginTime = System.DateTime.Now.Ticks / 10000;
 		}
 
@@ -384,7 +421,7 @@ namespace Lite.BevTree
 		{
 			if (System.DateTime.Now.Ticks / 10000 > m_beginTime + m_millseconds)
 			{
-				return m_child.Tick(context);
+				return m_child._Tick(context);
 			}
 
 			return RunningState.Running;
