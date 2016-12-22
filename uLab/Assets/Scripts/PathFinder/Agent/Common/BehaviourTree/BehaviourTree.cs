@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 
 
-namespace Lite.BehaviourTree
+namespace Lite.BevTree
 {
 	public class Context
 	{
-		public Tree tree;
+		public BehaviourTree tree;
 		public object data;
 
-		public Context(Tree tree)
+		public Context(BehaviourTree tree)
 		{
 			this.tree = tree;
 		}
@@ -39,45 +39,44 @@ namespace Lite.BehaviourTree
 		}
 	}
 
-	public class Tree
+	public class BehaviourTree
 	{
 		public long guid;
 		public string title;
 		public string description;
-		public Node root;
+		public BehaviourNode root;
 		public Context context;
 		public Blackborad balckboard;
 
-		private Dictionary<long, Node> m_openNodes;
+		private Dictionary<long, BehaviourNode> m_openNodes;
 		
-		public Tree()
+		public BehaviourTree()
 		{
 			guid = GuidGen.NextLong();
 			context = new Context(this);
 			balckboard = new Blackborad(this);
-			m_openNodes = new Dictionary<long, Node>();
+			m_openNodes = new Dictionary<long, BehaviourNode>();
 		}
 
-		public void Tick()
+		public RunningState Tick()
 		{
-			RunningState st = RunningState.Running;
+			RunningState ret = RunningState.Running;
 			if (root != null)
-			{
-				st = root.Tick(context);
-			}
+				ret = root.Tick(context);
+			return ret;
 		}
 
-		public bool IsInOpenNodes(Node node)
+		public bool IsInOpenNodes(BehaviourNode node)
 		{
 			return m_openNodes.ContainsKey(node.guid);
 		}
 
-		public void AddToOpenNodes(Node node)
+		public void AddToOpenNodes(BehaviourNode node)
 		{
 			m_openNodes.Add(node.guid, node);
 		}
 
-		public void RemoveFromOpenNodes(Node node)
+		public void RemoveFromOpenNodes(BehaviourNode node)
 		{
 			m_openNodes.Remove(node.guid);
 		}
@@ -91,11 +90,11 @@ namespace Lite.BehaviourTree
 
 	public class Blackborad
 	{
-		private Tree m_tree;
+		private BehaviourTree m_tree;
 		private Dictionary<string, System.Object> m_dataDic;
 		private Dictionary<long, Dictionary<string, System.Object>> m_nodeDataDic;
 
-		public Blackborad(Tree tree)
+		public Blackborad(BehaviourTree tree)
 		{
 			m_tree = tree;
 			m_dataDic = new Dictionary<string, object>();
@@ -141,28 +140,28 @@ namespace Lite.BehaviourTree
 	}
 
 
-	public abstract class Node
+	public abstract class BehaviourNode
 	{
 		public long guid;
 		public NodeType nodeType;
 
-		public Node()
+		public BehaviourNode()
 		{
 			guid = GuidGen.NextLong();
 			nodeType = NodeType.Default;
 		}
 
 		protected virtual void OnOpen(Context context) { }
+
+		protected virtual void OnClose(Context context) { }
+
+		protected virtual void OnEnter(Context context) { }
+
+		protected virtual void OnExit(Context context) { }
+
+		protected abstract RunningState OnTick(Context context);
 		
-		public virtual void OnClose(Context context) { }
-
-		public virtual void OnEnter(Context context) { }
-
-		public virtual void OnExit(Context context) { }
-
-		public abstract RunningState OnTick(Context context);
-		
-		public virtual RunningState Tick(Context context) 
+		public RunningState Tick(Context context) 
 		{
 			if (!context.tree.IsInOpenNodes(this))
 			{
@@ -187,17 +186,17 @@ namespace Lite.BehaviourTree
 
 	}
 
-	public abstract class Composite : Node
+	public abstract class Composite : BehaviourNode
 	{
-		protected List<Node> m_children;
+		protected List<BehaviourNode> m_children;
 		
 		public Composite() : base()
 		{
-			m_children = new List<Node>();
+			m_children = new List<BehaviourNode>();
 			nodeType = NodeType.Composite;
 		}
 
-		public void AddChildren(params Node[] nodes)
+		public void AddChildren(params BehaviourNode[] nodes)
 		{
 			for (int i = 0; i < nodes.Length; ++i)
 			{
@@ -205,7 +204,7 @@ namespace Lite.BehaviourTree
 			}
 		}
 
-		public void AddChild(Node node)
+		public void AddChild(BehaviourNode node)
 		{
 			if (!m_children.Contains(node))
 				m_children.Add(node);
@@ -215,7 +214,7 @@ namespace Lite.BehaviourTree
 
 	public class Selector : Composite
 	{
-		public Selector(params Node[] nodes)
+		public Selector(params BehaviourNode[] nodes)
 		{
 			AddChildren(nodes);
 		}
@@ -237,7 +236,7 @@ namespace Lite.BehaviourTree
 	{
 		private int currentNodeIndex = 0;
 
-		public Sequence(params Node[] nodes)
+		public Sequence(params BehaviourNode[] nodes)
 		{
 			AddChildren(nodes);
 		}
@@ -263,7 +262,7 @@ namespace Lite.BehaviourTree
 
 	public class Parallel : Composite
 	{
-		public Parallel(params Node[] nodes)
+		public Parallel(params BehaviourNode[] nodes)
 		{
 			AddChildren(nodes);
 		}
@@ -285,7 +284,7 @@ namespace Lite.BehaviourTree
 	{
 		private int randomIndex = 0;
 
-		public RandomSelector(params Node[] nodes)
+		public RandomSelector(params BehaviourNode[] nodes)
 		{
 			AddChildren(nodes);
 		}
@@ -303,11 +302,11 @@ namespace Lite.BehaviourTree
 
 	}
 
-	public abstract class Decorator : Node
+	public abstract class Decorator : BehaviourNode
 	{
-		protected Node m_child;
+		protected BehaviourNode m_child;
 
-		public Decorator(Node node) : base()
+		public Decorator(BehaviourNode node) : base()
 		{
 			m_child = node;
 			nodeType = NodeType.Decorator;
@@ -317,9 +316,9 @@ namespace Lite.BehaviourTree
 
 	public class Inverter : Decorator
 	{
-		public Inverter(Node node) : base(node) { }
+		public Inverter(BehaviourNode node) : base(node) { }
 
-		public override RunningState OnTick(Context context)
+		protected override RunningState OnTick(Context context)
 		{
 			RunningState ret = m_child.Tick(context);
 			if (ret == RunningState.Success)
@@ -338,7 +337,7 @@ namespace Lite.BehaviourTree
 
 		private uint m_count = 0;
 
-		public Repeater(Node node, uint count) : base(node)
+		public Repeater(BehaviourNode node, uint count) : base(node)
 		{
 			m_targetCount = count;
 		}
@@ -348,7 +347,7 @@ namespace Lite.BehaviourTree
 			m_count = 0;
 		}
 
-		public override RunningState OnTick(Context context)
+		protected override RunningState OnTick(Context context)
 		{
 			RunningState ret = m_child.Tick(context);
 			if (ret == RunningState.Success)
@@ -369,7 +368,7 @@ namespace Lite.BehaviourTree
 
 		private long m_beginTime = 0;
 
-		public Wait(Node node, float seconds) : base(node)
+		public Wait(BehaviourNode node, float seconds) : base(node)
 		{
 			if (seconds < 0)
 				seconds = 0;
@@ -381,7 +380,7 @@ namespace Lite.BehaviourTree
 			m_beginTime = System.DateTime.Now.Ticks / 10000;
 		}
 
-		public override RunningState OnTick(Context context)
+		protected override RunningState OnTick(Context context)
 		{
 			if (System.DateTime.Now.Ticks / 10000 > m_beginTime + m_millseconds)
 			{
@@ -393,7 +392,7 @@ namespace Lite.BehaviourTree
 
 	}
 
-	public abstract class Action : Node
+	public abstract class Action : BehaviourNode
 	{
 		public Action() : base()
 		{
