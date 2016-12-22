@@ -5,10 +5,10 @@ using UnityEngine;
 namespace Lite
 {
 
-	public class BehaviorAgent : Agent
+	public class BehaviourAgent : Agent
 	{
 
-		public BehaviorAgent(long guid) :
+		public BehaviourAgent(long guid) :
 			base(guid)
 		{
 			

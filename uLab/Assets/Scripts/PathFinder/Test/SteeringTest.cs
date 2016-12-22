@@ -91,25 +91,4 @@ public class SteeringTest : MonoBehaviour
 		return kinAgent;
 	}
 
-	void OnPostRender()
-	{
-		GL.LoadOrtho();
-		GL.PushMatrix();
-		lineMat.SetPass(0);
-		GL.LoadPixelMatrix();
-		GL.Color(Color.yellow);
-		GL.Begin(GL.LINES);
-		GL.Vertex3(0, 0, 0);
-		GL.Vertex3(1, 1, 0);
-		GL.End();
-		GL.PopMatrix();
-	}
-
-	/*void OnDrawGizmos()
-	{
-		Vector3[] points = {new Vector3(0,0,0), new Vector3(10,10,10)};
-		GizmoTool.DrawLine(points, Color.cyan);
-	}*/
-
-
 }

@@ -2,11 +2,11 @@
 
 namespace Lite
 {
-	public class BehaviorFacade : BaseFacade<BehaviorAgent>
+	public class BehaviourFacade : BaseFacade<BehaviourAgent>
 	{
 		private RequestHandlerManager requesthandlerManager;
 
-		public BehaviorFacade()
+		public BehaviourFacade()
 		{
 			requesthandlerManager = new RequestHandlerManager();
 		}
