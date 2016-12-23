@@ -9,6 +9,36 @@ namespace Lite.BevTree
 	using ScopedValueDic = Dictionary<long, Dictionary<string, System.Object>>;
 	using NodeStack = Stack<BehaviourNode>;
 
+	class GuidGen
+	{
+		public static long NextLong()
+		{
+			byte[] buffer = System.Guid.NewGuid().ToByteArray();
+			return System.BitConverter.ToInt64(buffer, 0);
+		}
+	}
+
+	class RandomGen
+	{
+		private static System.Random rnd = new System.Random(System.DateTime.Now.Millisecond);
+
+		public static int RandInt(int min, int max)
+		{
+			return rnd.Next(min, max);
+		}
+
+		public static float RandFloat()
+		{
+			return (rnd.Next(0, int.MaxValue)) / (int.MaxValue + 1.0f);
+		}
+
+		public static float RandClamp()
+		{
+			return RandFloat() - RandFloat();
+		}
+	}
+
+
 	public enum RunningState
 	{
 		Running,
@@ -24,28 +54,37 @@ namespace Lite.BevTree
 		Action
 	}
 
-	class GuidGen
-	{
-		public static long NextLong()
-		{
-			byte[] buffer = System.Guid.NewGuid().ToByteArray();
-			return System.BitConverter.ToInt64(buffer, 0);
-		}
-	}
-
 	public class Context
 	{
-		public BehaviourTree tree;
-		public Blackboard blackboard;
+		private BehaviourTree _tree;
+		public BehaviourTree tree { get { return _tree; } }
+
+		private Blackboard _blackboard;
+		public Blackboard blackboard { get { return _blackboard; } }
+
 		public object data;
+
+		private HashSet<long> treeSet;
 
 		public Context()
 		{
-			this.blackboard = new Blackboard();
+			this._blackboard = new Blackboard();
+			this.treeSet = new HashSet<long>();
 		}
-	}
 
-	
+		public void EnsureTreeEnvSetup(BehaviourTree tree)
+		{
+			this._tree = tree;
+			if(!treeSet.Contains(tree.guid))
+			{
+				treeSet.Add(tree.guid);
+				_blackboard.Set(tree.guid, "enterNodes", new NodeStack());
+				_blackboard.Set(tree.guid, "tempEnterNodes", new NodeStack());
+				_blackboard.Set(tree.guid, "openNodes", new NodeStack());
+			}
+		}
+
+	}
 
 	public class Blackboard
 	{
@@ -122,7 +161,7 @@ namespace Lite.BevTree
 
 		public RunningState Tick(Context context)
 		{
-			context.tree = this;
+			context.EnsureTreeEnvSetup(this);
 
 			var enterNodes = context.blackboard.Get<NodeStack>(guid, "enterNodes");
 			enterNodes.Clear();
@@ -197,7 +236,6 @@ namespace Lite.BevTree
 		public void _open(Context context)
 		{
 			context.blackboard.Set(context.tree.guid, guid, "isOpen", true);
-			//context.blackboard.Get<NodeStack>(guid, "openNodes").Push(this);
 			OnOpen(context);
 		}
 
@@ -279,8 +317,6 @@ namespace Lite.BevTree
 
 	public class Sequence : Composite
 	{
-		private int currentNodeIndex = 0;
-
 		public Sequence(params BehaviourNode[] nodes)
 		{
 			AddChildren(nodes);
@@ -288,20 +324,29 @@ namespace Lite.BevTree
 
 		protected override void OnOpen(Context context)
 		{
-			currentNodeIndex = 0;
+			context.blackboard.Set(context.tree.guid, this.guid, "childIndex", 0);
 		}
 
 		protected override RunningState OnTick(Context context)
 		{
+			RunningState ret = RunningState.Running;
+
+			int currentNodeIndex = context.blackboard.Get<int>(context.tree.guid, this.guid, "childIndex");
+
 			for (int i = currentNodeIndex; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i]._tick(context);
-				if (ret != RunningState.Success || currentNodeIndex == m_children.Count - 1)
-					return ret;
+				RunningState retChild = m_children[i]._tick(context);
+				if (retChild != RunningState.Success || currentNodeIndex == m_children.Count - 1)
+				{
+					ret = retChild;
+					break;
+				}
 				currentNodeIndex++;
 			}
 
-			return RunningState.Running;
+			context.blackboard.Set(context.tree.guid, this.guid, "childIndex", currentNodeIndex);
+
+			return ret;
 		}
 	}
 
@@ -327,8 +372,6 @@ namespace Lite.BevTree
 
 	public class RandomSelector : Composite
 	{
-		private int randomIndex = 0;
-
 		public RandomSelector(params BehaviourNode[] nodes)
 		{
 			AddChildren(nodes);
@@ -336,12 +379,13 @@ namespace Lite.BevTree
 
 		protected override void OnOpen(Context context)
 		{
-			System.Random rnd = new System.Random();
-			randomIndex = rnd.Next(0, m_children.Count - 1);
+			int randomIndex = RandomGen.RandInt(0, m_children.Count - 1);
+			context.blackboard.Set(context.tree.guid, this.guid, "randomIndex", randomIndex);
 		}
 
 		protected override RunningState OnTick(Context context)
 		{
+			int randomIndex = context.blackboard.Get<int>(context.tree.guid, this.guid, "randomIndex");
 			return m_children[randomIndex]._tick(context);
 		}
 
@@ -378,46 +422,43 @@ namespace Lite.BevTree
 
 	public class Repeater : Decorator
 	{
-		private uint m_targetCount = 0;
+		private int m_targetCount = 0;
 
-		private uint m_count = 0;
-
-		public Repeater(BehaviourNode node, uint count) : base(node)
+		public Repeater(BehaviourNode node, int count) : base(node)
 		{
 			m_targetCount = count;
 		}
 
 		protected override void OnOpen(Context context)
 		{
-			m_count = 0;
+			context.blackboard.Set(context.tree.guid, this.guid, "count", 0);
 			UnityEngine.Debug.Log("repeat open");
 		}
 
 		protected override RunningState OnTick(Context context)
 		{
-			if (m_count >= m_targetCount)
+			int m_count = context.blackboard.Get<int>(context.tree.guid, this.guid, "count");
+			if (m_targetCount >= 0 && m_count >= m_targetCount)
 				return RunningState.Success;
 
 			RunningState ret = m_child._tick(context);
-			if (ret == RunningState.Success)
+			if (m_targetCount >= 0 && ret == RunningState.Success)
 			{
 				m_count++;
 				if (m_count >= m_targetCount)
 					return RunningState.Success;
 			}
 			
-			return ret;
+			return RunningState.Running;
 		}
 
 	}
 
-	public class Wait : Decorator
+	public class Delay : Decorator
 	{
 		private uint m_millseconds = 0;
 
-		private long m_beginTime = 0;
-
-		public Wait(BehaviourNode node, float seconds) : base(node)
+		public Delay(BehaviourNode node, float seconds) : base(node)
 		{
 			if (seconds < 0)
 				seconds = 0;
@@ -427,12 +468,14 @@ namespace Lite.BevTree
 		protected override void OnOpen(Context context)
 		{
 			UnityEngine.Debug.Log("wait open");
-			m_beginTime = System.DateTime.Now.Ticks / 10000;
+			long beginTime = System.DateTime.Now.Ticks / 10000;
+			context.blackboard.Set(context.tree.guid, this.guid, "beginTime", beginTime);
 		}
 
 		protected override RunningState OnTick(Context context)
 		{
-			if (System.DateTime.Now.Ticks / 10000 > m_beginTime + m_millseconds)
+			long beginTime = context.blackboard.Get<long>(context.tree.guid, this.guid, "beginTime");
+			if (System.DateTime.Now.Ticks / 10000 > beginTime + m_millseconds)
 			{
 				return m_child._tick(context);
 			}
@@ -447,6 +490,37 @@ namespace Lite.BevTree
 		public Action() : base()
 		{
 			nodeType = NodeType.Action;
+		}
+
+	}
+
+	public class Wait : Action
+	{
+		private uint m_millseconds = 0;
+
+		public Wait(float seconds)
+			: base()
+		{
+			if (seconds < 0)
+				seconds = 0;
+			m_millseconds = (uint)(1000 * seconds);
+		}
+
+		protected override void OnOpen(Context context)
+		{
+			long beginTime = System.DateTime.Now.Ticks / 10000;
+			context.blackboard.Set(context.tree.guid, this.guid, "beginTime", beginTime);
+		}
+
+		protected override RunningState OnTick(Context context)
+		{
+			long beginTime = context.blackboard.Get<long>(context.tree.guid, this.guid, "beginTime");
+			if (System.DateTime.Now.Ticks / 10000 > beginTime + m_millseconds)
+			{
+				return RunningState.Success;
+			}
+
+			return RunningState.Running;
 		}
 
 	}

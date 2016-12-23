@@ -48,15 +48,17 @@ public class BehaviourTreeTest : MonoBehaviour
 
 	void Start()
 	{
-		tree = new BehaviourTree();
-		tree.title = "test tree";
-		tree.description = "just for test..";
-		tree.root = new Repeater(
-			new Wait(new Selector(
+		BehaviourNode root = new Repeater(
+			new Delay(new Selector(
 				new Action1(),
 				new Action2(),
 				new Action3()), 1),
 			5);
+
+		tree = new BehaviourTree();
+		tree.title = "test tree";
+		tree.description = "just for test..";
+		tree.root = root;
 
 		context = new Context();
 		context.data = "user data";

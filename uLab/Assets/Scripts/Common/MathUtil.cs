@@ -7,7 +7,7 @@ namespace Lite
 	{
 		public const double PI = Math.PI;
 
-		private static Random rnd = new Random();
+		private static Random rnd = new Random(System.DateTime.Now.Millisecond);
 
 		public static int RandInt(int min, int max)
 		{
