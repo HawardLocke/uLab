@@ -5,16 +5,9 @@ using System.Collections.Generic;
 
 namespace Lite.BevTree
 {
-	public class Context
-	{
-		public BehaviourTree tree;
-		public object data;
-
-		public Context(BehaviourTree tree)
-		{
-			this.tree = tree;
-		}
-	}
+	using ValueDic = Dictionary<string, System.Object>;
+	using ScopedValueDic = Dictionary<long, Dictionary<string, System.Object>>;
+	using NodeStack = Stack<BehaviourNode>;
 
 	public enum RunningState
 	{
@@ -40,48 +33,72 @@ namespace Lite.BevTree
 		}
 	}
 
-	public class Blackborad
+	public class Context
 	{
-		private BehaviourTree m_tree;
-		private Dictionary<string, System.Object> m_dataDic;
-		private Dictionary<long, Dictionary<string, System.Object>> m_nodeDataDic;
+		public BehaviourTree tree;
+		public Blackboard blackboard;
+		public object data;
 
-		public Blackborad(BehaviourTree tree)
+		public Context()
 		{
-			m_tree = tree;
-			m_dataDic = new Dictionary<string, object>();
-			m_nodeDataDic = new Dictionary<long, Dictionary<string, object>>();
+			this.blackboard = new Blackboard();
+		}
+	}
+
+	
+
+	public class Blackboard
+	{
+		private ScopedValueDic m_treeDic;
+		private Dictionary<long, ScopedValueDic> m_nodeDic;
+
+		public Blackboard()
+		{
+			m_treeDic = new ScopedValueDic();
+			m_nodeDic = new Dictionary<long, ScopedValueDic>();
 		}
 
-		public T Get<T>(string key)
+		public T Get<T>(long treeId, string key)
 		{
-			return (T)m_dataDic[key];
+			return (T)m_treeDic[treeId][key];
 		}
 
-		public void Set(string key, System.Object value)
+		public void Set(long treeId, string key, System.Object value)
 		{
-			if (m_dataDic.ContainsKey(key))
-				m_dataDic[key] = value;
-			else
-				m_dataDic.Add(key, value);
+			_setScopeValue(ref m_treeDic, treeId, key, value);
 		}
 
-		public T Get<T>(long nodeGuid, string key)
+		public T Get<T>(long treeId, long nodeId, string key)
 		{
-			return (T)m_nodeDataDic[nodeGuid][key];
+			return (T)m_nodeDic[treeId][nodeId][key];
 		}
 
-		public void Set(long nodeGuid, string key, System.Object value)
+		public void Set(long treeId, long nodeId, string key, System.Object value)
 		{
-			Dictionary<string, object> dic;
-			if (m_nodeDataDic.ContainsKey(nodeGuid))
+			ScopedValueDic sdic;
+			if (m_nodeDic.ContainsKey(treeId))
 			{
-				dic = m_nodeDataDic[nodeGuid];
+				sdic = m_nodeDic[treeId];
 			}
 			else
 			{
-				dic = new Dictionary<string, object>();
-				m_nodeDataDic.Add(nodeGuid, dic);
+				sdic = new ScopedValueDic();
+				m_nodeDic.Add(treeId, sdic);
+			}
+			_setScopeValue(ref sdic, nodeId, key, value);
+		}
+
+		private void _setScopeValue(ref ScopedValueDic sdic, long scope, string key, System.Object value)
+		{
+			ValueDic dic;
+			if (sdic.ContainsKey(scope))
+			{
+				dic = sdic[scope];
+			}
+			else
+			{
+				dic = new ValueDic();
+				sdic.Add(scope, dic);
 			}
 			if (dic.ContainsKey(key))
 				dic[key] = value;
@@ -97,65 +114,44 @@ namespace Lite.BevTree
 		public string title;
 		public string description;
 		public BehaviourNode root;
-		public Context context;
-		public Blackborad balckboard;
 
-		private Dictionary<long, BehaviourNode> m_lastOpenNodes;
-		private Dictionary<long, BehaviourNode> m_openNodes;
-		//private Dictionary<long, BehaviourNode> m_openNodes;
-		
 		public BehaviourTree()
 		{
 			guid = GuidGen.NextLong();
-			context = new Context(this);
-			balckboard = new Blackborad(this);
-			m_lastOpenNodes = new Dictionary<long, BehaviourNode>();
-			m_openNodes = new Dictionary<long, BehaviourNode>();
 		}
 
-		public RunningState Tick()
+		public RunningState Tick(Context context)
 		{
+			context.tree = this;
+
+			var enterNodes = context.blackboard.Get<NodeStack>(guid, "enterNodes");
+			enterNodes.Clear();
+
 			RunningState ret = RunningState.Running;
-
 			if (root != null)
-			{
-				m_openNodes.Clear();
-				ret = root._Tick(context);
-			}
+				ret = root._tick(context);
 
-			IDictionaryEnumerator itor = m_lastOpenNodes.GetEnumerator();
-
-			while (itor.MoveNext())
+			var tmpEnterNodes = context.blackboard.Get<NodeStack>(guid, "tempEnterNodes");
+			var openNodes = context.blackboard.Get<NodeStack>(guid, "openNodes");
+			UnityEngine.Debug.Log(string.Format("{0}, {1}", openNodes.Count, enterNodes.Count));
+			while(enterNodes.Count > 0 && openNodes.Count > 0)
 			{
-				long guid = (long)itor.Entry.Key;
-				if (!m_openNodes.ContainsKey(guid))
+				if (enterNodes.Peek().guid == openNodes.Peek().guid)
 				{
-					m_lastOpenNodes[guid]._Close(context);
+					tmpEnterNodes.Push(enterNodes.Pop());
+					openNodes.Pop();
 				}
+				else
+					break;
 			}
-
-			UnityEngine.Debug.Log(string.Format("{0}, {1}", m_lastOpenNodes.Count, m_openNodes.Count));
-
-			m_lastOpenNodes.Clear();
-
-			itor = m_openNodes.GetEnumerator();
-
-			while (itor.MoveNext())
-			{
-				m_lastOpenNodes.Add((long)itor.Entry.Key, (BehaviourNode)itor.Entry.Value);
-			}
+			while (openNodes.Count > 0)
+				openNodes.Pop()._close(context);
+			while (enterNodes.Count > 0)
+				tmpEnterNodes.Push(enterNodes.Pop());
+			while (tmpEnterNodes.Count > 0)
+				openNodes.Push(tmpEnterNodes.Pop());
 
 			return ret;
-		}
-
-		public bool _IsNodeOpen(BehaviourNode node)
-		{
-			return m_lastOpenNodes.ContainsKey(node.guid);
-		}
-
-		public void _AddOpenNode(BehaviourNode node)
-		{
-			m_openNodes.Add(node.guid, node);
 		}
 
 		public void Dump()
@@ -187,34 +183,48 @@ namespace Lite.BevTree
 
 		protected abstract RunningState OnTick(Context context);
 
-		public void _Close(Context context)
+		public void _enter(Context context)
 		{
-			UnityEngine.Debug.Log("_close");
+			context.blackboard.Get<NodeStack>(guid, "enterNodes").Push(this);
+			OnEnter(context);
+		}
+
+		public void _exit(Context context)
+		{
+			OnExit(context);
+		}
+
+		public void _open(Context context)
+		{
+			context.blackboard.Set(context.tree.guid, guid, "isOpen", true);
+			//context.blackboard.Get<NodeStack>(guid, "openNodes").Push(this);
+			OnOpen(context);
+		}
+
+		public void _close(Context context)
+		{
+			context.blackboard.Set(context.tree.guid, guid, "isOpen", false);
+			context.blackboard.Get<NodeStack>(guid, "enterNodes").Pop();
 			OnClose(context);
 		}
 		
-		public RunningState _Tick(Context context) 
+		public RunningState _tick(Context context) 
 		{
-			bool newOpen = false;
-			if (!context.tree._IsNodeOpen(this))
+			if (!context.blackboard.Get<bool>(context.tree.guid, guid, "isOpen"))
 			{
-				newOpen = true;
-				OnOpen(context);
+				_open(context);
 			}
 
-			OnEnter(context);
+			_enter(context);
 
 			RunningState ret = OnTick(context);
 
-			OnExit(context);
+			_exit(context);
 
 			if (ret != RunningState.Running)
 			{
-				newOpen = false;
+				_close(context);
 			}
-
-			if (newOpen)
-				context.tree._AddOpenNode(this);
 
 			return ret;
 		}
@@ -258,7 +268,7 @@ namespace Lite.BevTree
 		{
 			for (int i = 0; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i]._Tick(context);
+				RunningState ret = m_children[i]._tick(context);
 				if (ret != RunningState.Failure)
 					return ret;
 			}
@@ -285,7 +295,7 @@ namespace Lite.BevTree
 		{
 			for (int i = currentNodeIndex; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i]._Tick(context);
+				RunningState ret = m_children[i]._tick(context);
 				if (ret != RunningState.Success || currentNodeIndex == m_children.Count - 1)
 					return ret;
 				currentNodeIndex++;
@@ -306,7 +316,7 @@ namespace Lite.BevTree
 		{
 			for (int i = 0; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i]._Tick(context);
+				RunningState ret = m_children[i]._tick(context);
 				if (ret != RunningState.Running)
 					return ret;
 			}
@@ -332,7 +342,7 @@ namespace Lite.BevTree
 
 		protected override RunningState OnTick(Context context)
 		{
-			return m_children[randomIndex]._Tick(context);
+			return m_children[randomIndex]._tick(context);
 		}
 
 	}
@@ -355,7 +365,7 @@ namespace Lite.BevTree
 
 		protected override RunningState OnTick(Context context)
 		{
-			RunningState ret = m_child._Tick(context);
+			RunningState ret = m_child._tick(context);
 			if (ret == RunningState.Success)
 				return RunningState.Failure;
 			else if (ret == RunningState.Failure)
@@ -385,7 +395,10 @@ namespace Lite.BevTree
 
 		protected override RunningState OnTick(Context context)
 		{
-			RunningState ret = m_child._Tick(context);
+			if (m_count >= m_targetCount)
+				return RunningState.Success;
+
+			RunningState ret = m_child._tick(context);
 			if (ret == RunningState.Success)
 			{
 				m_count++;
@@ -421,7 +434,7 @@ namespace Lite.BevTree
 		{
 			if (System.DateTime.Now.Ticks / 10000 > m_beginTime + m_millseconds)
 			{
-				return m_child._Tick(context);
+				return m_child._tick(context);
 			}
 
 			return RunningState.Running;

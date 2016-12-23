@@ -42,6 +42,10 @@ public class BehaviourTreeTest : MonoBehaviour
 {
 	BehaviourTree tree;
 
+	Lite.BevTree.Blackboard blackboard;
+
+	Context context;
+
 	void Start()
 	{
 		tree = new BehaviourTree();
@@ -51,14 +55,18 @@ public class BehaviourTreeTest : MonoBehaviour
 			new Wait(new Selector(
 				new Action1(),
 				new Action2(),
-				new Action3()), 5),
+				new Action3()), 1),
 			5);
-		tree.context.data = 2333;
+
+		context = new Context();
+		context.data = "user data";
 	}
 
+	private RunningState lastRet = RunningState.Running;
 	void Update()
 	{
-		tree.Tick();
+		//if (lastRet == RunningState.Running)
+			lastRet = tree.Tick(context);
 	}
 
 	void OnGUI()
