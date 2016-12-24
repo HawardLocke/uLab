@@ -148,7 +148,7 @@ public class Xlsx_To_X
 			csFile += "using System;" + "\n";
 			csFile += "using System.Collections.Generic;" + "\n\n\n";
 
-			csFile += "namespace Locke" + "\n";
+			csFile += "namespace Lite" + "\n";
 			csFile += "{" + "\n";
 			csFile += "\tpublic class " + fileName + "_Data : IData" + "\n";
 			csFile += "\t" + "{" + "\n";

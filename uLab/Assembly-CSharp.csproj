@@ -105,6 +105,7 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\IRequestHandler.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\RequestHandlerManager.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AgentComponent.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimationComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\KinematicAgent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\KinematicComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\KinematicFacade.cs" />
@@ -136,6 +137,7 @@
      <Compile Include="Assets\Scripts\Template\DB.cs" />
      <Compile Include="Assets\Scripts\Template\IData.cs" />
      <Compile Include="Assets\Scripts\Template\TabReader.cs" />
+     <Compile Include="Assets\Scripts\Template\auto\AutoGenMecanim_Data.cs" />
      <Compile Include="Assets\Scripts\Template\auto\Npc0_Data.cs" />
      <Compile Include="Assets\Scripts\Test\MagicBox.cs" />
      <Compile Include="Assets\Scripts\Test\TestObjectPool.cs" />
@@ -287,7 +289,9 @@
      <Compile Include="Assets\ToLua\Source\LuaConst.cs" />
      <None Include="Assets\Scripts\PathFinder\Agent\Readme.txt" />
      <None Include="Assets\Resources\Template\Npc0.txt" />
+     <None Include="Assets\Art\Dwarfs\Shader\Compressed MaskedShader2sided 5-4 cut out.shader" />
      <None Include="Assets\ToLua\readme.txt" />
+     <None Include="Assets\Resources\Template\AutoGenMecanim.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

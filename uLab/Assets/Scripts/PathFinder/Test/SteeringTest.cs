@@ -18,7 +18,7 @@ public class SteeringTest : MonoBehaviour
 
 	long bot3_id;
 
-	string[] botFilePath = { "Prefabs/Bot1", "Prefabs/Bot2", "Prefabs/Bot3" };
+	string[] botFilePath = { "Prefabs/Dwarf/dwarf_01", "Prefabs/Dwarf/dwarf_02", "Prefabs/Dwarf/dwarf_03" };
 
 	Material lineMat;
 
@@ -82,9 +82,10 @@ public class SteeringTest : MonoBehaviour
 		kinAgent.agentComponent = agentCom;
 		/*SteeringComponent steer = */go.AddComponent<SteeringComponent>();
 		LocomotionComponent loco = go.AddComponent<LocomotionComponent>();
+		go.AddComponent<AnimationComponent>();
 
 		float x = MathUtil.RandFloat() * 10;
-		float y = 1;
+		float y = 0;
 		float z = MathUtil.RandFloat() * 10;
 		loco.SetPosition(x, y, z);
 
