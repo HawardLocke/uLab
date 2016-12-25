@@ -14,16 +14,21 @@ namespace Lite
 
 		private string currentAnimation = "";
 
+		private Anim.StateMachine mAnimFSM;
+
+		public KinematicAgent agent;
+
 		public override void OnStart()
 		{
 			animation = GetComponent<Animation>();
 			animation.playAutomatically = false;
-			Play("idle break");
+			mAnimFSM = new Anim.FsmSimple(agent);
 		}
 
 		public override void OnUpdate()
 		{
-			animation.PlayQueued("idle break");
+			if (mAnimFSM != null)
+				mAnimFSM.Update(agent);
 		}
 
 		public void Play(string name, bool forceReplay = false)
@@ -42,6 +47,11 @@ namespace Lite
 				animation.Stop();
 				animation.PlayQueued("idle break");
 			}
+		}
+
+		public void HandleAction(Bev.Action action)
+		{
+			mAnimFSM.DoAction(agent, action);
 		}
 
 	}

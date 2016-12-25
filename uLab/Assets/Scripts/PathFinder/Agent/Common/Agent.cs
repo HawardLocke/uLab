@@ -9,22 +9,14 @@ namespace Lite
 	{
 		protected long m_guid;
 
-		protected Blackborad m_blackboard;
-
 		public Agent(long guid)
 		{
 			m_guid = guid;
-			m_blackboard = new Blackborad(this);
 		}
 
 		public long Guid
 		{
 			get { return m_guid; }
-		}
-
-		public Blackborad Blackborad
-		{
-			get { return m_blackboard; }
 		}
 
 	}

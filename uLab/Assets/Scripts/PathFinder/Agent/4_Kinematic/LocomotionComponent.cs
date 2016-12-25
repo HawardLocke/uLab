@@ -27,6 +27,11 @@ namespace Lite
 			UpdateMovement();
 		}
 
+		public void StopMove()
+		{
+
+		}
+
 		private void UpdateMovement()
 		{
 			if (this.velocity.sqrMagnitude > 0.00001)
