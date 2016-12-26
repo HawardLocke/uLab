@@ -10,10 +10,20 @@ using Lite.BevTree;
 
 public class Action1 : Action
 {
+	protected override void OnOpen(Context context)
+	{
+		UnityEngine.Debug.Log("action 1 open");
+	}
+
 	protected override RunningState OnTick(Context context)
 	{
-		UnityEngine.Debug.Log("action 1");
+		//UnityEngine.Debug.Log("action 1");
 		return RunningState.Success;
+	}
+
+	protected override void OnClose(Context context)
+	{
+		UnityEngine.Debug.Log("action 1 close");
 	}
 
 }
@@ -68,22 +78,22 @@ public class BehaviourTreeTest : MonoBehaviour
 	void Update()
 	{
 		//if (lastRet == RunningState.Running)
-			lastRet = tree.Tick(context);
+		//	lastRet = tree.Tick(context);
 	}
 
 	void OnGUI()
 	{
-		/*if (GUI.Button(new Rect(20, 20, 60, 30), "spawn"))
+		if (GUI.Button(new Rect(20, 20, 60, 30), "step"))
 		{
-			
+			lastRet = tree.Tick(context);
 		}
 
-		if (GUI.Button(new Rect(20, 60, 60, 30), "wander"))
+		if (GUI.Button(new Rect(20, 60, 60, 30), "dump"))
 		{
-			
+			UnityEngine.Debug.Log(tree.Dump());
 		}
 
-		if (GUI.Button(new Rect(20, 100, 60, 30), "seek"))
+		/*if (GUI.Button(new Rect(20, 100, 60, 30), "seek"))
 		{
 			
 		}
