@@ -67,6 +67,14 @@ public class MapEditor : MonoBehaviour
 	
 	void OnGUI()
 	{
+		/*GUIHelper.BeginGroup(new Rect(0, 0, 100, 100));
+
+		GUIHelper.DrawLine(new Vector2(0, 0), new Vector2(200, 200), Color.red);
+
+		GUIHelper.EndGroup();
+
+		return;*/
+
 		if (GUI.Button(new Rect(5, 85, 60, 20), "switch"))
 		{
 			navMode = !navMode;
@@ -306,6 +314,9 @@ public class MapEditor : MonoBehaviour
 
 	void DrawGraph()
 	{
+
+		Color lineColor = new Color(94/255.0f, 103/255.0f, 169/255.0f, 1f);
+
 		var list = graph.GetNodeList();
 		for (int i = 0; i < list.Count; ++i)
 		{
@@ -321,25 +332,13 @@ public class MapEditor : MonoBehaviour
 				int minx = Mathf.Min(toNode.x, node.x) + offsetX;
 				int miny = Mathf.Min(toNode.y, node.y) + offsetY;
 				Rect screenRect = new Rect(minx, miny, stepx, stepy);
-				if (dx < 0 && dy < 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx < 0 && dy == 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx < 0 && dy > 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx == 0 && dy > 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx > 0 && dy > 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx > 0 && dy == 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx > 0 && dy < 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx == 0 && dy < 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
+
+				GUIHelper.DrawLine(new Vector2(offsetX + node.x, offsetY + node.y), new Vector2(offsetX + toNode.x, offsetY + toNode.y), lineColor);
+
 			}
 			Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - 2, 4, 4), dotBlueTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
 		}
+
 	}
 
 	#endregion
