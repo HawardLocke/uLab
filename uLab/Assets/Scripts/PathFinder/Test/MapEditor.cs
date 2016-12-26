@@ -314,7 +314,6 @@ public class MapEditor : MonoBehaviour
 
 	void DrawGraph()
 	{
-
 		Color lineColor = new Color(94/255.0f, 103/255.0f, 169/255.0f, 1f);
 
 		var list = graph.GetNodeList();

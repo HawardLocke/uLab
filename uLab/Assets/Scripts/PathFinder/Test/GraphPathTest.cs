@@ -92,6 +92,8 @@ public class GraphPathTest : MonoBehaviour
 	private int stepy = 20;
 	void DrawGraph()
 	{
+		Color lineColor = new Color(94 / 255.0f, 103 / 255.0f, 169 / 255.0f, 1f);
+
 		var list = graph.GetNodeList();
 		for (int i = 0; i < list.Count; ++i)
 		{
@@ -102,7 +104,10 @@ public class GraphPathTest : MonoBehaviour
 			{
 				GraphEdge edge = edges[e];
 				GraphAStarNode toNode = graph.GetNodeByID(edge.to) as GraphAStarNode;
-				int dx = toNode.x - node.x;
+
+				GUIHelper.DrawLine(new Vector2(offsetX + node.x, offsetY + node.y), new Vector2(offsetX + toNode.x, offsetY + toNode.y), lineColor);
+
+				/*int dx = toNode.x - node.x;
 				int dy = toNode.y - node.y;
 				int minx = Mathf.Min(toNode.x, node.x) + offsetX;
 				int miny = Mathf.Min(toNode.y, node.y) + offsetY;
@@ -122,7 +127,7 @@ public class GraphPathTest : MonoBehaviour
 				else if (dx > 0 && dy < 0)
 					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
 				else if (dx == 0 && dy < 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
+					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);*/
 			}
 			Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - 2, 4, 4), dotBlueTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
 		}
