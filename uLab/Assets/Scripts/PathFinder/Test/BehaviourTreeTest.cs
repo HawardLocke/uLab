@@ -8,42 +8,33 @@ using Lite.AStar;
 using Lite.Graph;
 using Lite.BevTree;
 
+// test result:
+// tree depth is 9, tree tick 100 times per frame, avarage cost ms is under 10, but ranges between 4 and 70...
+// But in practice, tree tick sould be much slower..
+
 public class Action1 : Action
 {
-	protected override void OnOpen(Context context)
+	protected override RunningStatus OnTick(Context context)
 	{
-		UnityEngine.Debug.Log("action 1 open");
-	}
-
-	protected override RunningState OnTick(Context context)
-	{
-		//UnityEngine.Debug.Log("action 1");
-		return RunningState.Success;
-	}
-
-	protected override void OnClose(Context context)
-	{
-		UnityEngine.Debug.Log("action 1 close");
+		return (RunningStatus)MathUtil.RandInt(1, 2);// RunningStatus.Success;
 	}
 
 }
 
 public class Action2 : Action
 {
-	protected override RunningState OnTick(Context context)
+	protected override RunningStatus OnTick(Context context)
 	{
-		UnityEngine.Debug.Log("action 2");
-		return RunningState.Success;
+		return (RunningStatus)MathUtil.RandInt(1, 2);
 	}
 
 }
 
 public class Action3 : Action
 {
-	protected override RunningState OnTick(Context context)
+	protected override RunningStatus OnTick(Context context)
 	{
-		UnityEngine.Debug.Log("action 3");
-		return RunningState.Success;
+		return (RunningStatus)MathUtil.RandInt(1, 2);
 	}
 
 }
@@ -56,14 +47,46 @@ public class BehaviourTreeTest : MonoBehaviour
 
 	Context context;
 
+	
+
 	void Start()
 	{
-		BehaviourNode root = new Repeater(
-			new Delay(new Selector(
-				new Action1(),
-				new Action2(),
-				new Action3()), 1),
-			5);
+		BehaviourNode root = new Repeater(-1,
+			new Parallel(
+				new Parallel(
+				new Sequence(
+						new Action1(),
+						new Sequence(
+							new Sequence(new Sequence(new Sequence(new Sequence(new Action1(),new Action2(),new Action3())))),
+							new Sequence(new Sequence(new Sequence(new Sequence(new Action1(),new Action2(),new Action3()))))
+							)
+						),
+				new Sequence(
+						new Action1(),
+						new Sequence(
+							new Sequence(new Sequence(new Sequence(new Sequence(new Action1(), new Action2(), new Action3())))),
+							new Sequence(new Sequence(new Sequence(new Sequence(new Action1(), new Action2(), new Action3()))))
+							)
+						),
+					new Parallel(
+				new Sequence(
+						new Action1(),
+						new Selector(
+							new Action2(),
+							new Action3()
+							)
+						),
+				new Sequence(
+						new Action1(),
+						new Sequence(
+							new Sequence(new Sequence(new Sequence(new Sequence(new Action1(), new Action2(), new Action3())))),
+							new Sequence(new Sequence(new Sequence(new Sequence(new Action1(), new Action2(), new Action3()))))
+							)
+						)
+				)
+					)
+				)
+			);
 
 		tree = new BehaviourTree();
 		tree.title = "test tree";
@@ -71,34 +94,65 @@ public class BehaviourTreeTest : MonoBehaviour
 		tree.root = root;
 
 		context = new Context();
-		context.data = "user data";
+
 	}
 
-	private RunningState lastRet = RunningState.Running;
+	private RunningStatus lastRet = RunningStatus.Running;
+	string treeDumpText = "";
+	long mills = 0;
+	Stopwatch watch = new Stopwatch();
+
 	void Update()
 	{
-		//if (lastRet == RunningState.Running)
-		//	lastRet = tree.Tick(context);
+		watch.Reset();
+		watch.Start();
+
+		if (lastRet == RunningStatus.Running)
+		{
+			for (int i = 0; i < 100; ++i)
+			{
+				lastRet = tree.Tick(context);
+			}
+			treeDumpText = tree.Dump(context);
+		}
+
+		watch.Stop();
+		mills = watch.ElapsedMilliseconds;
+		
 	}
 
+	
 	void OnGUI()
 	{
+		GUI.Label(new Rect(100, 20, 500, 20), mills.ToString());
+		/*GUI.Label(new Rect(100, 40, 500, 500), treeDumpText);
+
 		if (GUI.Button(new Rect(20, 20, 60, 30), "step"))
 		{
-			lastRet = tree.Tick(context);
+			watch.Reset();
+			watch.Start();
+
+			for (int i = 0; i < 100; ++i)
+			{
+				lastRet = tree.Tick(context);
+			}
+			treeDumpText = tree.Dump(context);
+
+			watch.Stop();
+			mills = watch.ElapsedMilliseconds;
 		}
 
 		if (GUI.Button(new Rect(20, 60, 60, 30), "dump"))
 		{
-			UnityEngine.Debug.Log(tree.Dump());
+			treeDumpText = tree.Dump();
 		}
 
-		/*if (GUI.Button(new Rect(20, 100, 60, 30), "seek"))
+		if (GUI.Button(new Rect(20, 100, 60, 30), ""))
 		{
 			
 		}
 
-		if (GUI.Button(new Rect(20, 140, 60, 30), "arrive"))
+		if (GUI.Button(new Rect(20, 140, 60, 30), ""))
 		{
 			
 		}*/

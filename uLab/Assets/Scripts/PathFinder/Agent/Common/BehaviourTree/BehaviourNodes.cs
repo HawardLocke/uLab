@@ -18,12 +18,14 @@ namespace Lite.BevTree
 	{
 		public long guid;
 		public NodeType nodeType;
+		public BehaviourNode parent;
 		protected List<BehaviourNode> m_children;
+
+		public RunningStatus lastRet;
 
 		public BehaviourNode()
 		{
 			guid = GuidGen.NextLong();
-			nodeType = NodeType.Default;
 			m_children = new List<BehaviourNode>();
 		}
 
@@ -35,7 +37,7 @@ namespace Lite.BevTree
 
 		protected virtual void OnExit(Context context) { }
 
-		protected abstract RunningState OnTick(Context context);
+		protected abstract RunningStatus OnTick(Context context);
 
 		public void _enter(Context context)
 		{
@@ -59,30 +61,32 @@ namespace Lite.BevTree
 			OnClose(context);
 		}
 
-		public RunningState _tick(Context context)
+		public RunningStatus _tick(Context context)
 		{
 			if (!context.blackboard.GetBool(context.tree.guid, guid, "isOpen"))
 			{
 				_open(context);
 			}
 
-			context._enterNodes[context.tree.guid].Push(this);
+			context._openNodes[context.tree.guid].Push(this);
+			context._travelNodes[context.tree.guid].Push(this);
 			_enter(context);
 
-			RunningState ret = OnTick(context);
+			RunningStatus ret = OnTick(context);
 
 			_exit(context);
 
-			if (ret != RunningState.Running)
+			if (ret != RunningStatus.Running)
 			{
-				context._enterNodes[context.tree.guid].Pop();
+				context._openNodes[context.tree.guid].Pop();
 				_close(context);
 			}
 
+			lastRet = ret;
 			return ret;
 		}
 
-		protected void AddChildren(params BehaviourNode[] nodes)
+		public void AddChildren(params BehaviourNode[] nodes)
 		{
 			for (int i = 0; i < nodes.Length; ++i)
 			{
@@ -90,10 +94,22 @@ namespace Lite.BevTree
 			}
 		}
 
-		protected void AddChild(BehaviourNode node)
+		public void AddChild(BehaviourNode node)
 		{
 			if (!m_children.Contains(node))
+			{
+				node.parent = this;
 				m_children.Add(node);
+			}
+		}
+
+		public void DeleteChild(BehaviourNode node)
+		{
+			if (m_children.Contains(node))
+			{
+				node.parent = null;
+				m_children.Remove(node);
+			}
 		}
 
 		public List<BehaviourNode> _getChildren()
@@ -121,16 +137,16 @@ namespace Lite.BevTree
 			
 		}
 
-		protected override RunningState OnTick(Context context)
+		protected override RunningStatus OnTick(Context context)
 		{
 			for (int i = 0; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i]._tick(context);
-				if (ret != RunningState.Failure)
+				RunningStatus ret = m_children[i]._tick(context);
+				if (ret != RunningStatus.Failure)
 					return ret;
 			}
 
-			return RunningState.Running;
+			return RunningStatus.Running;
 		}
 	}
 
@@ -139,7 +155,7 @@ namespace Lite.BevTree
 		public Sequence(params BehaviourNode[] nodes) :
 			base(nodes)
 		{
-
+			
 		}
 
 		protected override void OnOpen(Context context)
@@ -147,16 +163,16 @@ namespace Lite.BevTree
 			context.blackboard.SetInt(context.tree.guid, this.guid, "childIndex", 0);
 		}
 
-		protected override RunningState OnTick(Context context)
+		protected override RunningStatus OnTick(Context context)
 		{
-			RunningState ret = RunningState.Running;
+			RunningStatus ret = RunningStatus.Running;
 
 			int currentNodeIndex = context.blackboard.GetInt(context.tree.guid, this.guid, "childIndex");
 
 			for (int i = currentNodeIndex; i < m_children.Count; ++i)
 			{
-				RunningState retChild = m_children[i]._tick(context);
-				if (retChild != RunningState.Success || currentNodeIndex == m_children.Count - 1)
+				RunningStatus retChild = m_children[i]._tick(context);
+				if (retChild != RunningStatus.Success || currentNodeIndex == m_children.Count - 1)
 				{
 					ret = retChild;
 					break;
@@ -175,19 +191,19 @@ namespace Lite.BevTree
 		public Parallel(params BehaviourNode[] nodes) :
 			base(nodes)
 		{
-
+			
 		}
 
-		protected override RunningState OnTick(Context context)
+		protected override RunningStatus OnTick(Context context)
 		{
 			for (int i = 0; i < m_children.Count; ++i)
 			{
-				RunningState ret = m_children[i]._tick(context);
-				if (ret != RunningState.Running)
+				RunningStatus ret = m_children[i]._tick(context);
+				if (ret != RunningStatus.Running)
 					return ret;
 			}
 
-			return RunningState.Running;
+			return RunningStatus.Running;
 		}
 	}
 
@@ -196,7 +212,7 @@ namespace Lite.BevTree
 		public RandomSelector(params BehaviourNode[] nodes) :
 			base(nodes)
 		{
-
+			
 		}
 
 		protected override void OnOpen(Context context)
@@ -205,7 +221,7 @@ namespace Lite.BevTree
 			context.blackboard.SetInt(context.tree.guid, this.guid, "randomIndex", randomIndex);
 		}
 
-		protected override RunningState OnTick(Context context)
+		protected override RunningStatus OnTick(Context context)
 		{
 			int randomIndex = context.blackboard.GetInt(context.tree.guid, this.guid, "randomIndex");
 			return m_children[randomIndex]._tick(context);
@@ -229,27 +245,35 @@ namespace Lite.BevTree
 		public Inverter(BehaviourNode node) : 
 			base(node) 
 		{
-
+			
 		}
 
-		protected override RunningState OnTick(Context context)
+		protected override RunningStatus OnTick(Context context)
 		{
-			RunningState ret = m_children[0]._tick(context);
-			if (ret == RunningState.Success)
-				return RunningState.Failure;
-			else if (ret == RunningState.Failure)
-				return RunningState.Success;
+			RunningStatus ret = m_children[0]._tick(context);
+			if (ret == RunningStatus.Success)
+				return RunningStatus.Failure;
+			else if (ret == RunningStatus.Failure)
+				return RunningStatus.Success;
 
-			return RunningState.Running;
+			return RunningStatus.Running;
 		}
 
 	}
 
+	/// <summary>
+	/// Repeater
+	/// </summary>
 	public class Repeater : Decorator
 	{
 		private int m_targetCount = 0;
 
-		public Repeater(BehaviourNode node, int count)
+		/// <summary>
+		/// Repeater
+		/// </summary>
+		/// <param name="count">-1:forever repeating; positive: repeating count</param>
+		/// <param name="node"></param>
+		public Repeater(int count, BehaviourNode node)
 			: base(node)
 		{
 			m_targetCount = count;
@@ -258,29 +282,24 @@ namespace Lite.BevTree
 		protected override void OnOpen(Context context)
 		{
 			context.blackboard.SetInt(context.tree.guid, this.guid, "count", 0);
-			UnityEngine.Debug.Log("repeat open");
 		}
 
-		protected override void OnClose(Context context)
-		{
-			UnityEngine.Debug.Log("repeat close");
-		}
-
-		protected override RunningState OnTick(Context context)
+		protected override RunningStatus OnTick(Context context)
 		{
 			int m_count = context.blackboard.GetInt(context.tree.guid, this.guid, "count");
 			if (m_targetCount >= 0 && m_count >= m_targetCount)
-				return RunningState.Success;
+				return RunningStatus.Success;
 
-			RunningState ret = m_children[0]._tick(context);
-			if (m_targetCount >= 0 && ret == RunningState.Success)
+			RunningStatus ret = m_children[0]._tick(context);
+			if (m_targetCount >= 0 && ret == RunningStatus.Success)
 			{
 				m_count++;
+				context.blackboard.SetInt(context.tree.guid, this.guid, "count", m_count);
 				if (m_count >= m_targetCount)
-					return RunningState.Success;
+					return RunningStatus.Success;
 			}
 
-			return RunningState.Running;
+			return RunningStatus.Running;
 		}
 
 	}
@@ -289,7 +308,7 @@ namespace Lite.BevTree
 	{
 		private uint m_millseconds = 0;
 
-		public Delay(BehaviourNode node, float seconds)
+		public Delay(float seconds, BehaviourNode node)
 			: base(node)
 		{
 			if (seconds < 0)
@@ -299,17 +318,11 @@ namespace Lite.BevTree
 
 		protected override void OnOpen(Context context)
 		{
-			UnityEngine.Debug.Log("delay open");
 			long beginTime = System.DateTime.Now.Ticks / 10000;
 			context.blackboard.SetLong(context.tree.guid, this.guid, "beginTime", beginTime);
 		}
 
-		protected override void OnClose(Context context)
-		{
-			UnityEngine.Debug.Log("delay close");
-		}
-
-		protected override RunningState OnTick(Context context)
+		protected override RunningStatus OnTick(Context context)
 		{
 			long beginTime = context.blackboard.GetLong(context.tree.guid, this.guid, "beginTime");
 			if (System.DateTime.Now.Ticks / 10000 > beginTime + m_millseconds)
@@ -317,7 +330,7 @@ namespace Lite.BevTree
 				return m_children[0]._tick(context);
 			}
 
-			return RunningState.Running;
+			return RunningStatus.Running;
 		}
 
 	}
@@ -350,15 +363,15 @@ namespace Lite.BevTree
 			context.blackboard.SetLong(context.tree.guid, this.guid, "beginTime", beginTime);
 		}
 
-		protected override RunningState OnTick(Context context)
+		protected override RunningStatus OnTick(Context context)
 		{
 			long beginTime = context.blackboard.GetLong(context.tree.guid, this.guid, "beginTime");
 			if (System.DateTime.Now.Ticks / 10000 > beginTime + m_millseconds)
 			{
-				return RunningState.Success;
+				return RunningStatus.Success;
 			}
 
-			return RunningState.Running;
+			return RunningStatus.Running;
 		}
 
 	}

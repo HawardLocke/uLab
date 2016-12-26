@@ -8,8 +8,9 @@ namespace Lite.BevTree
 	using NodeStack = Stack<BehaviourNode>;
 
 
-	public enum RunningState
+	public enum RunningStatus
 	{
+		None,
 		Running,
 		Success,
 		Failure
@@ -28,13 +29,14 @@ namespace Lite.BevTree
 			guid = GuidGen.NextLong();
 		}
 
-		public RunningState Tick(Context context)
+		public RunningStatus Tick(Context context)
 		{
 			context.EnsureTreeEnvSetup(this);
 
-			context._enterNodes[guid].Clear();
+			context._openNodes[guid].Clear();
+			context._travelNodes[guid].Clear();
 
-			RunningState ret = RunningState.Running;
+			RunningStatus ret = RunningStatus.Running;
 			if (root != null)
 				ret = root._tick(context);
 
@@ -45,63 +47,58 @@ namespace Lite.BevTree
 
 		private void UpdateOpenNodes(Context context)
 		{
-			NodeStack enterNodes = context._enterNodes[guid];
-			NodeStack tmpEnterNodes = context._tempEnterNodes[guid];
 			NodeStack openNodes = context._openNodes[guid];
-			/*while(enterNodes.Count > 0 && openNodes.Count > 0)
+			NodeStack tmpNodes = context._tempNodes[guid];
+			NodeStack oldOpenNodes = context._oldOpenNodes[guid];
+			while (openNodes.Count > 0 && oldOpenNodes.Count > 0)
 			{
-				if (enterNodes.Peek().guid == openNodes.Peek().guid)
+				if (openNodes.Count > oldOpenNodes.Count)
 				{
-					tmpEnterNodes.Push(enterNodes.Pop());
-					openNodes.Pop();
+					tmpNodes.Push(openNodes.Pop());
+				}
+				else if (openNodes.Count < oldOpenNodes.Count)
+				{
+					oldOpenNodes.Pop()._close(context);
+				}
+				else if (openNodes.Peek().guid != oldOpenNodes.Peek().guid)
+				{
+					tmpNodes.Push(openNodes.Pop());
+					oldOpenNodes.Pop()._close(context);
 				}
 				else
 					break;
 			}
-			while (openNodes.Count > 0)
-				openNodes.Peek()._close(context);
-			while (enterNodes.Count > 0)
-				tmpEnterNodes.Push(enterNodes.Pop());
-			while (tmpEnterNodes.Count > 0)
-				openNodes.Push(tmpEnterNodes.Pop());
-			 */
-			while (enterNodes.Count > 0 && openNodes.Count > 0)
-			{
-				if (enterNodes.Count > openNodes.Count)
-				{
-					tmpEnterNodes.Push(enterNodes.Pop());
-				}
-				else if (enterNodes.Count < openNodes.Count)
-				{
-					openNodes.Pop()._close(context);
-				}
-				else if (enterNodes.Peek().guid != openNodes.Peek().guid)
-				{
-					tmpEnterNodes.Push(enterNodes.Pop());
-					openNodes.Pop()._close(context);
-				}
-				else
-					break;
-			}
-
-			while (tmpEnterNodes.Count > 0)
-				openNodes.Push(tmpEnterNodes.Pop());
-
+			while (tmpNodes.Count > 0)
+				oldOpenNodes.Push(tmpNodes.Pop());
 		}
 
-		public string Dump()
+		public string Dump(Context context)
 		{
 			System.Text.StringBuilder builder = new System.Text.StringBuilder();
+
+			string[] statusColors = { "grey", "yellow", "green", "red" };
 
 			NodeStack nodeStack = new NodeStack();
 			nodeStack.Push(root);
 			while (nodeStack.Count > 0)
 			{
 				BehaviourNode node = nodeStack.Pop();
-				builder.Append(string.Format("{0}", node.nodeType.ToString()));
-				foreach (BehaviourNode child in node._getChildren())
+				int depth = 0;
+				BehaviourNode tmpNode = node;
+				while (tmpNode.parent != null)
 				{
-					nodeStack.Push(child);
+					tmpNode = tmpNode.parent;
+					depth++;
+				}
+				while (depth-- > 0) builder.Append("    ");
+				string color = statusColors[(int)node.lastRet];
+				if (!context._travelNodes[this.guid].Contains(node))
+					color = statusColors[0];
+				builder.Append(string.Format("<color={0}>{1}</color>\n", color, node.GetType().Name));
+				var childrenList = node._getChildren();
+				for (int i = childrenList.Count - 1; i >= 0; --i)
+				{
+					nodeStack.Push(childrenList[i]);
 				}
 			}
 
@@ -122,23 +119,21 @@ namespace Lite.BevTree
 		private Blackboard _blackboard;
 		public Blackboard blackboard { get { return _blackboard; } }
 
-		public object data;
-
+		// internal members
 		private HashSet<long> treeSet;
-
-		public Dictionary<long, NodeStack> _enterNodes;
-
-		public Dictionary<long, NodeStack> _tempEnterNodes;
-
 		public Dictionary<long, NodeStack> _openNodes;
+		public Dictionary<long, NodeStack> _tempNodes;
+		public Dictionary<long, NodeStack> _oldOpenNodes;
+		public Dictionary<long, NodeStack> _travelNodes;
 
 		public Context()
 		{
 			this._blackboard = new Blackboard();
 			this.treeSet = new HashSet<long>();
-			this._enterNodes = new Dictionary<long, NodeStack>();
-			this._tempEnterNodes = new Dictionary<long, NodeStack>();
 			this._openNodes = new Dictionary<long, NodeStack>();
+			this._tempNodes = new Dictionary<long, NodeStack>();
+			this._oldOpenNodes = new Dictionary<long, NodeStack>();
+			this._travelNodes = new Dictionary<long, NodeStack>();
 		}
 
 		public void EnsureTreeEnvSetup(BehaviourTree tree)
@@ -147,9 +142,10 @@ namespace Lite.BevTree
 			if (!treeSet.Contains(tree.guid))
 			{
 				treeSet.Add(tree.guid);
-				_enterNodes.Add(tree.guid, new NodeStack());
-				_tempEnterNodes.Add(tree.guid, new NodeStack());
 				_openNodes.Add(tree.guid, new NodeStack());
+				_tempNodes.Add(tree.guid, new NodeStack());
+				_oldOpenNodes.Add(tree.guid, new NodeStack());
+				_travelNodes.Add(tree.guid, new NodeStack());
 			}
 		}
 
