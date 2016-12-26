@@ -72,24 +72,26 @@ public class SteeringTest : MonoBehaviour
 
 	KinematicAgent AddBot()
 	{
-		KinematicAgent kinAgent = new KinematicAgent(GuidGenerator.NextLong());
-		app.kinematicFacade.AddAgent(kinAgent);
+		KinematicAgent agent = new KinematicAgent(GuidGenerator.NextLong());
+		app.kinematicFacade.AddAgent(agent);
 
 		var prefab = Resources.Load(botFilePath[MathUtil.RandInt(0,2)]);
 		GameObject go = GameObject.Instantiate(prefab) as GameObject;
 		AgentComponent agentCom = go.AddComponent<AgentComponent>();
-		agentCom.agent = kinAgent;
-		kinAgent.agentComponent = agentCom;
-		/*SteeringComponent steer = */go.AddComponent<SteeringComponent>();
-		LocomotionComponent loco = go.AddComponent<LocomotionComponent>();
-		go.AddComponent<AnimationComponent>();
+		agentCom.agent = agent;
+		agent.agentComponent = agentCom;
+		var steer = go.AddComponent<SteeringComponent>();
+		var loco = go.AddComponent<LocomotionComponent>();
+		var animCom = go.AddComponent<AnimationComponent>();
+
+		animCom.Init(agent);
 
 		float x = MathUtil.RandFloat() * 10;
 		float y = 0;
 		float z = MathUtil.RandFloat() * 10;
 		loco.SetPosition(x, y, z);
 
-		return kinAgent;
+		return agent;
 	}
 
 }

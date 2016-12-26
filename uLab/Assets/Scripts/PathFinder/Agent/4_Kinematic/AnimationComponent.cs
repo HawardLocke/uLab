@@ -6,23 +6,26 @@ namespace Lite
 
 	public class AnimationComponent : IComponent
 	{
-		public bool displayTrack;
-
-		public float damping = 0.9f;
-
 		private Animation animation;
 
 		private string currentAnimation = "";
 
+		public KinematicAgent agent;
+
 		private Anim.StateMachine mAnimFSM;
 
-		public KinematicAgent agent;
+		
+
+		public void Init(KinematicAgent agent)
+		{
+			this.agent = agent;
+			mAnimFSM = new Anim.FsmSimple(agent);
+		}
 
 		public override void OnStart()
 		{
 			animation = GetComponent<Animation>();
 			animation.playAutomatically = false;
-			mAnimFSM = new Anim.FsmSimple(agent);
 		}
 
 		public override void OnUpdate()
