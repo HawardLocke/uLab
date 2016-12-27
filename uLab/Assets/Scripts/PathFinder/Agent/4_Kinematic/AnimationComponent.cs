@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using Lite.Anim;
+
+
 namespace Lite
 {
 
@@ -12,14 +15,16 @@ namespace Lite
 
 		public KinematicAgent agent;
 
-		private Anim.StateMachine mAnimFSM;
+		private Anim.Fsm mAnimFSM;
 
-		
+		private Anim.AnimSet _animSet;
+		public Anim.AnimSet animSet { get { return _animSet; } }
 
 		public void Init(KinematicAgent agent)
 		{
 			this.agent = agent;
-			mAnimFSM = new Anim.FsmSimple(agent);
+			mAnimFSM = FsmFactory.GetFsm(FsmType.SimpleFsm);
+			_animSet = AnimSetFactory.GetAnimSet(1);
 		}
 
 		public override void OnStart()
@@ -42,19 +47,23 @@ namespace Lite
 				{
 					animation.Stop();
 				}
-				animation.PlayQueued(name);
+				animation.CrossFade(name);
 			}
 			else
 			{
-				animation.CrossFade("", 0.9f);
-				animation.Stop();
-				animation.PlayQueued("idle break");
+				animation.CrossFade(name);			
 			}
+			currentAnimation = name;
 		}
 
 		public void HandleAction(Bev.Action action)
 		{
 			mAnimFSM.DoAction(agent, action);
+		}
+
+		public bool IsCurrentFinished()
+		{
+			return animation.isPlaying && animation[currentAnimation].normalizedTime > 0.95f;
 		}
 
 	}

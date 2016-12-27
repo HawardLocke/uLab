@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Lite
 {
 
-	public enum ActionType
+	public enum MotionType
 	{
 		None,
 		Idle,
@@ -21,9 +21,9 @@ namespace Lite
 	{
 		public AgentComponent agentComponent;
 
-		public ActionType currentMotionType;
+		public AnimationComponent animComponent;
 
-		public Anim.AnimSet animationSet;
+		public MotionType currentMotionType;
 
 		public KinematicBlackboard blackboard;
 

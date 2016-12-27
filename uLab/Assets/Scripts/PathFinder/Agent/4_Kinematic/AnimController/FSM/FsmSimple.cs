@@ -2,55 +2,50 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+using Lite.Bev;
+
+
 namespace Lite.Anim
 {
-	public class FsmSimple : StateMachine
+	public class FsmSimple : Fsm
 	{
 		private enum StateType
 		{
 			Idle,
-			Die,
 			Walk,
 			Run,
-			Jump,
-			Attack,
 		}
 
-		public FsmSimple(KinematicAgent agent) :
-			base(agent)
+		public FsmSimple()
 		{
-			//mAnimStates.Add((int)StateType.Idle, new Idle(agent, locomotion, animator));
-			//mAnimStates.Add((int)StateType.Die, new Die(agent, locomotion, animator));
-			//mAnimStates.Add((int)StateType.Walk, new GoTo(agent, locomotion, animator));
-			// run??
-			//mAnimStates.Add((int)StateType.Jump, new AnimStateJumpTo(agent, locomotion, animator));
-			//mAnimStates.Add((int)StateType.Attack, new AnimStateAttack(agent, locomotion, animator));
+			mStateDic.Add((int)StateType.Idle, new Idle());
+			mStateDic.Add((int)StateType.Walk, new Walk());
+			mStateDic.Add((int)StateType.Run, new Run());
 
-			agent.blackboard.defaultAnimState = mStateDic[(int)StateType.Idle];
+			this.defaultAnimState = mStateDic[(int)StateType.Idle];
 		}
 
 		public override void DoAction(KinematicAgent agent, Bev.Action action)
 		{
-			if (null != agent.blackboard.currentAnimState && agent.blackboard.currentAnimState.HandleAction(agent, action))
+			if (agent.blackboard.currentAnimState == null || ! agent.blackboard.currentAnimState.HandleAction(agent, action))
 			{
-
-			}
-			else
-			{
-				/*if (action is Bev.ActionIdle)
-					this.mNextState = mAnimStates[(int)StateType.Idle];
-				else if (action is Bev.ActionDie)
-					this.mNextState = mAnimStates[(int)StateType.Die];
-				else if (action is Bev.ActionGoTo)
-					this.mNextState = mAnimStates[(int)StateType.Walk];
-				else if (action is Bev.ActionMoveTowards)
-					this.mNextState = mAnimStates[(int)StateType.Walk];
-				else if (action is Bev.ActionJumpTo)
-					this.mNextState = mAnimStates[(int)StateType.Jump];
-				else if (action is Bev.ActionAttack)
-					this.mNextState = mAnimStates[(int)StateType.Attack];*/
-
-				ProgressToNextState(agent, action);
+				ActionType type = action.type;
+				if (type == ActionType.MoveTo)
+				{
+					MoveTo moveTo = action as MoveTo;
+					if (moveTo.speed == MoveTo.Speed.Slow)
+						agent.blackboard.nextAnimState = mStateDic[(int)StateType.Walk];
+					else if (moveTo.speed == MoveTo.Speed.Normal)
+						agent.blackboard.nextAnimState = mStateDic[(int)StateType.Walk];
+					else if (moveTo.speed == MoveTo.Speed.Fast)
+						agent.blackboard.nextAnimState = mStateDic[(int)StateType.Run];
+				}
+				else if (type == ActionType.StopMove)
+				{
+					agent.blackboard.nextAnimState = mStateDic[(int)StateType.Idle];
+				}
+				
+				ChangeToNextState(agent, action);
 			}
 		}
 

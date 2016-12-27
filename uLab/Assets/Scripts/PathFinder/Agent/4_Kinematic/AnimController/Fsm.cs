@@ -5,13 +5,14 @@ using System.Collections.Generic;
 namespace Lite.Anim
 {
 
-	public abstract class StateMachine
+	public abstract class Fsm
 	{
 		protected Dictionary<int, State> mStateDic = new Dictionary<int, State>();
 
-		public StateMachine(KinematicAgent agent)
+		protected State defaultAnimState;
+
+		public Fsm()
 		{
-			
 		}
 
 		public abstract void DoAction(KinematicAgent agent, Bev.Action action);
@@ -24,7 +25,7 @@ namespace Lite.Anim
 				{
 					agent.blackboard.currentAnimState.Exit(agent);
 					agent.blackboard.currentAnimState = agent.blackboard.defaultAnimState;
-					agent.blackboard.currentAnimState.Enter(agent, null);
+					agent.blackboard.currentAnimState.Enter(agent, Bev.Nothing.Inst);
 				}
 				else
 				{
@@ -34,11 +35,11 @@ namespace Lite.Anim
 			else
 			{
 				agent.blackboard.currentAnimState = agent.blackboard.defaultAnimState;
-				agent.blackboard.currentAnimState.Enter(agent, null);
+				agent.blackboard.currentAnimState.Enter(agent, Bev.Nothing.Inst);
 			}
 		}
 
-		protected void ProgressToNextState(KinematicAgent agent, Bev.Action action)
+		protected void ChangeToNextState(KinematicAgent agent, Bev.Action action)
 		{
 			if (agent.blackboard.nextAnimState != null)
 			{
@@ -48,7 +49,7 @@ namespace Lite.Anim
 					return;
 				}
 
-				if (null != agent.blackboard.currentAnimState)
+				if (agent.blackboard.currentAnimState != null)
 					agent.blackboard.currentAnimState.Exit(agent);
 				agent.blackboard.currentAnimState = agent.blackboard.nextAnimState;
 				agent.blackboard.currentAnimState.Enter(agent, action);

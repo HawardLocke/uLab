@@ -7,13 +7,13 @@ namespace Lite.Anim
 	{
 		private long guid;
 
-		private ActionType actionType = ActionType.None;
+		private MotionType actionType = MotionType.None;
 
 		public State()
 		{
 			guid = GuidGenerator.NextLong();
 
-			actionType = ActionType.None;
+			actionType = MotionType.None;
 		}
 
 		public void Enter(KinematicAgent agent, Bev.Action action)
@@ -30,17 +30,16 @@ namespace Lite.Anim
 
 		public void Update(KinematicAgent agent)
 		{
+			if (agent.animComponent.IsCurrentFinished())
+				OnAnimationFinished(agent);
 			this.OnUpdate(agent);
 		}
 
 		protected abstract void OnEnter(KinematicAgent agent, Bev.Action action);
 		protected abstract void OnExit(KinematicAgent agent);
 		protected abstract void OnUpdate(KinematicAgent agent);
-
-		public virtual bool HandleAction(KinematicAgent agent, Bev.Action action)
-		{
-			return false;
-		}
+		public virtual bool HandleAction(KinematicAgent agent, Bev.Action action) { return false; }
+		protected abstract void OnAnimationFinished(KinematicAgent agent);
 
 		public bool IsFinished(KinematicAgent agent)
 		{

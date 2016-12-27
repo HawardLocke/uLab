@@ -83,8 +83,8 @@ public class SteeringTest : MonoBehaviour
 		var steer = go.AddComponent<SteeringComponent>();
 		var loco = go.AddComponent<LocomotionComponent>();
 		var animCom = go.AddComponent<AnimationComponent>();
-
 		animCom.Init(agent);
+		agent.animComponent = animCom;
 
 		float x = MathUtil.RandFloat() * 10;
 		float y = 0;

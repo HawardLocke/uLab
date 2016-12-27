@@ -2,38 +2,12 @@
 
 namespace Lite.Anim
 {
-	public class AnimSet
+	public abstract class AnimSet
 	{
-		private string mDefaultName = "idle";
-
-		public string GetAnimName(ActionType motion)
-		{
-			string name = mDefaultName;
-
-			switch (motion)
-			{
-				case ActionType.Idle:
-					name = "idle";
-					break;
-				case ActionType.Die:
-					name = "death";
-					break;
-				case ActionType.Walk:
-					name = "walk";
-					break;
-				case ActionType.Run:
-					name = "run";
-					break;
-				case ActionType.Jump:
-					name = "jump";
-					break;
-				case ActionType.Attack:
-					name = "attack";
-					break;
-			}
-
-			return name;
-		}
+		public abstract string GetIdle(KinematicAgent agent);
+		public abstract string GetWalk(KinematicAgent agent);
+		public abstract string GetRun(KinematicAgent agent);
+		public abstract string GetAttack(KinematicAgent agent);
 
 	}
 
