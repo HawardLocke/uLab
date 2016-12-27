@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -9,26 +10,35 @@ namespace Lite
 	{
 		public KinematicAgent agent;
 
-		private KinematicComponent kinematic;
+		private KinematicComponent _kinematic;
+		public KinematicComponent kinematic { get { return _kinematic; } }
 
-		private SteeringComponent steering;
+		private SteeringComponent _steering;
+		public SteeringComponent steering { get { return _steering; } }
+
+		private Queue<Bev.Action> actionQueue = new Queue<Bev.Action>();
 
 
 		public override void OnStart()
 		{
-			kinematic = GetComponent<KinematicComponent>();
+			_kinematic = GetComponent<KinematicComponent>();
 
-			steering = GetComponent<SteeringComponent>();
+			_steering = GetComponent<SteeringComponent>();
 		}
 
-		public KinematicComponent GetKinematic()
+		public override void OnUpdate()
 		{
-			return kinematic;
+			if (actionQueue.Count > 0)
+			{
+				Bev.Action action = actionQueue.Dequeue();
+
+				agent.animComponent.HandleAction(action);
+			}
 		}
 
-		public SteeringComponent GetSteering()
+		public void PushAction(Bev.Action action)
 		{
-			return steering;
+			actionQueue.Enqueue(action);
 		}
 
 	}

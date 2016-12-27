@@ -29,7 +29,7 @@ namespace Lite.Anim
 			return false;
 		}
 
-		protected override void OnAnimationFinished(KinematicAgent agent)
+		protected override void OnAnimationEnd(KinematicAgent agent)
 		{
 			Debug.Log("test run finished..");
 		}

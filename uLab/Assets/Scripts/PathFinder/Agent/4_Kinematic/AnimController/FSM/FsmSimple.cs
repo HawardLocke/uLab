@@ -14,13 +14,15 @@ namespace Lite.Anim
 			Idle,
 			Walk,
 			Run,
+			Attack
 		}
 
 		public FsmSimple()
 		{
-			mStateDic.Add((int)StateType.Idle, new Idle());
-			mStateDic.Add((int)StateType.Walk, new Walk());
-			mStateDic.Add((int)StateType.Run, new Run());
+			mStateDic.Add((uint)StateType.Idle, new Idle());
+			mStateDic.Add((uint)StateType.Walk, new Walk());
+			mStateDic.Add((uint)StateType.Run, new Run());
+			mStateDic.Add((uint)StateType.Attack, new Attack());
 
 			this.defaultAnimState = mStateDic[(int)StateType.Idle];
 		}
@@ -34,15 +36,15 @@ namespace Lite.Anim
 				{
 					MoveTo moveTo = action as MoveTo;
 					if (moveTo.speed == MoveTo.Speed.Slow)
-						agent.blackboard.nextAnimState = mStateDic[(int)StateType.Walk];
+						agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Walk];
 					else if (moveTo.speed == MoveTo.Speed.Normal)
-						agent.blackboard.nextAnimState = mStateDic[(int)StateType.Walk];
+						agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Walk];
 					else if (moveTo.speed == MoveTo.Speed.Fast)
-						agent.blackboard.nextAnimState = mStateDic[(int)StateType.Run];
+						agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Run];
 				}
 				else if (type == ActionType.StopMove)
 				{
-					agent.blackboard.nextAnimState = mStateDic[(int)StateType.Idle];
+					agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Idle];
 				}
 				
 				ChangeToNextState(agent, action);

@@ -106,30 +106,8 @@ public class GraphPathTest : MonoBehaviour
 				GraphAStarNode toNode = graph.GetNodeByID(edge.to) as GraphAStarNode;
 
 				GUIHelper.DrawLine(new Vector2(offsetX + node.x, offsetY + node.y), new Vector2(offsetX + toNode.x, offsetY + toNode.y), lineColor);
-
-				/*int dx = toNode.x - node.x;
-				int dy = toNode.y - node.y;
-				int minx = Mathf.Min(toNode.x, node.x) + offsetX;
-				int miny = Mathf.Min(toNode.y, node.y) + offsetY;
-				Rect screenRect = new Rect(minx, miny, stepx, stepy);
-				if (dx < 0 && dy < 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx < 0 && dy == 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx < 0 && dy > 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx == 0 && dy > 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx > 0 && dy > 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx > 0 && dy == 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.0f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx > 0 && dy < 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.0f, 0.49f, 0.49f), 0, 0, 0, 0, null);
-				else if (dx == 0 && dy < 0)
-					Graphics.DrawTexture(screenRect, lineTex, new Rect(0.5f, 0.5f, 0.49f, 0.49f), 0, 0, 0, 0, null);*/
 			}
-			Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - 2, 4, 4), dotBlueTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
+			//Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - 2, 4, 4), dotBlueTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
 		}
 	}
 

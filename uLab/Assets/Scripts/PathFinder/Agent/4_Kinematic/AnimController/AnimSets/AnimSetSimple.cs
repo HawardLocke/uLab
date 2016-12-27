@@ -1,13 +1,23 @@
 
+using UnityEngine;
+
 
 namespace Lite.Anim
 {
 
 	public class AnimSetSimple : AnimSet
 	{
+		public override void Init(Animation animation)
+		{
+			animation["idle break"].wrapMode = WrapMode.Loop;
+			animation["walk"].wrapMode = WrapMode.Loop;
+			animation["run"].wrapMode = WrapMode.Loop;
+			animation["run fast"].wrapMode = WrapMode.Loop;
+		}
+
 		public override string GetIdle(KinematicAgent agent)
 		{
-			return "idle";
+			return "idle break";
 		}
 
 		public override string GetWalk(KinematicAgent agent)
@@ -20,9 +30,14 @@ namespace Lite.Anim
 			return "run";
 		}
 
+		public override string GetRunFast(KinematicAgent agent)
+		{
+			return "run fast";
+		}
+
 		public override string GetAttack(KinematicAgent agent)
 		{
-			return "attack";
+			return "attack1";
 		}
 
 	}

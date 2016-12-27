@@ -21,6 +21,8 @@ namespace Lite
 	{
 		public AgentComponent agentComponent;
 
+		public SteeringComponent steering;
+
 		public AnimationComponent animComponent;
 
 		public MotionType currentMotionType;
@@ -35,15 +37,9 @@ namespace Lite
 			blackboard = new KinematicBlackboard(this);
 		}
 
-
-		public KinematicComponent GetKinematic()
+		public void PushAction(Bev.Action action)
 		{
-			return agentComponent.GetKinematic();
-		}
-
-		public SteeringComponent GetSteering()
-		{
-			return agentComponent.GetSteering();
+			agentComponent.PushAction(action);
 		}
 
 	}

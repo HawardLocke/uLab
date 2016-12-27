@@ -2,9 +2,11 @@ using UnityEngine;
 
 namespace Lite.Anim
 {
-	public class Walk : State
+	public class Attack : State
 	{
-		public Walk()
+		protected float endOfAnimTime;
+
+		public Attack()
 		{
 
 		}
@@ -29,9 +31,20 @@ namespace Lite.Anim
 			return false;
 		}
 
+		protected override void OnAnimationEnd(KinematicAgent agent)
+		{
+			Debug.Log("test attack finished..");
+		}
+
+		protected virtual bool IsAnimLoopEnded()
+		{
+			return endOfAnimTime <= Time.timeSinceLevelLoad;
+		}
+
 		private void PlayAnim(KinematicAgent agent)
 		{
-			string name = agent.animComponent.animSet.GetWalk(agent);
+			string name = agent.animComponent.animSet.GetAttack(agent);
+			endOfAnimTime = Time.timeSinceLevelLoad + agent.animComponent.GetAnimLenth(name);
 			agent.animComponent.Play(name);
 		}
 

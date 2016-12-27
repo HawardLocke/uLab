@@ -67,14 +67,6 @@ public class MapEditor : MonoBehaviour
 	
 	void OnGUI()
 	{
-		/*GUIHelper.BeginGroup(new Rect(0, 0, 100, 100));
-
-		GUIHelper.DrawLine(new Vector2(0, 0), new Vector2(200, 200), Color.red);
-
-		GUIHelper.EndGroup();
-
-		return;*/
-
 		if (GUI.Button(new Rect(5, 85, 60, 20), "switch"))
 		{
 			navMode = !navMode;
@@ -326,16 +318,11 @@ public class MapEditor : MonoBehaviour
 			{
 				GraphEdge edge = edges[e];
 				GraphAStarNode toNode = graph.GetNodeByID(edge.to) as GraphAStarNode;
-				int dx = toNode.x - node.x;
-				int dy = toNode.y - node.y;
-				int minx = Mathf.Min(toNode.x, node.x) + offsetX;
-				int miny = Mathf.Min(toNode.y, node.y) + offsetY;
-				Rect screenRect = new Rect(minx, miny, stepx, stepy);
 
 				GUIHelper.DrawLine(new Vector2(offsetX + node.x, offsetY + node.y), new Vector2(offsetX + toNode.x, offsetY + toNode.y), lineColor);
 
 			}
-			Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - 2, 4, 4), dotBlueTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
+			//Graphics.DrawTexture(new Rect(offsetX + node.x, offsetY + node.y - 2, 4, 4), dotBlueTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
 		}
 
 	}

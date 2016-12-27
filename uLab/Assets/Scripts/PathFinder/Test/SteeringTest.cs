@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Lite;
 using Lite.AStar;
 using Lite.Graph;
+using Lite.Bev;
 
 
 public class SteeringTest : MonoBehaviour
@@ -35,7 +36,7 @@ public class SteeringTest : MonoBehaviour
 
 	void OnGUI()
 	{
-		if (GUI.Button(new Rect(20, 20, 60, 30), "spawn"))
+		if (GUI.Button(new Rect(20, 20, 60, 30), "bot"))
 		{
 			if (bot1_id == 0)
 				bot1_id = AddBot().Guid;
@@ -45,28 +46,34 @@ public class SteeringTest : MonoBehaviour
 				bot3_id = AddBot().Guid;
 		}
 
-		if (GUI.Button(new Rect(20, 60, 60, 30), "wander"))
+		if (GUI.Button(new Rect(20, 60, 60, 30), "mvt"))
 		{
-			KinematicAgent kinAgent = app.kinematicFacade.FindAgent(bot1_id);
-			bool isOn = kinAgent.GetSteering().IsSteeringOn(SteeringType.Wander);
-			kinAgent.GetSteering().TurnSteeringOn(SteeringType.Wander, !isOn);
+			KinematicAgent agent = app.kinematicFacade.FindAgent(bot1_id);
+			var target = new Vector3(MathUtil.RandFloat() * 15, 0, MathUtil.RandFloat() * 15);
+			MoveTo mvt = new MoveTo(target, MoveTo.Speed.Slow);
+			agent.PushAction(mvt);
+			agent.steering.TurnSteeringOn(SteeringType.Seek, true);
 		}
 
-		if (GUI.Button(new Rect(20, 100, 60, 30), "seek"))
+		if (GUI.Button(new Rect(20, 100, 60, 30), "stp"))
+		{
+		}
+
+		/*if (GUI.Button(new Rect(20, 100, 60, 30), "seek"))
 		{
 			KinematicAgent kinAgent = app.kinematicFacade.FindAgent(bot1_id);
 			kinAgent.GetKinematic().targetPosition = new Vector3(0, 1, 0);
-			bool isOn = kinAgent.GetSteering().IsSteeringOn(SteeringType.Seek);
-			kinAgent.GetSteering().TurnSteeringOn(SteeringType.Seek, !isOn);
+			bool isOn = kinAgent.steering.IsSteeringOn(SteeringType.Seek);
+			kinAgent.steering.TurnSteeringOn(SteeringType.Seek, !isOn);
 		}
 
 		if (GUI.Button(new Rect(20, 140, 60, 30), "arrive"))
 		{
 			KinematicAgent kinAgent = app.kinematicFacade.FindAgent(bot1_id);
 			kinAgent.GetKinematic().targetPosition = new Vector3(0, 1, 0);
-			bool isOn = kinAgent.GetSteering().IsSteeringOn(SteeringType.Arrive);
-			kinAgent.GetSteering().TurnSteeringOn(SteeringType.Arrive, !isOn);
-		}
+			bool isOn = kinAgent.steering.IsSteeringOn(SteeringType.Arrive);
+			kinAgent.steering.TurnSteeringOn(SteeringType.Arrive, !isOn);
+		}*/
 
 	}
 
@@ -81,6 +88,7 @@ public class SteeringTest : MonoBehaviour
 		agentCom.agent = agent;
 		agent.agentComponent = agentCom;
 		var steer = go.AddComponent<SteeringComponent>();
+		agent.steering = steer;
 		var loco = go.AddComponent<LocomotionComponent>();
 		var animCom = go.AddComponent<AnimationComponent>();
 		animCom.Init(agent);

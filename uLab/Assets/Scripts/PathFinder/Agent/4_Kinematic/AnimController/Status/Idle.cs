@@ -4,6 +4,7 @@ namespace Lite.Anim
 {
 	public class Idle : State
 	{
+
 		public Idle()
 		{
 
@@ -11,7 +12,7 @@ namespace Lite.Anim
 
 		protected override void OnEnter(KinematicAgent agent, Bev.Action action)
 		{
-			agent.animComponent.Play(agent.animComponent.animSet.GetIdle(agent));
+			PlayAnim(agent);
 		}
 
 		protected override void OnExit(KinematicAgent agent)
@@ -29,9 +30,10 @@ namespace Lite.Anim
 			return false;
 		}
 
-		protected override void OnAnimationFinished(KinematicAgent agent)
+		private void PlayAnim(KinematicAgent agent)
 		{
-			Debug.Log("test idle finished..");
+			string name = agent.animComponent.animSet.GetIdle(agent);
+			agent.animComponent.Play(name);
 		}
 
 	}

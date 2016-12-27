@@ -7,7 +7,7 @@ namespace Lite.Anim
 
 	public abstract class Fsm
 	{
-		protected Dictionary<int, State> mStateDic = new Dictionary<int, State>();
+		protected Dictionary<uint, State> mStateDic = new Dictionary<uint, State>();
 
 		protected State defaultAnimState;
 
@@ -24,7 +24,7 @@ namespace Lite.Anim
 				if (agent.blackboard.currentAnimState.IsFinished(agent))
 				{
 					agent.blackboard.currentAnimState.Exit(agent);
-					agent.blackboard.currentAnimState = agent.blackboard.defaultAnimState;
+					agent.blackboard.currentAnimState = defaultAnimState;
 					agent.blackboard.currentAnimState.Enter(agent, Bev.Nothing.Inst);
 				}
 				else
@@ -34,7 +34,7 @@ namespace Lite.Anim
 			}
 			else
 			{
-				agent.blackboard.currentAnimState = agent.blackboard.defaultAnimState;
+				agent.blackboard.currentAnimState = defaultAnimState;
 				agent.blackboard.currentAnimState.Enter(agent, Bev.Nothing.Inst);
 			}
 		}

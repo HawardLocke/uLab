@@ -11,7 +11,6 @@ namespace Lite
 
 		public Anim.State currentAnimState = null;
 		public Anim.State nextAnimState = null;
-		public Anim.State defaultAnimState = null;
 
 		public KinematicBlackboard(KinematicAgent agent)
 		{

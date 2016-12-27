@@ -31,6 +31,7 @@ namespace Lite
 		{
 			animation = GetComponent<Animation>();
 			animation.playAutomatically = false;
+			_animSet.Init(animation);
 		}
 
 		public override void OnUpdate()
@@ -39,19 +40,15 @@ namespace Lite
 				mAnimFSM.Update(agent);
 		}
 
-		public void Play(string name, bool forceReplay = false)
+		public void Play(string name)
 		{
 			if (animation.IsPlaying(name))
 			{
-				if (forceReplay)
-				{
-					animation.Stop();
-				}
-				animation.CrossFade(name);
+				animation.PlayQueued(name);
 			}
 			else
 			{
-				animation.CrossFade(name);			
+				animation.CrossFade(name);
 			}
 			currentAnimation = name;
 		}
@@ -61,9 +58,9 @@ namespace Lite
 			mAnimFSM.DoAction(agent, action);
 		}
 
-		public bool IsCurrentFinished()
+		public float GetAnimLenth(string name)
 		{
-			return animation.isPlaying && animation[currentAnimation].normalizedTime > 0.95f;
+			return animation[name].length;
 		}
 
 	}

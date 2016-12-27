@@ -5,9 +5,9 @@ namespace Lite.Anim
 {
 	public abstract class State
 	{
-		private long guid;
+		protected long guid;
 
-		private MotionType actionType = MotionType.None;
+		protected MotionType actionType = MotionType.None;
 
 		public State()
 		{
@@ -30,8 +30,8 @@ namespace Lite.Anim
 
 		public void Update(KinematicAgent agent)
 		{
-			if (agent.animComponent.IsCurrentFinished())
-				OnAnimationFinished(agent);
+			if (IsAnimLoopEnded())
+				OnAnimationEnd(agent);
 			this.OnUpdate(agent);
 		}
 
@@ -39,7 +39,8 @@ namespace Lite.Anim
 		protected abstract void OnExit(KinematicAgent agent);
 		protected abstract void OnUpdate(KinematicAgent agent);
 		public virtual bool HandleAction(KinematicAgent agent, Bev.Action action) { return false; }
-		protected abstract void OnAnimationFinished(KinematicAgent agent);
+		protected virtual void OnAnimationEnd(KinematicAgent agent) { }
+		protected virtual bool IsAnimLoopEnded() { return false; }
 
 		public bool IsFinished(KinematicAgent agent)
 		{
