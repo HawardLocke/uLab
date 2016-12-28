@@ -9,6 +9,7 @@ namespace Lite.Anim
 
 		protected MotionType actionType = MotionType.None;
 
+		
 		public State()
 		{
 			guid = GuidGenerator.NextLong();
@@ -18,6 +19,8 @@ namespace Lite.Anim
 
 		public void Enter(KinematicAgent agent, Bev.Action action)
 		{
+			SetLastUpdateTime(agent, Time.timeSinceLevelLoad);
+			SetThisUpdateTime(agent, Time.timeSinceLevelLoad);
 			this.SetFinished(agent, false);
 			this.OnEnter(agent, action);
 		}
@@ -30,6 +33,9 @@ namespace Lite.Anim
 
 		public void Update(KinematicAgent agent)
 		{
+			SetLastUpdateTime(agent, GetThisUpdateTime(agent));
+			SetThisUpdateTime(agent, Time.timeSinceLevelLoad);
+			
 			if (IsAnimLoopEnded())
 				OnAnimationEnd(agent);
 			this.OnUpdate(agent);
@@ -50,6 +56,31 @@ namespace Lite.Anim
 		public void SetFinished(KinematicAgent agent, bool value)
 		{
 			agent.blackboard.SetBool(guid, "isFinished", value);
+		}
+
+		public float GetLastUpdateTime(KinematicAgent agent)
+		{
+			return agent.blackboard.GetFloat(guid, "lastUpdateTime");
+		}
+
+		private void SetLastUpdateTime(KinematicAgent agent, float time)
+		{
+			agent.blackboard.SetFloat(guid, "lastUpdateTime", time);
+		}
+
+		public float GetThisUpdateTime(KinematicAgent agent)
+		{
+			return agent.blackboard.GetFloat(guid, "thisUpdateTime");
+		}
+
+		private void SetThisUpdateTime(KinematicAgent agent, float time)
+		{
+			agent.blackboard.SetFloat(guid, "thisUpdateTime", time);
+		}
+
+		public float GetDeltaUpdateTime(KinematicAgent agent)
+		{
+			return GetThisUpdateTime(agent) - GetLastUpdateTime(agent);
 		}
 
 	}

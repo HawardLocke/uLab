@@ -21,7 +21,7 @@ namespace Lite
 	{
 		public AgentComponent agentComponent;
 
-		public SteeringComponent steering;
+		public LocomotionComponent locomotion;
 
 		public AnimationComponent animComponent;
 

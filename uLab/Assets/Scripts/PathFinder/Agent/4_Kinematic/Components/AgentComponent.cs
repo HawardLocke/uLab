@@ -10,20 +10,12 @@ namespace Lite
 	{
 		public KinematicAgent agent;
 
-		private KinematicComponent _kinematic;
-		public KinematicComponent kinematic { get { return _kinematic; } }
-
-		private SteeringComponent _steering;
-		public SteeringComponent steering { get { return _steering; } }
-
 		private Queue<Bev.Action> actionQueue = new Queue<Bev.Action>();
 
 
 		public override void OnStart()
 		{
-			_kinematic = GetComponent<KinematicComponent>();
-
-			_steering = GetComponent<SteeringComponent>();
+			
 		}
 
 		public override void OnUpdate()

@@ -7,20 +7,13 @@ namespace Lite
 {
 	public class Separating : Steering
 	{
-
-		public Separating(KinematicComponent kinm) : 
-			base(kinm)
-		{
-
-		}
-
-		public override Vector3 Calculate()
+		public override Vector3 Calculate(LocomotionComponent loco)
 		{
 			Vector3 SteeringForce = new Vector3(0,0,0);
-			List<KinematicComponent> neighbors = new List<KinematicComponent>();
+			List<LocomotionComponent> neighbors = new List<LocomotionComponent>();
 			foreach(var kinm in neighbors)
 			{
-				Vector3 ToAgent = GetKinematic().position - kinm.position;
+				Vector3 ToAgent = loco.position - kinm.position;
 				SteeringForce += ToAgent.normalized / ToAgent.magnitude;
 			}
 			return SteeringForce;

@@ -7,13 +7,7 @@ namespace Lite
 	public class WallAvoiding : Steering
 	{
 
-		public WallAvoiding(KinematicComponent kinm) : 
-			base(kinm)
-		{
-
-		}
-
-		public override Vector3 Calculate()
+		public override Vector3 Calculate(LocomotionComponent loco)
 		{
 			return Vector3.zero;
 		}

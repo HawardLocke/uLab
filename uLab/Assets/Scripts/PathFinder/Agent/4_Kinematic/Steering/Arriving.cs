@@ -6,16 +6,9 @@ namespace Lite
 {
 	public class Arriving : Steering
 	{
-
-		public Arriving(KinematicComponent kinm) : 
-			base(kinm)
+		public override Vector3 Calculate(LocomotionComponent loco)
 		{
-
-		}
-
-		public override Vector3 Calculate()
-		{
-			Vector3 toTarget = GetKinematic().targetPosition - GetKinematic().position;
+			Vector3 toTarget = loco.targetPosition - loco.position;
 
 			double distSqr = toTarget.sqrMagnitude;
 
@@ -27,11 +20,11 @@ namespace Lite
 
 				float speed = dist / (DecelerationTweaker);
 
-				speed = System.Math.Min(speed, GetKinematic().maxSpeed);
+				speed = System.Math.Min(speed, loco.maxSpeed);
 
 				Vector3 desiredVelocity = toTarget / dist * speed;
 
-				return (desiredVelocity - GetKinematic().velocity);
+				return (desiredVelocity - loco.velocity);
 			}
 
 			return Vector3.zero;

@@ -12,6 +12,7 @@ namespace Lite.Anim
 
 		protected override void OnEnter(KinematicAgent agent, Bev.Action action)
 		{
+			agent.locomotion.StopMove();
 			PlayAnim(agent);
 		}
 

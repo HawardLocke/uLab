@@ -50,9 +50,9 @@ public class SteeringTest : MonoBehaviour
 		{
 			KinematicAgent agent = app.kinematicFacade.FindAgent(bot1_id);
 			var target = new Vector3(MathUtil.RandFloat() * 15, 0, MathUtil.RandFloat() * 15);
-			MoveTo mvt = new MoveTo(target, MoveTo.Speed.Slow);
+			MoveTo mvt = new MoveTo(target, (MoveTo.Speed)MathUtil.RandInt(0,2));
 			agent.PushAction(mvt);
-			agent.steering.TurnSteeringOn(SteeringType.Seek, true);
+			agent.locomotion.TurnSteeringOn(SteeringType.Seek, true);
 		}
 
 		if (GUI.Button(new Rect(20, 100, 60, 30), "stp"))
@@ -84,12 +84,11 @@ public class SteeringTest : MonoBehaviour
 
 		var prefab = Resources.Load(botFilePath[MathUtil.RandInt(0,2)]);
 		GameObject go = GameObject.Instantiate(prefab) as GameObject;
-		AgentComponent agentCom = go.AddComponent<AgentComponent>();
+		var agentCom = go.AddComponent<AgentComponent>();
 		agentCom.agent = agent;
 		agent.agentComponent = agentCom;
-		var steer = go.AddComponent<SteeringComponent>();
-		agent.steering = steer;
 		var loco = go.AddComponent<LocomotionComponent>();
+		agent.locomotion = loco;
 		var animCom = go.AddComponent<AnimationComponent>();
 		animCom.Init(agent);
 		agent.animComponent = animCom;
