@@ -7,11 +7,12 @@ namespace Lite
 
 	public enum MotionType
 	{
-		None,
+		None = 0,
 		Idle,
 		Die,
 		Walk,
 		Run,
+		Sprint,
 		Jump,
 		Attack,
 	}

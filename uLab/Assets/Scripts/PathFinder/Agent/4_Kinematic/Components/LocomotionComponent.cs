@@ -6,19 +6,8 @@ namespace Lite
 {
 	public class LocomotionComponent : IComponent
 	{
+		// configed members
 		public float mass;
-
-		public Vector3 position;
-
-		public Vector3 forward;
-
-		public Vector3 velocity;
-
-		public float speed;
-
-		public float speedSqr;
-
-		public float maxSpeed;
 
 		public float maxWalkSpeed;
 
@@ -26,19 +15,27 @@ namespace Lite
 
 		public float maxSprintSpeed;
 
-		public Vector3 steeringForce;
-
 		public float maxForce;
-
-		
-
-		public bool isPlanar;
-
-		public Vector3 targetPosition;
 
 		public float wanderRadius;
 
+		// dynamic members
+		public Vector3 position = Vector3.zero;
+
+		public Vector3 velocity = Vector3.zero;
+
+		public float speed;
+
+		public float speedSqr;
+
+		public float maxSpeed;
+
+		public Vector3 steeringForce = Vector3.zero;
+
+		public Vector3 targetPosition = Vector3.zero;
+
 		// constants
+		public const bool isPlanar = true;
 		public const float damping = 2f;
 
 		// steering machine
@@ -55,14 +52,13 @@ namespace Lite
 		public override void OnAwake()
 		{
 			mass = 1;
-			position = new Vector3(0, 0, 0);
-			velocity = new Vector3(0, 0, 0);
-			steeringForce = new Vector3(0, 0, 0);
+			maxWalkSpeed = 1;
+			maxRunSpeed = 2;
+			maxSprintSpeed = 4;
 			maxForce = 1;
-			maxSpeed = 2;
-			isPlanar = true;
-			targetPosition = new Vector3(0, 0, 0);
 			wanderRadius = 2;
+
+			maxSpeed = maxRunSpeed;
 
 			// steering
 			updateSteeringForceTimer = Time.timeSinceLevelLoad + updateSteeringInterval;
@@ -140,7 +136,6 @@ namespace Lite
 
 				// force position
 				this.position = transform.position;
-				this.forward = transform.forward;
 			
 				// rotating
 				Vector3 newForward = Vector3.Slerp(transform.forward, this.velocity, damping * Time.deltaTime);
