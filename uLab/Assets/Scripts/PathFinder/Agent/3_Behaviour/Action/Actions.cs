@@ -30,16 +30,9 @@ namespace Lite.Bev
 	public class MoveTo : Action
 	{
 		public Vector3 target;
+		public MoveSpeed speed;
 
-		public enum Speed
-		{
-			Slow,
-			Normal,
-			Fast
-		}
-		public Speed speed;
-
-		public MoveTo(Vector3 target, Speed speed)
+		public MoveTo(Vector3 target, MoveSpeed speed)
 		{
 			type = ActionType.MoveTo;
 			this.target = target;

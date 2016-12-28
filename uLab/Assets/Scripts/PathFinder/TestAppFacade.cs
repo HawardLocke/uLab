@@ -15,9 +15,11 @@ namespace Lite
 		public KinematicFacade kinematicFacade { get { return m_kinematicFacade; } }
 
 
+		public static TestAppFacade Instance;
+
 		public TestAppFacade()
 		{
-			
+			Instance = this;
 		}
 
 		public void Init()

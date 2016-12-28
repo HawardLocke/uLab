@@ -32,13 +32,7 @@ namespace Lite.Anim
 				ActionType type = action.type;
 				if (type == ActionType.MoveTo)
 				{
-					/*MoveTo moveTo = action as MoveTo;
-					if (moveTo.speed == MoveTo.Speed.Slow)*/
-						agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Run];
-					/*else if (moveTo.speed == MoveTo.Speed.Normal)
-						agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Walk];
-					else if (moveTo.speed == MoveTo.Speed.Fast)
-						agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Run];*/
+					agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Run];
 				}
 				else if (type == ActionType.StopMove)
 				{

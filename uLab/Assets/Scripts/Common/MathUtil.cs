@@ -1,13 +1,16 @@
 
 using System;
 
+using UnityEngine;
+
+
 namespace Lite
 {
 	public class MathUtil
 	{
 		public const double PI = Math.PI;
 
-		private static Random rnd = new Random(System.DateTime.Now.Millisecond);
+		private static System.Random rnd = new System.Random(System.DateTime.Now.Millisecond);
 
 		/// <summary>
 		/// get a random integer in [min, max].
@@ -36,6 +39,16 @@ namespace Lite
 		public static float RandClamp()
 		{
 			return RandFloat() - RandFloat();
+		}
+
+		public static float Distance(Vector3 p1, Vector3 p2)
+		{
+			return Vector3.Distance(p1, p2);
+		}
+
+		public static float DistanceSqr(Vector3 p1, Vector3 p2)
+		{
+			return (p1 - p2).sqrMagnitude;
 		}
 
 	}

@@ -46,14 +46,13 @@ public class SteeringTest : MonoBehaviour
 				bot3_id = AddBot().Guid;
 		}
 
-		if (GUI.Button(new Rect(20, 60, 60, 30), "mvt"))
+		/*if (GUI.Button(new Rect(20, 60, 60, 30), "mvt"))
 		{
 			KinematicAgent agent = app.kinematicFacade.FindAgent(bot1_id);
 			var target = new Vector3(MathUtil.RandFloat() * 15, 0, MathUtil.RandFloat() * 15);
-			MoveTo mvt = new MoveTo(target, (MoveTo.Speed)MathUtil.RandInt(0,2));
+			MoveTo mvt = new MoveTo(target, MoveSpeed.Normal);//(MoveSpeed)MathUtil.RandInt(0,2));
 			agent.PushAction(mvt);
-			agent.locomotion.TurnSteeringOn(SteeringType.Seek, true);
-		}
+		}*/
 
 		if (GUI.Button(new Rect(20, 100, 60, 30), "stp"))
 		{
@@ -84,6 +83,7 @@ public class SteeringTest : MonoBehaviour
 
 		var prefab = Resources.Load(botFilePath[MathUtil.RandInt(0,2)]);
 		GameObject go = GameObject.Instantiate(prefab) as GameObject;
+		go.layer = LayerMask.NameToLayer(GameDefine.LayerBot);
 		var agentCom = go.AddComponent<AgentComponent>();
 		agentCom.agent = agent;
 		agent.agentComponent = agentCom;

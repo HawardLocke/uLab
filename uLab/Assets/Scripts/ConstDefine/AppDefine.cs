@@ -28,18 +28,5 @@ namespace Lite
 
 		public const string ManagerGOName = "Managers";				// 给各种管理器使用的go
 
-
-		// layer
-		public static string LayerDefault = "Default";
-		public static string LayerTerrain = "Terrain";
-		public static string LayerFlora = "Flora";
-		public static string LayerObstacles = "Obstacles";
-		public static string LayerNGUI = "NGUI";
-		public static string LayerItem = "Item";
-		public static string LayerNPC = "NPC";
-		public static string LayerProjectile = "Projectile";
-		public static string LayerEffect = "Effect";
-		public static string LayerNoSupportTouch = "NoSupportTouch";
-
 	}
 }

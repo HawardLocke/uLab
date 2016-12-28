@@ -11,20 +11,20 @@ namespace Lite
 
 		// camera positon
 		private float camPosX = 0;
-		private float camPosZ = 0;
-		private float camPosY = 30;
+		private float camPosZ = -20;
+		private float camPosY = 20;
 		private const float maxX = 32;
 		private const float minX = -32;
 		private const float maxY = 35;
-		private const float minY = 10;
+		private const float minY = 5;
 		private const float maxZ = 20;
 		private const float minZ = -20;
 		
 		private float ZoomSpeed = 30;
 		private float DragSpeed = 30;
 
-		public float dampingY = 10;
-		public float dampingXZ = 20;
+		private float dampingY = 10;
+		private float dampingXZ = 20;
 
 		void Awake()
 		{
@@ -84,14 +84,10 @@ namespace Lite
 		{
 			ZoomInOut(Input.GetAxis("Mouse ScrollWheel"));
 
-			/*if (Input.GetMouseButtonUp(0))
+			if (Input.GetMouseButtonUp(0))
 			{
+				OnClickScene(Input.mousePosition);
 			}
-			if (Input.GetMouseButton(1))
-			{
-				float rotY = Input.GetAxis("Mouse X");
-				float rotX = Input.GetAxis("Mouse Y");
-			}*/
 			if (Input.GetMouseButtonDown(2))
 			{
 				if (!isMiddleButtonDown)
@@ -121,6 +117,51 @@ namespace Lite
 		{
 			if (Input.GetKey(KeyCode.Space))
 			{
+			}
+		}
+
+		private void OnClickScene(Vector3 mousePosition)
+		{
+			Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+			RaycastHit hit;
+			int layerMask =
+				1 << LayerMask.NameToLayer(GameDefine.LayerTerrain)
+				| 1 << LayerMask.NameToLayer(GameDefine.LayerBot);
+
+			if (Physics.Raycast(ray, out hit, 50, layerMask))
+			{
+				Vector3 hitPoint = hit.point;
+				int hitLayer = hit.collider.gameObject.layer;
+				if (hitLayer == LayerMask.NameToLayer(GameDefine.LayerTerrain))
+				{
+					OnClickTerrain(hitPoint);
+				}
+				else if (hitLayer == LayerMask.NameToLayer(GameDefine.LayerBot))
+				{
+					OnClickBot(hit.collider.gameObject);
+				}
+			}
+		}
+
+		private GameObject clickTerrainEffect;
+		private void OnClickTerrain(Vector3 position)
+		{
+			if (clickTerrainEffect == null)
+			{
+				var prefab = Resources.Load("Prefabs/SmallBox");
+				clickTerrainEffect = GameObject.Instantiate(prefab) as GameObject;
+			}
+			clickTerrainEffect.transform.position = position;
+		}
+
+		private void OnClickBot(GameObject go)
+		{
+			AgentComponent agentCom = go.GetComponent<AgentComponent>();
+			if (agentCom != null)
+			{
+				var target = clickTerrainEffect.transform.position;
+				Bev.MoveTo mvt = new Bev.MoveTo(target, Bev.MoveSpeed.Normal);
+				agentCom.agent.PushAction(mvt);
 			}
 		}
 

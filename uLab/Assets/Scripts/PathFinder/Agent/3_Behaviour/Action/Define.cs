@@ -9,4 +9,11 @@ namespace Lite.Bev
 		Attack
 	}
 
+	public enum MoveSpeed
+	{
+		Slow,
+		Normal,
+		Fast
+	}
+
 }

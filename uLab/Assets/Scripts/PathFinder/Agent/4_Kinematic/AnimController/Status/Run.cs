@@ -12,18 +12,19 @@ namespace Lite.Anim
 
 		protected override void OnEnter(KinematicAgent agent, Bev.Action action)
 		{
+			Bev.MoveSpeed speedType = Bev.MoveSpeed.Normal;
+
 			if (action.type == Bev.ActionType.MoveTo)
 			{
 				Bev.MoveTo moveTo = action as Bev.MoveTo;
 				agent.blackboard.moveToAction = moveTo;
-				if (moveTo.speed == Bev.MoveTo.Speed.Slow)
-					agent.locomotion.maxSpeed = agent.locomotion.maxWalkSpeed;
-				else if (moveTo.speed == Bev.MoveTo.Speed.Normal)
-					agent.locomotion.maxSpeed = agent.locomotion.maxRunSpeed;
-				else if (moveTo.speed == Bev.MoveTo.Speed.Fast)
-					agent.locomotion.maxSpeed = agent.locomotion.maxSprintSpeed;
+				speedType = moveTo.speed;
+
+				agent.locomotion.StartMove(moveTo.target, GetSpeed(agent, agent.blackboard.moveToAction.speed));
 			}
-			PlayAnim(agent);
+
+			PlayAnim(agent, speedType);
+			
 		}
 
 		protected override void OnExit(KinematicAgent agent)
@@ -36,11 +37,13 @@ namespace Lite.Anim
 			float deltaTime = this.GetDeltaUpdateTime(agent);
 			if (agent.blackboard.moveToAction != null)
 			{
-				float distanceSqr = (agent.blackboard.moveToAction.target - agent.locomotion.position).sqrMagnitude;
-				if (distanceSqr < agent.locomotion.speed * agent.locomotion.speed * deltaTime)
+				var target = agent.blackboard.moveToAction.target;
+				float distanceSqr = MathUtil.DistanceSqr(target, agent.locomotion.position);
+				float speed = GetSpeed(agent, agent.blackboard.moveToAction.speed);
+				if (distanceSqr < speed * speed * deltaTime)
 				{
 					agent.blackboard.moveToAction = null;
-					Log.Info("arrived");
+					//Log.Info("arrived");
 					SetFinished(agent, true);
 				}
 			}
@@ -51,10 +54,46 @@ namespace Lite.Anim
 			return false;
 		}
 
-		private void PlayAnim(KinematicAgent agent)
+		private void PlayAnim(KinematicAgent agent, Bev.MoveSpeed speed)
 		{
-			string name = agent.animComponent.animSet.GetWalk(agent);
+			string name;
+			switch(speed)
+			{
+				case Bev.MoveSpeed.Slow:
+					name = agent.animComponent.animSet.GetWalk(agent);
+					break;
+				case Bev.MoveSpeed.Normal:
+					name = agent.animComponent.animSet.GetRun(agent);
+					break;
+				case Bev.MoveSpeed.Fast:
+					name = agent.animComponent.animSet.GetRunFast(agent);
+					break;
+				default:
+					name = agent.animComponent.animSet.GetWalk(agent);
+					break;
+			}
 			agent.animComponent.Play(name);
+		}
+
+		private float GetSpeed(KinematicAgent agent, Bev.MoveSpeed speedType)
+		{
+			float speed = 0;
+			switch (speedType)
+			{
+				case Bev.MoveSpeed.Slow:
+					speed = agent.locomotion.maxWalkSpeed;
+					break;
+				case Bev.MoveSpeed.Normal:
+					speed = agent.locomotion.maxRunSpeed;
+					break;
+				case Bev.MoveSpeed.Fast:
+					speed = agent.locomotion.maxSprintSpeed;
+					break;
+				default:
+					speed = agent.locomotion.maxRunSpeed;
+					break;
+			}
+			return speed;
 		}
 
 	}

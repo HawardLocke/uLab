@@ -44,10 +44,13 @@ namespace Lite
 		{
 			if (animation.IsPlaying(name))
 			{
+				//Log.Info("queued");
+				animation.Stop();
 				animation.PlayQueued(name);
 			}
 			else
 			{
+				//Log.Info("fade");
 				animation.CrossFade(name);
 			}
 			currentAnimation = name;
