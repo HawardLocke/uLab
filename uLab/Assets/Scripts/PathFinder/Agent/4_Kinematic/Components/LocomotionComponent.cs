@@ -14,6 +14,7 @@ namespace Lite
 
 		// dynamic members
 		public Vector3 position { get { return transform.position; } }
+		public Vector3 forward { get { return transform.forward; } }
 		public Vector3 velocity = Vector3.zero;
 		public float speed;
 		public Vector3 targetPosition = Vector3.zero;
@@ -48,7 +49,12 @@ namespace Lite
 
 		public void SetPosition(float x, float y, float z)
 		{
-			gameObject.transform.position.Set(x, y, z);
+			transform.position.Set(x, y, z);
+		}
+
+		public void SetForward(Vector3 dir)
+		{
+			transform.forward = dir;
 		}
 
 		public void StartMove(Vector3 target, float speed = -1)
@@ -99,7 +105,7 @@ namespace Lite
 			
 				// rotating
 				Vector3 newForward = Vector3.Slerp(transform.forward, this.velocity, damping * Time.deltaTime * (speed / maxWalkSpeed));
-				transform.forward = newForward;
+				this.SetForward(newForward);
 			}
 
 		}

@@ -13,7 +13,7 @@ namespace Lite
 		public Anim.State nextAnimState = null;
 
 		public Bev.MoveTo moveToAction;
-
+		public Bev.Attack attackAction;
 
 		public KinematicBlackboard(KinematicAgent agent)
 		{

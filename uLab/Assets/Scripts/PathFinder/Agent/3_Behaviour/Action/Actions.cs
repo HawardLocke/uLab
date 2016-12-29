@@ -5,11 +5,11 @@ namespace Lite.Bev
 {
 	public abstract class Action
 	{
-		public ActionType type;
+		public ActionType actionType;
 
 		public Action()
 		{
-			type = ActionType.Default;
+			actionType = ActionType.Default;
 		}
 	}
 
@@ -34,7 +34,7 @@ namespace Lite.Bev
 
 		public MoveTo(Vector3 target, MoveSpeed speed)
 		{
-			type = ActionType.MoveTo;
+			actionType = ActionType.MoveTo;
 			this.target = target;
 			this.speed = speed;
 		}
@@ -46,7 +46,7 @@ namespace Lite.Bev
 
 		public StopMove(Vector3 target)
 		{
-			type = ActionType.StopMove;
+			actionType = ActionType.StopMove;
 			this.target = target;
 		}
 	}
@@ -57,7 +57,7 @@ namespace Lite.Bev
 
 		public Attack(KinematicAgent target)
 		{
-			type = ActionType.Attack;
+			actionType = ActionType.Attack;
 			this.target = target;
 		}
 	}

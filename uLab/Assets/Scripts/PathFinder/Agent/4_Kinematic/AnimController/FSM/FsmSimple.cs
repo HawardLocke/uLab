@@ -29,7 +29,7 @@ namespace Lite.Anim
 		{
 			if (agent.blackboard.currentAnimState == null || ! agent.blackboard.currentAnimState.HandleAction(agent, action))
 			{
-				ActionType type = action.type;
+				ActionType type = action.actionType;
 				if (type == ActionType.MoveTo)
 				{
 					agent.blackboard.nextAnimState = mStateDic[(uint)StateType.Run];

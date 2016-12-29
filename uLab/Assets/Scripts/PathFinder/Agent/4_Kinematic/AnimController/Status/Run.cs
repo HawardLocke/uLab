@@ -14,13 +14,13 @@ namespace Lite.Anim
 		{
 			Bev.MoveSpeed speedType = Bev.MoveSpeed.Normal;
 
-			if (action.type == Bev.ActionType.MoveTo)
+			if (action.actionType == Bev.ActionType.MoveTo)
 			{
 				Bev.MoveTo moveTo = action as Bev.MoveTo;
 				agent.blackboard.moveToAction = moveTo;
 				speedType = moveTo.speed;
 
-				agent.locomotion.StartMove(moveTo.target, GetSpeed(agent, agent.blackboard.moveToAction.speed));
+				agent.locomotion.StartMove(moveTo.target, GetSpeed(agent, moveTo.speed));
 			}
 
 			PlayAnim(agent, speedType);
@@ -51,6 +51,15 @@ namespace Lite.Anim
 
 		public override bool HandleAction(KinematicAgent agent, Bev.Action action)
 		{
+			Bev.ActionType type = action.actionType;
+			if (type == Bev.ActionType.MoveTo)
+			{
+				Bev.MoveTo moveTo = (Bev.MoveTo)action;
+				agent.blackboard.moveToAction = moveTo;
+				agent.locomotion.StartMove(moveTo.target, GetSpeed(agent, moveTo.speed));
+				//PlayAnim(agent, moveTo.speed);
+				return true;
+			}
 			return false;
 		}
 

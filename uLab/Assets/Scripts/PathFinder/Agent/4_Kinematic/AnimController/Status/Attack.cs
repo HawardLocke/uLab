@@ -4,7 +4,6 @@ namespace Lite.Anim
 {
 	public class Attack : State
 	{
-		protected float endOfAnimTime;
 
 		public Attack()
 		{
@@ -13,7 +12,14 @@ namespace Lite.Anim
 
 		protected override void OnEnter(KinematicAgent agent, Bev.Action action)
 		{
-			PlayAnim(agent);
+			if (action.actionType == Bev.ActionType.Attack)
+			{
+				Bev.Attack attackAction = action as Bev.Attack;
+				agent.blackboard.attackAction = attackAction;
+			}
+
+			//PlayAnim(agent);
+
 		}
 
 		protected override void OnExit(KinematicAgent agent)
@@ -23,7 +29,26 @@ namespace Lite.Anim
 
 		protected override void OnUpdate(KinematicAgent agent)
 		{
-
+			KinematicAgent targetAgent = agent.blackboard.attackAction.target;
+			if (targetAgent != null)
+			{
+				Vector3 faceDir = agent.locomotion.forward;
+				Vector3 desiredDir = targetAgent.locomotion.position;
+				if (Vector3.Angle(faceDir, desiredDir) > 10)
+				{
+					float deltaTime = this.GetDeltaUpdateTime(agent);
+					Vector3 dir = Vector3.Slerp(faceDir, desiredDir, 5 * deltaTime);
+					agent.locomotion.SetForward(dir);
+				}
+				else
+				{
+					PlayAnim(agent);
+				}
+			}
+			else
+			{
+				SetFinished(agent, true);
+			}
 		}
 
 		public override bool HandleAction(KinematicAgent agent, Bev.Action action)
@@ -31,20 +56,10 @@ namespace Lite.Anim
 			return false;
 		}
 
-		protected override void OnAnimationEnd(KinematicAgent agent)
-		{
-			Debug.Log("test attack finished..");
-		}
-
-		protected virtual bool IsAnimLoopEnded()
-		{
-			return endOfAnimTime <= Time.timeSinceLevelLoad;
-		}
-
 		private void PlayAnim(KinematicAgent agent)
 		{
-			string name = agent.animComponent.animSet.GetAttack(agent);
-			endOfAnimTime = Time.timeSinceLevelLoad + agent.animComponent.GetAnimLenth(name);
+			string name;
+			name = agent.animComponent.animSet.GetAttack(agent);
 			agent.animComponent.Play(name);
 		}
 

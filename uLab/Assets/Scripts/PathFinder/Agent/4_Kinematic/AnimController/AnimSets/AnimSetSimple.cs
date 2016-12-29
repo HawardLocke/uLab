@@ -40,6 +40,11 @@ namespace Lite.Anim
 			return "attack1";
 		}
 
+		public override string GetTurnBack(KinematicAgent agent)
+		{
+			return "Run";
+		}
+
 	}
 
 }
