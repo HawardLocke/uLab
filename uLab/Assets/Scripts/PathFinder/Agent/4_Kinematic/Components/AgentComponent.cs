@@ -12,6 +12,8 @@ namespace Lite
 
 		private Queue<Bev.Action> actionQueue = new Queue<Bev.Action>();
 
+		private Bev.Action currentAction;
+
 
 		public override void OnStart()
 		{
@@ -20,10 +22,10 @@ namespace Lite
 
 		public override void OnUpdate()
 		{
-			if (actionQueue.Count > 0)
+			if ((currentAction == null || currentAction.IsFinished()) && actionQueue.Count > 0)
 			{
 				Bev.Action action = actionQueue.Dequeue();
-
+				currentAction = action;
 				agent.animComponent.HandleAction(action);
 			}
 		}

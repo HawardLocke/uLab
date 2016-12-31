@@ -15,9 +15,14 @@ namespace Lite
 		// dynamic members
 		public Vector3 position { get { return transform.position; } }
 		public Vector3 forward { get { return transform.forward; } }
+		[System.NonSerialized]
 		public Vector3 velocity = Vector3.zero;
+		[System.NonSerialized]
 		public float speed;
+		[System.NonSerialized]
 		public Vector3 targetPosition = Vector3.zero;
+		private float updateVelocityTime;
+
 
 		// constants
 		public const bool isPlanar = true;
@@ -47,9 +52,9 @@ namespace Lite
 			UpdateMovement();
 		}
 
-		public void SetPosition(float x, float y, float z)
+		public void SetPosition(Vector3 pos)
 		{
-			transform.position.Set(x, y, z);
+			transform.position = pos;
 		}
 
 		public void SetForward(Vector3 dir)
@@ -62,9 +67,8 @@ namespace Lite
 			if (speed > 0)
 				this.speed = speed;
 			targetPosition = target;
-			velocity = Vector3.Normalize(targetPosition - position) * speed;
-			if (isPlanar)
-				velocity.Set(velocity.x, 0, velocity.z);
+			UpdateVelocity();
+			updateVelocityTime = Time.timeSinceLevelLoad + 0.2f;
 		}
 
 		public void StopMove()
@@ -75,20 +79,25 @@ namespace Lite
 
 		private void UpdateMovement()
 		{
-			if (this.speed > 0.00001)
+			if (this.speed > 0.00001f)
 			{
 				float deltaTime = Time.deltaTime;
 
-				float distanceSqr = MathUtil.DistanceSqr(targetPosition, transform.position);
+				float distanceSqr = MathUtil.DistanceSqr2D(targetPosition, transform.position);
 				if (distanceSqr < speed * speed * deltaTime)
 				{
-					SetPosition(targetPosition.x, transform.position.y, targetPosition.z);
+					SetPosition(new Vector3(targetPosition.x, transform.position.y, targetPosition.z));
 					StopMove();
 				}
 				else
 				{
-					Vector3 moveDistance = this.velocity * deltaTime;
+					if (Time.timeSinceLevelLoad > updateVelocityTime)
+					{
+						UpdateVelocity();
+						updateVelocityTime = Time.timeSinceLevelLoad + 0.5f;
+					}
 
+					Vector3 moveDistance = this.velocity * deltaTime;
 					if (controller != null)
 					{
 						controller.SimpleMove(this.velocity);
@@ -108,6 +117,13 @@ namespace Lite
 				this.SetForward(newForward);
 			}
 
+		}
+
+		private void UpdateVelocity()
+		{
+			velocity = Vector3.Normalize(targetPosition - position) * speed;
+			if (isPlanar)
+				velocity.Set(velocity.x, 0, velocity.z);
 		}
 
 

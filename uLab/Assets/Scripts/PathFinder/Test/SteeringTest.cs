@@ -46,33 +46,16 @@ public class SteeringTest : MonoBehaviour
 				bot3_id = AddBot().Guid;
 		}
 
-		/*if (GUI.Button(new Rect(20, 60, 60, 30), "mvt"))
+		if (GUI.Button(new Rect(20, 60, 60, 30), "cmd"))
 		{
 			KinematicAgent agent = app.kinematicFacade.FindAgent(bot1_id);
-			var target = new Vector3(MathUtil.RandFloat() * 15, 0, MathUtil.RandFloat() * 15);
+			/*var target = new Vector3(MathUtil.RandFloat() * 15, 0, MathUtil.RandFloat() * 15);
 			MoveTo mvt = new MoveTo(target, MoveSpeed.Normal);//(MoveSpeed)MathUtil.RandInt(0,2));
-			agent.PushAction(mvt);
-		}*/
+			agent.PushAction(mvt);*/
 
-		if (GUI.Button(new Rect(20, 100, 60, 30), "stp"))
-		{
+			Lite.Bev.Attack atk = new Lite.Bev.Attack(app.kinematicFacade.FindAgent(bot2_id));
+			agent.PushAction(atk);
 		}
-
-		/*if (GUI.Button(new Rect(20, 100, 60, 30), "seek"))
-		{
-			KinematicAgent kinAgent = app.kinematicFacade.FindAgent(bot1_id);
-			kinAgent.GetKinematic().targetPosition = new Vector3(0, 1, 0);
-			bool isOn = kinAgent.steering.IsSteeringOn(SteeringType.Seek);
-			kinAgent.steering.TurnSteeringOn(SteeringType.Seek, !isOn);
-		}
-
-		if (GUI.Button(new Rect(20, 140, 60, 30), "arrive"))
-		{
-			KinematicAgent kinAgent = app.kinematicFacade.FindAgent(bot1_id);
-			kinAgent.GetKinematic().targetPosition = new Vector3(0, 1, 0);
-			bool isOn = kinAgent.steering.IsSteeringOn(SteeringType.Arrive);
-			kinAgent.steering.TurnSteeringOn(SteeringType.Arrive, !isOn);
-		}*/
 
 	}
 
@@ -93,10 +76,10 @@ public class SteeringTest : MonoBehaviour
 		animCom.Init(agent);
 		agent.animComponent = animCom;
 
-		float x = MathUtil.RandFloat() * 10;
+		float x = MathUtil.RandClamp() * 5;
 		float y = 0;
-		float z = MathUtil.RandFloat() * 10;
-		loco.SetPosition(x, y, z);
+		float z = MathUtil.RandClamp() * 5;
+		loco.SetPosition(new Vector3(x, y, z));
 
 		return agent;
 	}

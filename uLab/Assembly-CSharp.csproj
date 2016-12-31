@@ -94,10 +94,6 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Knowledge\SensorManager.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Action\AgentAction.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Action\AgentActionMove.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Action.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Goal.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Planner.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\WorldState.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\Request\GoToRequest.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\Request\Request.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\RequestAgent.cs" />
@@ -115,9 +111,9 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\FSM\FsmSimple.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Fsm.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\State.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\Attack.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\Idle.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\Run.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\StateAttack.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\StateIdle.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\StateRun.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\Components\AgentComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\Components\AnimationComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\Components\LocomotionComponent.cs" />
@@ -131,6 +127,13 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Blackboard.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Common.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Blackborad.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\AStar\AStarGoapMap.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\AStar\AStarGoapNode.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\Blackboard.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\ContextState.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\GoapAction.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\GoapPlanner.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\WrappedValues.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphEdge.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphNode.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\SparseGraph.cs" />

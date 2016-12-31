@@ -2,29 +2,24 @@ using UnityEngine;
 
 namespace Lite.Anim
 {
-	public class Run : State
+	public class StateRun : State
 	{
 		
-		public Run()
+		public StateRun()
 		{
 
 		}
 
 		protected override void OnEnter(KinematicAgent agent, Bev.Action action)
 		{
-			Bev.MoveSpeed speedType = Bev.MoveSpeed.Normal;
-
 			if (action.actionType == Bev.ActionType.MoveTo)
 			{
 				Bev.MoveTo moveTo = action as Bev.MoveTo;
 				agent.blackboard.moveToAction = moveTo;
-				speedType = moveTo.speed;
-
 				agent.locomotion.StartMove(moveTo.target, GetSpeed(agent, moveTo.speed));
+				PlayAnim(agent, moveTo.speed);
 			}
-
-			PlayAnim(agent, speedType);
-			
+			Log.Info("enter run");
 		}
 
 		protected override void OnExit(KinematicAgent agent)
@@ -38,15 +33,26 @@ namespace Lite.Anim
 			if (agent.blackboard.moveToAction != null)
 			{
 				var target = agent.blackboard.moveToAction.target;
-				float distanceSqr = MathUtil.DistanceSqr(target, agent.locomotion.position);
+				float distanceSqr = MathUtil.DistanceSqr2D(target, agent.locomotion.position);
 				float speed = GetSpeed(agent, agent.blackboard.moveToAction.speed);
 				if (distanceSqr < speed * speed * deltaTime)
 				{
+					agent.blackboard.moveToAction.Finish();
 					agent.blackboard.moveToAction = null;
-					//Log.Info("arrived");
+					Log.Info("arrived");
 					SetFinished(agent, true);
 				}
+				else
+				{
+					string name = GetAnimName(agent, agent.blackboard.moveToAction.speed);
+					if (!agent.animComponent.IsPlaying(name))
+					{
+						PlayAnim(agent, agent.blackboard.moveToAction.speed);
+						Log.Info("replay");
+					}
+				}
 			}
+
 		}
 
 		public override bool HandleAction(KinematicAgent agent, Bev.Action action)
@@ -57,7 +63,7 @@ namespace Lite.Anim
 				Bev.MoveTo moveTo = (Bev.MoveTo)action;
 				agent.blackboard.moveToAction = moveTo;
 				agent.locomotion.StartMove(moveTo.target, GetSpeed(agent, moveTo.speed));
-				//PlayAnim(agent, moveTo.speed);
+				SetFinished(agent, false);
 				return true;
 			}
 			return false;
@@ -65,8 +71,14 @@ namespace Lite.Anim
 
 		private void PlayAnim(KinematicAgent agent, Bev.MoveSpeed speed)
 		{
+			string name = GetAnimName(agent, speed);
+			agent.animComponent.Play(name);
+		}
+
+		private string GetAnimName(KinematicAgent agent, Bev.MoveSpeed speed)
+		{
 			string name;
-			switch(speed)
+			switch (speed)
 			{
 				case Bev.MoveSpeed.Slow:
 					name = agent.animComponent.animSet.GetWalk(agent);
@@ -81,7 +93,7 @@ namespace Lite.Anim
 					name = agent.animComponent.animSet.GetWalk(agent);
 					break;
 			}
-			agent.animComponent.Play(name);
+			return name;
 		}
 
 		private float GetSpeed(KinematicAgent agent, Bev.MoveSpeed speedType)

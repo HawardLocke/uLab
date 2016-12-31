@@ -6,11 +6,24 @@ namespace Lite.Bev
 	public abstract class Action
 	{
 		public ActionType actionType;
+		private bool isFinished;
 
 		public Action()
 		{
 			actionType = ActionType.Default;
+			isFinished = false;
 		}
+
+		public void Finish()
+		{
+			isFinished = true;
+		}
+
+		public bool IsFinished()
+		{
+			return isFinished;
+		}
+
 	}
 
 	public class Nothing : Action

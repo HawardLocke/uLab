@@ -35,8 +35,8 @@ namespace Lite.Anim
 		{
 			SetLastUpdateTime(agent, GetThisUpdateTime(agent));
 			SetThisUpdateTime(agent, Time.timeSinceLevelLoad);
-			
-			if (IsAnimLoopEnded())
+
+			if (IsAnimLoopEnded(agent))
 				OnAnimationEnd(agent);
 			this.OnUpdate(agent);
 		}
@@ -46,7 +46,7 @@ namespace Lite.Anim
 		protected abstract void OnUpdate(KinematicAgent agent);
 		public virtual bool HandleAction(KinematicAgent agent, Bev.Action action) { return false; }
 		protected virtual void OnAnimationEnd(KinematicAgent agent) { }
-		protected virtual bool IsAnimLoopEnded() { return false; }
+		protected virtual bool IsAnimLoopEnded(KinematicAgent agent) { return false; }
 
 		public bool IsFinished(KinematicAgent agent)
 		{

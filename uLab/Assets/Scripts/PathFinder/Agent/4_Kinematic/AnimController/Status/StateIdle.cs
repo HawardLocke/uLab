@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace Lite.Anim
 {
-	public class Idle : State
+	public class StateIdle : State
 	{
 
-		public Idle()
+		public StateIdle()
 		{
 
 		}
@@ -14,6 +14,7 @@ namespace Lite.Anim
 		{
 			//agent.locomotion.StopMove();
 			PlayAnim(agent);
+			Log.Info("enter idle");
 		}
 
 		protected override void OnExit(KinematicAgent agent)

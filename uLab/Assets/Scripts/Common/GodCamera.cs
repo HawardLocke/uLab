@@ -84,7 +84,7 @@ namespace Lite
 		{
 			ZoomInOut(Input.GetAxis("Mouse ScrollWheel"));
 
-			if (Input.GetMouseButtonUp(0))
+			if (GUIUtility.hotControl == 0 && Input.GetMouseButtonUp(0))
 			{
 				OnClickScene(Input.mousePosition);
 			}
@@ -148,10 +148,10 @@ namespace Lite
 		{
 			if (clickTerrainEffect == null)
 			{
-				var prefab = Resources.Load("Prefabs/SmallBox");
+				var prefab = Resources.Load("Prefabs/Bot1");
 				clickTerrainEffect = GameObject.Instantiate(prefab) as GameObject;
 			}
-			clickTerrainEffect.transform.position = position;
+			clickTerrainEffect.transform.position = position + new Vector3(0,-0.495f,0);
 		}
 
 		private void OnClickBot(GameObject go)

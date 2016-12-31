@@ -46,8 +46,22 @@ namespace Lite
 			return Vector3.Distance(p1, p2);
 		}
 
+		public static float Distance2D(Vector3 p1, Vector3 p2)
+		{
+			p1.Set(p1.x, 0, p1.z);
+			p2.Set(p2.x, 0, p2.z);
+			return Vector3.Distance(p1, p2);
+		}
+
 		public static float DistanceSqr(Vector3 p1, Vector3 p2)
 		{
+			return (p1 - p2).sqrMagnitude;
+		}
+
+		public static float DistanceSqr2D(Vector3 p1, Vector3 p2)
+		{
+			p1.Set(p1.x, 0, p1.z);
+			p2.Set(p2.x, 0, p2.z);
 			return (p1 - p2).sqrMagnitude;
 		}
 

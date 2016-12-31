@@ -66,6 +66,11 @@ namespace Lite
 			return animation[name].length;
 		}
 
+		public bool IsPlaying(string name)
+		{
+			return currentAnimation == name;
+		}
+
 	}
 
 }
