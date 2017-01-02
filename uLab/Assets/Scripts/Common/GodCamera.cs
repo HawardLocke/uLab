@@ -161,7 +161,9 @@ namespace Lite
 			if (agentCom != null)
 			{
 				var target = clickTerrainEffect.transform.position;
-				Bev.MoveTo mvt = new Bev.MoveTo(target, Bev.MoveSpeed.Normal);
+				Bev.MoveToPosition mvt = new Bev.MoveToPosition();
+				mvt.target = target;
+				mvt.speed = Bev.MoveSpeed.Normal;
 				agentCom.agent.PushAction(mvt);
 			}
 		}

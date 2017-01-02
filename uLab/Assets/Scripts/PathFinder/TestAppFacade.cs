@@ -11,8 +11,8 @@ namespace Lite
 		private BehaviourFacade m_behaviorFacade;
 		public BehaviourFacade behaviorFacade { get { return m_behaviorFacade; } }
 
-		private KinematicFacade m_kinematicFacade;
-		public KinematicFacade kinematicFacade { get { return m_kinematicFacade; } }
+		private BehaviourFacade m_behaviourFacade;
+		public BehaviourFacade behaviourFacade { get { return m_behaviourFacade; } }
 
 
 		public static TestAppFacade Instance;
@@ -28,7 +28,7 @@ namespace Lite
 			m_CommandFacade.Init();
 			m_behaviorFacade = new BehaviourFacade();
 			m_CommandFacade.Init();
-			m_kinematicFacade = new KinematicFacade();
+			m_behaviourFacade = new BehaviourFacade();
 			m_CommandFacade.Init();
 		}
 

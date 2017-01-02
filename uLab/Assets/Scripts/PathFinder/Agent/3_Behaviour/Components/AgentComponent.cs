@@ -8,11 +8,11 @@ namespace Lite
 
 	public class AgentComponent : IComponent
 	{
-		public KinematicAgent agent;
+		public BehaviourAgent agent;
 
-		private Queue<Bev.Action> actionQueue = new Queue<Bev.Action>();
+		private Queue<Bev.AgentAction> actionQueue = new Queue<Bev.AgentAction>();
 
-		private Bev.Action currentAction;
+		private Bev.AgentAction currentAction;
 
 
 		public override void OnStart()
@@ -25,7 +25,7 @@ namespace Lite
 			ProcessActions();
 		}
 
-		public void PushAction(Bev.Action action)
+		public void PushAction(Bev.AgentAction action)
 		{
 			actionQueue.Enqueue(action);
 		}
@@ -36,7 +36,7 @@ namespace Lite
 			{
 				if (actionQueue.Count > 0)
 				{
-					Bev.Action action = actionQueue.Dequeue();
+					Bev.AgentAction action = actionQueue.Dequeue();
 					currentAction = action;
 					//agent.animComponent.HandleAction(action);
 				}
@@ -48,7 +48,7 @@ namespace Lite
 
 			if (currentAction != null)
 			{
-				currentAction.OnProcess();
+				currentAction.OnProcess(agent);
 			}
 		}
 

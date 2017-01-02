@@ -11,14 +11,14 @@ namespace Lite
 
 		private string currentAnimation = "";
 
-		public KinematicAgent agent;
+		public BehaviourAgent agent;
 
 		//private Anim.Fsm mAnimFSM;
 
 		//private Anim.AnimSet _animSet;
 		//public Anim.AnimSet animSet { get { return _animSet; } }
 
-		public void Init(KinematicAgent agent)
+		public void Init(BehaviourAgent agent)
 		{
 			this.agent = agent;
 			//mAnimFSM = FsmFactory.GetFsm(FsmType.SimpleFsm);

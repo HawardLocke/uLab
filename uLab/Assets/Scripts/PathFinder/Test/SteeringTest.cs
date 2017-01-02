@@ -48,21 +48,22 @@ public class SteeringTest : MonoBehaviour
 
 		if (GUI.Button(new Rect(20, 60, 60, 30), "cmd"))
 		{
-			KinematicAgent agent = app.kinematicFacade.FindAgent(bot1_id);
+			BehaviourAgent agent = app.behaviourFacade.FindAgent(bot1_id);
 			/*var target = new Vector3(MathUtil.RandFloat() * 15, 0, MathUtil.RandFloat() * 15);
 			MoveTo mvt = new MoveTo(target, MoveSpeed.Normal);//(MoveSpeed)MathUtil.RandInt(0,2));
 			agent.PushAction(mvt);*/
 
-			Lite.Bev.Attack atk = new Lite.Bev.Attack(app.kinematicFacade.FindAgent(bot2_id));
+			Lite.Bev.AttackAgent atk = new Lite.Bev.AttackAgent();
+			atk.target = app.behaviourFacade.FindAgent(bot2_id);
 			agent.PushAction(atk);
 		}
 
 	}
 
-	KinematicAgent AddBot()
+	BehaviourAgent AddBot()
 	{
-		var agent = new KinematicAgent(GuidGenerator.NextLong());
-		app.kinematicFacade.AddAgent(agent);
+		var agent = new BehaviourAgent(GuidGenerator.NextLong());
+		app.behaviourFacade.AddAgent(agent);
 
 		var go = new GameObject("dwarf");
 

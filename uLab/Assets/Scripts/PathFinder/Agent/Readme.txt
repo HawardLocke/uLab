@@ -9,7 +9,7 @@
   缓存决策请求，并更新请求和决定是否执行
 4.行为层Behavior
   执行请求
-5.运动层Kinematic
+5.运动层Behaviour
   表现运动
 
 受此启发http://www.aisharing.com/archives/769
