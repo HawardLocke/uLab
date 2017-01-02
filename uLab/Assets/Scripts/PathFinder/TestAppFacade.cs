@@ -5,8 +5,8 @@ namespace Lite
 
 	public class TestAppFacade
 	{
-		private RequestFacade m_requestFacade;
-		public RequestFacade requestFacade { get { return m_requestFacade; } }
+		private CommandFacade m_CommandFacade;
+		public CommandFacade CommandFacade { get { return m_CommandFacade; } }
 
 		private BehaviourFacade m_behaviorFacade;
 		public BehaviourFacade behaviorFacade { get { return m_behaviorFacade; } }
@@ -24,12 +24,12 @@ namespace Lite
 
 		public void Init()
 		{
-			m_requestFacade = new RequestFacade();
-			m_requestFacade.Init();
+			m_CommandFacade = new CommandFacade();
+			m_CommandFacade.Init();
 			m_behaviorFacade = new BehaviourFacade();
-			m_requestFacade.Init();
+			m_CommandFacade.Init();
 			m_kinematicFacade = new KinematicFacade();
-			m_requestFacade.Init();
+			m_CommandFacade.Init();
 		}
 
 	}

@@ -30,7 +30,6 @@ namespace Lite
 
 		public KinematicBlackboard blackboard;
 
-		public AgentAction action;
 
 		public KinematicAgent(long guid):
 			base(guid)

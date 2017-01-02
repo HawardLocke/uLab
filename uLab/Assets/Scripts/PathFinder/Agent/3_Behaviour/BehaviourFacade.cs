@@ -1,29 +1,31 @@
 
+using Lite.Strategy;
+
 
 namespace Lite
 {
 	public class BehaviourFacade : BaseFacade<BehaviourAgent>
 	{
-		private RequestHandlerManager requesthandlerManager;
+		private CommandHandlerManager CommandhandlerManager;
 
 		public BehaviourFacade()
 		{
-			requesthandlerManager = new RequestHandlerManager();
+			CommandhandlerManager = new CommandHandlerManager();
 		}
 
-		public void RegisterHandler(int requestType, IRequestHandler handler)
+		public void RegisterHandler(int CommandType, ICommandHandler handler)
 		{
-			requesthandlerManager.RegisterHandler(requestType, handler);
+			CommandhandlerManager.RegisterHandler(CommandType, handler);
 		}
 
-		public void UnregisterHandler(int requestType)
+		public void UnregisterHandler(int CommandType)
 		{
-			requesthandlerManager.UnregisterHandler(requestType);
+			CommandhandlerManager.UnregisterHandler(CommandType);
 		}
 
-		public void HandleRequest(Request request)
+		public void HandleCommand(Command Command)
 		{
-			requesthandlerManager.HandleRequest(request);
+			CommandhandlerManager.HandleCommand(Command);
 		}
 
 	}

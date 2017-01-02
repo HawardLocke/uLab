@@ -3,8 +3,105 @@ guid: 53c67261c20d3de4c87510032c419a17
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
+    100000: bon_gob_war_face
+    100002: bon_gob_war_jaw
+    100004: dwarf_head_beard_01
+    100006: dwarf_skn_body
+    100008: DwarfHead
+    100010: DwarfLCalf
+    100012: DwarfLCollarbone
+    100014: DwarfLDigit11
+    100016: DwarfLDigit11 1
+    100018: DwarfLDigit12
+    100020: DwarfLDigit13
+    100022: DwarfLDigit21
+    100024: DwarfLDigit22
+    100026: DwarfLDigit23
+    100028: DwarfLDigit31
+    100030: DwarfLDigit32
+    100032: DwarfLDigit33
+    100034: DwarfLFoot
+    100036: DwarfLForearm
+    100038: DwarfLPalm
+    100040: DwarfLThigh
+    100042: DwarfLUpperarm
+    100044: DwarfNeck
+    100046: DwarfPelvis
+    100048: DwarfRCalf
+    100050: DwarfRCollarbone
+    100052: DwarfRDigit11
+    100054: DwarfRDigit11 1
+    100056: DwarfRDigit12
+    100058: DwarfRDigit13
+    100060: DwarfRDigit21
+    100062: DwarfRDigit22
+    100064: DwarfRDigit23
+    100066: DwarfRDigit31
+    100068: DwarfRDigit32
+    100070: DwarfRDigit33
+    100072: DwarfRFoot
+    100074: DwarfRForearm
+    100076: DwarfRibcage
+    100078: DwarfRPalm
+    100080: DwarfRThigh
+    100082: DwarfRUpperarm
+    100084: DwarfSpine1
+    100086: DwarfSpine2
+    100088: DwarfSpine3
+    100090: //RootNode
+    400000: bon_gob_war_face
+    400002: bon_gob_war_jaw
+    400004: dwarf_head_beard_01
+    400006: dwarf_skn_body
+    400008: DwarfHead
+    400010: DwarfLCalf
+    400012: DwarfLCollarbone
+    400014: DwarfLDigit11
+    400016: DwarfLDigit11 1
+    400018: DwarfLDigit12
+    400020: DwarfLDigit13
+    400022: DwarfLDigit21
+    400024: DwarfLDigit22
+    400026: DwarfLDigit23
+    400028: DwarfLDigit31
+    400030: DwarfLDigit32
+    400032: DwarfLDigit33
+    400034: DwarfLFoot
+    400036: DwarfLForearm
+    400038: DwarfLPalm
+    400040: DwarfLThigh
+    400042: DwarfLUpperarm
+    400044: DwarfNeck
+    400046: DwarfPelvis
+    400048: DwarfRCalf
+    400050: DwarfRCollarbone
+    400052: DwarfRDigit11
+    400054: DwarfRDigit11 1
+    400056: DwarfRDigit12
+    400058: DwarfRDigit13
+    400060: DwarfRDigit21
+    400062: DwarfRDigit22
+    400064: DwarfRDigit23
+    400066: DwarfRDigit31
+    400068: DwarfRDigit32
+    400070: DwarfRDigit33
+    400072: DwarfRFoot
+    400074: DwarfRForearm
+    400076: DwarfRibcage
+    400078: DwarfRPalm
+    400080: DwarfRThigh
+    400082: DwarfRUpperarm
+    400084: DwarfSpine1
+    400086: DwarfSpine2
+    400088: DwarfSpine3
+    400090: //RootNode
     4300000: dwarf_skn_body
     4300002: dwarf_head_beard_01
+    7400000: run
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: dwarf_head_beard_01
+    13700002: dwarf_skn_body
   materials:
     importMaterials: 0
     materialName: 0
@@ -16,10 +113,16 @@ ModelImporter:
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nInbetween bone default rotation found in this file
+      is different from the one found in the source avatar:\n\t'DwarfSpine3' : rotation
+      error = 7.779585 deg\n\t'DwarfRibcage' : rotation error = 4.477995 deg\n\nClip
+      'Take 001' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'DwarfSpine3'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'DwarfRibcage'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -37,7 +140,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 1
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -79,8 +182,566 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    human: []
-    skeleton: []
+    human:
+    - boneName: DwarfPelvis
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLThigh
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRThigh
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLCalf
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRCalf
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLFoot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRFoot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfSpine1
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfSpine2
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfNeck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfHead
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLCollarbone
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRCollarbone
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLUpperarm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRUpperarm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLForearm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRForearm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLPalm
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRPalm
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit11
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit11
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bon_gob_war_face
+      humanName: LeftEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bon_gob_war_jaw
+      humanName: Jaw
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit21
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit22
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit23
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit11 1
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit12
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit13
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit31
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit32
+      humanName: Left Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfLDigit33
+      humanName: Left Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit21
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit22
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit23
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit11 1
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit12
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit13
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit31
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit32
+      humanName: Right Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: DwarfRDigit33
+      humanName: Right Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: FH-dwarf@run(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: dwarf_head_beard_01
+      position: {x: 0.00011413574, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: dwarf_skn_body
+      position: {x: 0.00011413574, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: DwarfPelvis
+      position: {x: 0.000000024817131, y: 0.48832893, z: -0.044636212}
+      rotation: {x: 0.49912703, y: -0.5008716, z: -0.4991269, w: 0.5008715}
+      scale: {x: 1.0000002, y: 0.99999994, z: 1}
+      transformModified: 1
+    - name: DwarfLThigh
+      position: {x: -0.01639202, y: 0.044693675, z: 0.08095452}
+      rotation: {x: 0.022628156, y: 0.9968642, z: -0.0004061758, w: 0.07582589}
+      scale: {x: 1.0000002, y: 1.0000006, z: 1.0000004}
+      transformModified: 1
+    - name: DwarfLCalf
+      position: {x: -0.24698827, y: 0.000000028610229, z: -0.000000019073486}
+      rotation: {x: 0.00074620533, y: 0.03451779, z: 0.11106439, w: 0.9932133}
+      scale: {x: 0.99999976, y: 0.99999946, z: 0.99999976}
+      transformModified: 1
+    - name: DwarfLFoot
+      position: {x: -0.24863857, y: -0.000000038146972, z: 0.000000009536743}
+      rotation: {x: -0.075614005, y: -0.0013209097, z: -0.7558491, w: 0.6503637}
+      scale: {x: 1.0000002, y: 1.0000001, z: 1}
+      transformModified: 1
+    - name: DwarfLDigit11
+      position: {x: -0.15464951, y: 0.009816208, z: 0.0000015735626}
+      rotation: {x: -0.000000022351742, y: -1.2088108e-10, z: -0.054379147, w: 0.9985204}
+      scale: {x: 1.0000004, y: 1.0000001, z: 1.0000001}
+      transformModified: 1
+    - name: DwarfRThigh
+      position: {x: -0.01639206, y: 0.044693682, z: -0.08095455}
+      rotation: {x: 0.022628216, y: 0.9968642, z: 0.00040599698, w: -0.07582577}
+      scale: {x: 1.0000001, y: 1.0000006, z: 1.0000001}
+      transformModified: 1
+    - name: DwarfRCalf
+      position: {x: -0.24698833, y: 0.000000038146972, z: 0.0000000047683715}
+      rotation: {x: -0.0007153898, y: -0.034514423, z: 0.1110653, w: 0.99321336}
+      scale: {x: 1, y: 0.9999991, z: 0.9999997}
+      transformModified: 1
+    - name: DwarfRFoot
+      position: {x: -0.24863857, y: 0.000000019073486, z: 0}
+      rotation: {x: 0.07559372, y: 0.0012975355, z: -0.7558492, w: 0.65036607}
+      scale: {x: 0.99999994, y: 0.9999997, z: 0.99999994}
+      transformModified: 1
+    - name: DwarfRDigit11
+      position: {x: -0.15464954, y: 0.009816284, z: -0.0000015878677}
+      rotation: {x: -0.0000000037252899, y: -0.00000018155383, z: -0.054379087, w: 0.9985204}
+      scale: {x: 1.0000005, y: 1, z: 1.0000002}
+      transformModified: 1
+    - name: DwarfSpine1
+      position: {x: -0.043513067, y: -0.0033292102, z: -0.000000008940696}
+      rotation: {x: 0.0000004172325, y: 0, z: 0.14649442, w: -0.98921156}
+      scale: {x: 1.0000001, y: 1.0000004, z: 0.9999998}
+      transformModified: 1
+    - name: DwarfSpine2
+      position: {x: -0.15592991, y: -0.000000019073486, z: 5.9604643e-10}
+      rotation: {x: -0.00000038743013, y: 0.000000029802319, z: -0.16776313, w: -0.9858273}
+      scale: {x: 1.0000001, y: 0.9999999, z: 1}
+      transformModified: 1
+    - name: DwarfSpine3
+      position: {x: -0.1328315, y: 0.000000009536743, z: -0.0000000011920929}
+      rotation: {x: -0.000000029802319, y: 0.000000059604638, z: 0.07379576, w: 0.9972734}
+      scale: {x: 0.9999998, y: 1.0000002, z: 1}
+      transformModified: 1
+    - name: DwarfRibcage
+      position: {x: -0.14274414, y: 0.000000019073486, z: 0}
+      rotation: {x: 0, y: 0.000000059604645, z: 0.09699142, w: -0.9952853}
+      scale: {x: 0.9999995, y: 0.9999992, z: 1}
+      transformModified: 1
+    - name: DwarfLCollarbone
+      position: {x: 0.016525727, y: 0.09663544, z: 0.028669542}
+      rotation: {x: -0.02803897, y: -0.73470527, z: -0.18224126, w: -0.6528477}
+      scale: {x: 1.0000002, y: 1.0000004, z: 1.0000002}
+      transformModified: 1
+    - name: DwarfLUpperarm
+      position: {x: -0.18093076, y: 0, z: 0.000000076293944}
+      rotation: {x: 0.13795115, y: -0.03388183, z: -0.14953305, w: 0.9784996}
+      scale: {x: 0.9999996, y: 0.9999992, z: 0.99999905}
+      transformModified: 1
+    - name: DwarfLForearm
+      position: {x: -0.19435294, y: 0, z: 0.000000076293944}
+      rotation: {x: 0.07870918, y: -0.011931437, z: -0.024994848, w: 0.9965128}
+      scale: {x: 0.99999934, y: 1.000001, z: 1.0000002}
+      transformModified: 1
+    - name: DwarfLPalm
+      position: {x: -0.18018016, y: 0, z: 0}
+      rotation: {x: -0.7596253, y: 0.06413551, z: 0.049166396, w: 0.64532065}
+      scale: {x: 0.9999995, y: 0.9999996, z: 0.99999964}
+      transformModified: 1
+    - name: DwarfLDigit11 1
+      position: {x: -0.0329994, y: 0.0005976486, z: 0.015835838}
+      rotation: {x: 0.5150105, y: 0.24501435, z: -0.083978415, w: 0.81711686}
+      scale: {x: 1.000001, y: 0.99999964, z: 1.0000001}
+      transformModified: 1
+    - name: DwarfLDigit12
+      position: {x: -0.0532289, y: -0.000000076293944, z: 0}
+      rotation: {x: -0.0134559125, y: 0.0076529835, z: 0.038811956, w: 0.9991266}
+      scale: {x: 0.99999976, y: 1, z: 0.9999999}
+      transformModified: 1
+    - name: DwarfLDigit13
+      position: {x: -0.035124242, y: -0.000000038146972, z: -0.000000038146972}
+      rotation: {x: 0.0000012964009, y: 0.00000056624407, z: 0.19707711, w: 0.980388}
+      scale: {x: 1.0000002, y: 1.0000005, z: 1.0000004}
+      transformModified: 1
+    - name: DwarfLDigit21
+      position: {x: -0.12447552, y: 0.000084037776, z: 0.037880667}
+      rotation: {x: -0.0016333567, y: 0.14598976, z: 0.0020296453, w: 0.98928267}
+      scale: {x: 1.0000008, y: 0.9999994, z: 1.0000002}
+      transformModified: 1
+    - name: DwarfLDigit22
+      position: {x: -0.044805337, y: -0.000000038146972, z: 0}
+      rotation: {x: 0.0000011101358, y: -0.0000000052386864, z: 0.032672476, w: 0.9994661}
+      scale: {x: 0.9999997, y: 1.0000007, z: 1}
+      transformModified: 1
+    - name: DwarfLDigit23
+      position: {x: -0.03512432, y: 0, z: 0}
+      rotation: {x: 0.0000004991889, y: 0.00000004284084, z: 0.028674634, w: 0.99958885}
+      scale: {x: 0.9999997, y: 1.0000002, z: 1}
+      transformModified: 1
+    - name: DwarfLDigit31
+      position: {x: -0.123890184, y: 0.0039741895, z: -0.005552292}
+      rotation: {x: -0.030397305, y: 0.16376992, z: 0.031448673, w: 0.98552847}
+      scale: {x: 1.0000005, y: 0.9999995, z: 1.0000004}
+      transformModified: 1
+    - name: DwarfLDigit32
+      position: {x: -0.043255195, y: -0.000000038146972, z: 0}
+      rotation: {x: -0.0022008058, y: -0.00024073376, z: 0.034616888, w: 0.9993983}
+      scale: {x: 1, y: 1.0000006, z: 0.99999994}
+      transformModified: 1
+    - name: DwarfLDigit33
+      position: {x: -0.02864109, y: 0, z: 0}
+      rotation: {x: -0.0013608296, y: -0.006550972, z: 0.2387098, w: 0.9710679}
+      scale: {x: 0.99999994, y: 0.99999976, z: 1}
+      transformModified: 1
+    - name: DwarfNeck
+      position: {x: -0.036912687, y: -0.0122994995, z: -0.0000000047683715}
+      rotation: {x: -0.000000059604638, y: 0.000000059604638, z: 0.13555498, w: -0.99076986}
+      scale: {x: 1, y: 0.99999994, z: 0.9999997}
+      transformModified: 1
+    - name: DwarfHead
+      position: {x: -0.061390303, y: 0, z: 0}
+      rotation: {x: 0.000000029802322, y: -0.000000029802322, z: -0.13555504, w: -0.99076986}
+      scale: {x: 0.9999999, y: 1.0000001, z: 1.0000001}
+      transformModified: 1
+    - name: bon_gob_war_face
+      position: {x: -0.0974884, y: 0.028021373, z: 0.00000065963985}
+      rotation: {x: 0.67362636, y: -0.73907214, z: 0.0000007897614, w: -0.00000039301804}
+      scale: {x: 1.0000011, y: 1.0000006, z: 0.99999964}
+      transformModified: 1
+    - name: bon_gob_war_jaw
+      position: {x: -0.010716828, y: 0.049715538, z: 0.0000011067841}
+      rotation: {x: 0.530885, y: -0.847444, z: 0.0000007897614, w: -0.00000017136331}
+      scale: {x: 0.9999994, y: 1.0000001, z: 0.99999964}
+      transformModified: 1
+    - name: DwarfRCollarbone
+      position: {x: 0.016525803, y: 0.096635416, z: -0.028669553}
+      rotation: {x: -0.02803894, y: -0.73470557, z: 0.18224111, w: 0.6528474}
+      scale: {x: 1.0000002, y: 1.0000002, z: 1.0000004}
+      transformModified: 1
+    - name: DwarfRUpperarm
+      position: {x: -0.18093081, y: 0, z: 0}
+      rotation: {x: -0.13795108, y: 0.03388197, z: -0.14953285, w: 0.97849965}
+      scale: {x: 0.9999998, y: 0.9999998, z: 0.99999905}
+      transformModified: 1
+    - name: DwarfRForearm
+      position: {x: -0.19435284, y: 0, z: 0.000000076293944}
+      rotation: {x: -0.078709215, y: 0.01193184, z: -0.024994964, w: 0.99651283}
+      scale: {x: 0.9999995, y: 1.0000004, z: 1.0000004}
+      transformModified: 1
+    - name: DwarfRPalm
+      position: {x: -0.18018016, y: 0.000000009536743, z: 0}
+      rotation: {x: 0.7596255, y: -0.064134926, z: 0.04916565, w: 0.6453205}
+      scale: {x: 0.9999995, y: 0.99999964, z: 0.99999994}
+      transformModified: 1
+    - name: DwarfRDigit11 1
+      position: {x: -0.032999497, y: 0.0005975723, z: -0.01583578}
+      rotation: {x: -0.5150111, y: -0.24501166, z: -0.083976164, w: 0.8171174}
+      scale: {x: 1.0000001, y: 0.9999999, z: 0.99999994}
+      transformModified: 1
+    - name: DwarfRDigit12
+      position: {x: -0.053228874, y: 0, z: 0}
+      rotation: {x: 0.013455776, y: -0.007649868, z: 0.03881178, w: 0.9991267}
+      scale: {x: 1.0000001, y: 0.99999964, z: 1.0000002}
+      transformModified: 1
+    - name: DwarfRDigit13
+      position: {x: -0.035124283, y: 0, z: 0}
+      rotation: {x: -0.0000012218949, y: -0.00000068545324, z: 0.1970771, w: 0.98038805}
+      scale: {x: 1.0000001, y: 0.99999976, z: 0.9999999}
+      transformModified: 1
+    - name: DwarfRDigit31
+      position: {x: -0.123890184, y: 0.003974113, z: 0.005552363}
+      rotation: {x: 0.030396663, y: -0.1637671, z: 0.031450536, w: 0.98552895}
+      scale: {x: 1.0000002, y: 0.99999964, z: 1.0000001}
+      transformModified: 1
+    - name: DwarfRDigit32
+      position: {x: -0.043255232, y: 0, z: 0.0000000047683715}
+      rotation: {x: 0.0022006214, y: 0.00024024551, z: 0.03461619, w: 0.9993983}
+      scale: {x: 0.99999964, y: 1.0000001, z: 0.9999998}
+      transformModified: 1
+    - name: DwarfRDigit33
+      position: {x: -0.02864105, y: 0, z: 0}
+      rotation: {x: 0.0013606945, y: 0.0065510687, z: 0.23871014, w: 0.9710678}
+      scale: {x: 1.0000005, y: 0.9999998, z: 1.0000001}
+      transformModified: 1
+    - name: DwarfRDigit21
+      position: {x: -0.12447552, y: 0.000084075924, z: -0.0378806}
+      rotation: {x: 0.0016332002, y: -0.14598677, z: 0.0020309829, w: 0.98928314}
+      scale: {x: 1.0000006, y: 0.9999997, z: 1}
+      transformModified: 1
+    - name: DwarfRDigit22
+      position: {x: -0.044805337, y: 0, z: -0.000000009536743}
+      rotation: {x: -0.00000094063523, y: -0.0000008736965, z: 0.032673534, w: 0.99946606}
+      scale: {x: 0.99999964, y: 1.0000002, z: 0.99999994}
+      transformModified: 1
+    - name: DwarfRDigit23
+      position: {x: -0.035124242, y: 0.000000038146972, z: 0}
+      rotation: {x: -0.0000005513429, y: -0.000000050291412, z: 0.02867448, w: 0.9995888}
+      scale: {x: 0.9999998, y: 1.0000002, z: 1.0000002}
+      transformModified: 1
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -90,8 +751,9 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
     hasTranslationDoF: 0
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: bba0b9aa748169c4abf07fdbf230f865,
+    type: 3}
+  animationType: 3
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

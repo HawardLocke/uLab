@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Common\GameTimer.cs" />
      <Compile Include="Assets\Scripts\Common\GodCamera.cs" />
      <Compile Include="Assets\Scripts\Common\GuidGenerator.cs" />
      <Compile Include="Assets\Scripts\Common\Log.cs" />
@@ -92,28 +93,15 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Knowledge\KnowledgePool.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Knowledge\KnowledgePoolManager.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Knowledge\SensorManager.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Action\AgentAction.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Action\AgentActionMove.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\Request\GoToRequest.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\Request\Request.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\RequestAgent.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Request\RequestFacade.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Command\Command.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Command\CommandAgent.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Command\CommandFacade.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Action\Actions.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Action\Define.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\BehaviourAgent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\BehaviourFacade.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\IRequestHandler.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\RequestHandlerManager.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\AnimSet.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\AnimSets\AnimSetFactory.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\AnimSets\AnimSetSimple.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\FSM\FsmFactory.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\FSM\FsmSimple.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Fsm.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\State.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\StateAttack.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\StateIdle.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\AnimController\Status\StateRun.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\CommandHandlerManager.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\ICommandHandler.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\Components\AgentComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\Components\AnimationComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\4_Kinematic\Components\LocomotionComponent.cs" />

@@ -19,7 +19,7 @@ public class SteeringTest : MonoBehaviour
 
 	long bot3_id;
 
-	string[] botFilePath = { "Prefabs/Dwarf/dwarf_01", "Prefabs/Dwarf/dwarf_02", "Prefabs/Dwarf/dwarf_03" };
+	string[] botFilePath = { "Prefabs/Dwarf/dwarf_01"/*, "Prefabs/Dwarf/dwarf_02", "Prefabs/Dwarf/dwarf_03"*/ };
 
 	Material lineMat;
 
@@ -61,12 +61,17 @@ public class SteeringTest : MonoBehaviour
 
 	KinematicAgent AddBot()
 	{
-		KinematicAgent agent = new KinematicAgent(GuidGenerator.NextLong());
+		var agent = new KinematicAgent(GuidGenerator.NextLong());
 		app.kinematicFacade.AddAgent(agent);
 
-		var prefab = Resources.Load(botFilePath[MathUtil.RandInt(0,2)]);
-		GameObject go = GameObject.Instantiate(prefab) as GameObject;
-		go.layer = LayerMask.NameToLayer(GameDefine.LayerBot);
+		var go = new GameObject("dwarf");
+
+		var prefab = Resources.Load(botFilePath[MathUtil.RandInt(0, botFilePath.Length - 1)]);
+		var goAvatar = GameObject.Instantiate(prefab) as GameObject;
+		goAvatar.transform.parent = go.transform;
+		goAvatar.transform.position = Vector3.zero;
+		goAvatar.transform.localScale = Vector3.one;
+
 		var agentCom = go.AddComponent<AgentComponent>();
 		agentCom.agent = agent;
 		agent.agentComponent = agentCom;
@@ -75,6 +80,8 @@ public class SteeringTest : MonoBehaviour
 		var animCom = go.AddComponent<AnimationComponent>();
 		animCom.Init(agent);
 		agent.animComponent = animCom;
+
+		goAvatar.layer = LayerMask.NameToLayer(GameDefine.LayerBot);
 
 		float x = MathUtil.RandClamp() * 5;
 		float y = 0;

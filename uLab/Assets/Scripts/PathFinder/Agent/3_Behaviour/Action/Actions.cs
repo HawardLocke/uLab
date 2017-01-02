@@ -24,6 +24,13 @@ namespace Lite.Bev
 			return isFinished;
 		}
 
+		public void Active() { }
+		public void Deactive() { }
+		public void Process() { }
+		public virtual void OnActive() { }
+		public virtual void OnDeactive() { }
+		public virtual void OnProcess() { }
+
 	}
 
 	public class Nothing : Action

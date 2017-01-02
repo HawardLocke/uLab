@@ -22,17 +22,34 @@ namespace Lite
 
 		public override void OnUpdate()
 		{
-			if ((currentAction == null || currentAction.IsFinished()) && actionQueue.Count > 0)
-			{
-				Bev.Action action = actionQueue.Dequeue();
-				currentAction = action;
-				agent.animComponent.HandleAction(action);
-			}
+			ProcessActions();
 		}
 
 		public void PushAction(Bev.Action action)
 		{
 			actionQueue.Enqueue(action);
+		}
+
+		private void ProcessActions()
+		{
+			if (currentAction == null || currentAction.IsFinished())
+			{
+				if (actionQueue.Count > 0)
+				{
+					Bev.Action action = actionQueue.Dequeue();
+					currentAction = action;
+					//agent.animComponent.HandleAction(action);
+				}
+				else
+				{
+					currentAction = null;
+				}
+			}
+
+			if (currentAction != null)
+			{
+				currentAction.OnProcess();
+			}
 		}
 
 	}

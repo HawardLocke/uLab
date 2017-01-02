@@ -68,7 +68,7 @@ namespace Lite
 				this.speed = speed;
 			targetPosition = target;
 			UpdateVelocity();
-			updateVelocityTime = Time.timeSinceLevelLoad + 0.2f;
+			updateVelocityTime = GameTimer.timeSinceLevelLoad + 0.2f;
 		}
 
 		public void StopMove()
@@ -81,7 +81,7 @@ namespace Lite
 		{
 			if (this.speed > 0.00001f)
 			{
-				float deltaTime = Time.deltaTime;
+				float deltaTime = GameTimer.deltaTime;
 
 				float distanceSqr = MathUtil.DistanceSqr2D(targetPosition, transform.position);
 				if (distanceSqr < speed * speed * deltaTime)
@@ -91,7 +91,7 @@ namespace Lite
 				}
 				else
 				{
-					if (Time.timeSinceLevelLoad > updateVelocityTime)
+					if (GameTimer.timeSinceLevelLoad > updateVelocityTime)
 					{
 						UpdateVelocity();
 						updateVelocityTime = Time.timeSinceLevelLoad + 0.5f;
@@ -113,7 +113,7 @@ namespace Lite
 				}
 			
 				// rotating
-				Vector3 newForward = Vector3.Slerp(transform.forward, this.velocity, damping * Time.deltaTime * (speed / maxWalkSpeed));
+				Vector3 newForward = Vector3.Slerp(transform.forward, this.velocity, damping * GameTimer.deltaTime * (speed / maxWalkSpeed));
 				this.SetForward(newForward);
 			}
 
