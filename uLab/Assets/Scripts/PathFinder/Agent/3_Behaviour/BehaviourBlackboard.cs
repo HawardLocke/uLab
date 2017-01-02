@@ -12,8 +12,8 @@ namespace Lite
 		//public Anim.State currentAnimState = null;
 		//public Anim.State nextAnimState = null;
 
-		public Bev.MoveToPosition moveToAction;
-		public Bev.AttackAgent attackAction;
+		//public Bev.MoveToPosition moveToAction;
+		//public Bev.AttackAgent attackAction;
 
 		public BehaviourBlackboard(BehaviourAgent agent)
 		{

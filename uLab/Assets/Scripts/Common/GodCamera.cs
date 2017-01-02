@@ -156,14 +156,14 @@ namespace Lite
 
 		private void OnClickBot(GameObject go)
 		{
-			Log.Info("click bot");
+			//Log.Info("click bot");
 			AgentComponent agentCom = go.transform.parent.GetComponent<AgentComponent>();
 			if (agentCom != null)
 			{
 				var target = clickTerrainEffect.transform.position;
 				Bev.MoveToPosition mvt = new Bev.MoveToPosition();
-				mvt.target = target;
-				mvt.speed = Bev.MoveSpeed.Normal;
+				mvt.targetPosition = target;
+				mvt.speedType = Bev.MoveSpeed.Normal;
 				agentCom.agent.PushAction(mvt);
 			}
 		}

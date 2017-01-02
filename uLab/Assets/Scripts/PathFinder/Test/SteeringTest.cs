@@ -54,7 +54,7 @@ public class SteeringTest : MonoBehaviour
 			agent.PushAction(mvt);*/
 
 			Lite.Bev.AttackAgent atk = new Lite.Bev.AttackAgent();
-			atk.target = app.behaviourFacade.FindAgent(bot2_id);
+			atk.targetAgent = app.behaviourFacade.FindAgent(bot2_id);
 			agent.PushAction(atk);
 		}
 

@@ -15,7 +15,7 @@ namespace Lite.Bev
 
 		public override void OnActive(BehaviourAgent agent)
 		{
-
+			agent.animComponent.moveSpeed = 0;
 		}
 
 		public override void OnDeactive(BehaviourAgent agent)

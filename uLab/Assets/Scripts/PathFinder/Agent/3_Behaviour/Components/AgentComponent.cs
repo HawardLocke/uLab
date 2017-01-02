@@ -37,8 +37,10 @@ namespace Lite
 				if (actionQueue.Count > 0)
 				{
 					Bev.AgentAction action = actionQueue.Dequeue();
+					if (currentAction != null)
+						currentAction.Deactive(agent);
 					currentAction = action;
-					//agent.animComponent.HandleAction(action);
+					currentAction.Active(agent);
 				}
 				else
 				{
