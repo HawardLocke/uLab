@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Common\GUIHelper.cs" />
      <Compile Include="Assets\Scripts\Common\GameTimer.cs" />
      <Compile Include="Assets\Scripts\Common\GodCamera.cs" />
      <Compile Include="Assets\Scripts\Common\GuidGenerator.cs" />
@@ -82,13 +83,13 @@
      <Compile Include="Assets\Scripts\Network\SocketClient.cs" />
      <Compile Include="Assets\Scripts\PathFinder\AStar\AStarMap.cs" />
      <Compile Include="Assets\Scripts\PathFinder\AStar\AStarNode.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\AStar\AStarPathPlanner.cs" />
      <Compile Include="Assets\Scripts\PathFinder\AStar\GraphAStarMap.cs" />
      <Compile Include="Assets\Scripts\PathFinder\AStar\GraphAStarNode.cs" />
      <Compile Include="Assets\Scripts\PathFinder\AStar\GraphPathPlanner.cs" />
      <Compile Include="Assets\Scripts\PathFinder\AStar\GridAStarMap.cs" />
      <Compile Include="Assets\Scripts\PathFinder\AStar\GridAStarNode.cs" />
      <Compile Include="Assets\Scripts\PathFinder\AStar\GridPathPlanner.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\PathPlanner.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Knowledge\ISensor.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Knowledge\KnowledgePool.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Knowledge\KnowledgePoolManager.cs" />
@@ -116,19 +117,20 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Blackboard.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Common.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Blackborad.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\AStar\AStarGoapMap.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\AStar\AStarGoapNode.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\Blackboard.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\ContextState.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\ContextStatus.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\GoapAStarMap.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\GoapAStarNode.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\GoapAStarPlanner.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\GoapAction.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\GoapPlanner.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\GoapGoal.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\WrappedValues.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphEdge.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphNode.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\SparseGraph.cs" />
      <Compile Include="Assets\Scripts\PathFinder\IComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Test\BehaviourTreeTest.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Test\GUIHelper.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Test\GoapPlannerTest.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Test\GraphPathTest.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Test\GridPathTest.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Test\MapEditor.cs" />

@@ -36,9 +36,9 @@ namespace Lite.Bev
 				}
 				else
 				{
-					if (!agent.animComponent.attack)
+					if (!agent.animComponent.attack1)
 					{
-						agent.animComponent.attack = true;
+						agent.animComponent.attack1 = true;
 						Log.Info("play attack");
 					}
 				}

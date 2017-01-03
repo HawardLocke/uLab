@@ -53,9 +53,22 @@ public class SteeringTest : MonoBehaviour
 			MoveTo mvt = new MoveTo(target, MoveSpeed.Normal);//(MoveSpeed)MathUtil.RandInt(0,2));
 			agent.PushAction(mvt);*/
 
-			Lite.Bev.AttackAgent atk = new Lite.Bev.AttackAgent();
+			/*Lite.Bev.AttackAgent atk = new Lite.Bev.AttackAgent();
 			atk.targetAgent = app.behaviourFacade.FindAgent(bot2_id);
-			agent.PushAction(atk);
+			agent.PushAction(atk);*/
+			agent.animComponent.attack1 = true;
+		}
+
+		if (GUI.Button(new Rect(20, 100, 60, 30), "idle"))
+		{
+			BehaviourAgent agent = app.behaviourFacade.FindAgent(bot1_id);
+			agent.animComponent.moveSpeed = 0;
+		}
+
+		if (GUI.Button(new Rect(20, 140, 60, 30), "run"))
+		{
+			BehaviourAgent agent = app.behaviourFacade.FindAgent(bot1_id);
+			agent.animComponent.moveSpeed = 1;
 		}
 
 	}

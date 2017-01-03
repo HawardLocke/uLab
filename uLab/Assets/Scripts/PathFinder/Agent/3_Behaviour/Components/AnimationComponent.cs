@@ -33,10 +33,10 @@ namespace Lite
 			get { return animator.GetFloat("moveSpeed"); }
 		}
 
-		public bool attack
+		public bool attack1
 		{
-			set { animator.SetBool("attack", value); }
-			get { return animator.GetBool("attack"); }
+			set { animator.SetBool("attack1", value); }
+			get { return animator.GetBool("attack1"); }
 		}
 
 	}
