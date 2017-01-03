@@ -7,7 +7,7 @@ namespace Lite.AStar
 {
 	
 
-	public class GraphPathPlanner : PathPlanner
+	public class GraphPathPlanner : AStarPathPlanner
 	{
 		private int start;
 		private int end;
@@ -40,6 +40,7 @@ namespace Lite.AStar
 				pointArray[index++] = new Point2D(pathNode.x, pathNode.y);
 				pathNode = pathNode.prev as GraphAStarNode;
 			}
+			Cleanup();
 			return pointArray;
 		}
 

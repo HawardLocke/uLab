@@ -3,15 +3,15 @@
 namespace Lite.Goap
 {
 
-	public abstract class Action
+	public abstract class GoapAction
 	{
 		public ContextStatus preconditon;
-		public ContextStatus effects;
+		public ContextStatus effect;
 
-		public Action(int stateCount)
+		public GoapAction()
 		{
-			preconditon = new ContextStatus(stateCount);
-			effects = new ContextStatus(stateCount);
+			preconditon = new ContextStatus();
+			effect = new ContextStatus();
 		}
 	}
 

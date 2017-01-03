@@ -16,7 +16,7 @@ namespace Lite.AStar
 		}
 	}
 
-	public class GridPathPlanner : PathPlanner
+	public class GridPathPlanner : AStarPathPlanner
 	{
 		private int startX;
 		private int startY;
@@ -54,6 +54,7 @@ namespace Lite.AStar
 				pointArray[index++] = new Point2D(pathNode.x, pathNode.y);
 				pathNode = pathNode.prev as GridAStarNode;
 			}
+			Cleanup();
 			return pointArray;
 		}
 

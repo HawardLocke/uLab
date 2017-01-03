@@ -15,11 +15,33 @@ namespace Lite.Goap
 		private BitArray stateBits;
 		private Dictionary<uint, AtomValue> status;
 
-		public ContextStatus(int stateCount)
+		public const int stateCount = 64;
+
+		public ContextStatus()
 		{
 			maxStateCount = stateCount;
 			stateBits = new BitArray(stateCount);
 			status = new Dictionary<uint, AtomValue>();
+		}
+
+		public void Copy(ContextStatus from)
+		{
+
+		}
+
+		public void Merge(ContextStatus from)
+		{
+
+		}
+
+		public bool IsSame(ContextStatus from)
+		{
+			return false;
+		}
+
+		public bool Contains(ContextStatus other)
+		{
+			return false;
 		}
 
 	}

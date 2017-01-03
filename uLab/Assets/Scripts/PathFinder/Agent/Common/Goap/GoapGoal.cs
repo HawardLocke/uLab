@@ -2,11 +2,11 @@
 
 namespace Lite.Goap
 {
-
-	public class AStarGoapNode : AStar.AStarNode
+	// worldstate is node, action is edge
+	public class GoapGoal
 	{
 		public ContextStatus currentStatus;
-		
+
 		public ContextStatus goalStatus;
 
 	}

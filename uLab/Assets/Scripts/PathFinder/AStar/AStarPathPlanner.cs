@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Lite.AStar
 {
-	public abstract class PathPlanner
+	public abstract class AStarPathPlanner
 	{
 		private AStarNode openList;
 
@@ -17,6 +17,12 @@ namespace Lite.AStar
 		public void Setup(AStarMap map)
 		{
 			this.map = map;
+		}
+
+		public void Cleanup()
+		{
+			openList = null;
+			closedList = null;
 		}
 
 		protected AStarNode DoAStar(AStarNode startNode)
