@@ -41,6 +41,11 @@ public class GridPathTest : MonoBehaviour
 		dotRedTex = Resources.Load("Textures/dotRed") as Texture;
 	}
 
+	void Update()
+	{
+		path = pathFinder.FindPath(x1, y1, x2, y2);
+	}
+
 	
 	void OnGUI()
 	{
@@ -70,10 +75,10 @@ public class GridPathTest : MonoBehaviour
 		{
 			for (int i = 0; i < path.Length; ++i)
 			{
-				//GUI.Box(new Rect(path[i].x * gw + 0.3f * gw, path[i].y * gh + 0.3f * gh, 0.4f * gw, 0.4f * gh), "");
 				Graphics.DrawTexture(new Rect(path[i].x * gw + 0.4f * gw, path[i].y * gh + 0.4f * gh, 0.2f * gw, 0.2f * gh), dotRedTex, new Rect(0.0f, 0.0f, 1f, 1f), 0, 0, 0, 0, null);
 			}
 		}
 
 	}
+
 }

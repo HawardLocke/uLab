@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using Lite.Strategy;
 
 
-namespace Lite
+namespace Lite.Cmd
 {
 
-	public class CommandFacade : BaseFacade<CommandAgent>
+	public class AgentManager : IAgentManager<Agent>
 	{
 		public void Process()
 		{
-			foreach (CommandAgent agent in this.m_agentMap.Values)
+			foreach (Agent agent in this.m_agentMap.Values)
 			{
 				agent.Process();
 			}
@@ -19,10 +19,10 @@ namespace Lite
 
 		public void OnReceiveCommand(Command Command)
 		{
-			CommandAgent agent = FindAgent(Command.ownerGuid);
+			Agent agent = FindAgent(Command.ownerGuid);
 			if (agent == null)
 			{
-				agent = new CommandAgent(Command.ownerGuid);
+				agent = new Agent(Command.ownerGuid);
 				AddAgent(agent);
 			}
 			agent.PushCommand(Command);

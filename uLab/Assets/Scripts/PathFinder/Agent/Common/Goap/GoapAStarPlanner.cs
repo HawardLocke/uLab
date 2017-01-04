@@ -14,7 +14,7 @@ namespace Lite.Goap
 			currentGoal = goal;
 
 			GoapAStarMap goapMap = map as GoapAStarMap;
-			GoapAStarNode startNode = goapMap.CreateGoapNode(goal.goalStatus) as GoapAStarNode;
+			GoapAStarNode startNode = goapMap.CreateGoapNode(goal.state) as GoapAStarNode;
 
 			GoapAStarNode endNode = DoAStar(startNode) as GoapAStarNode;
 
@@ -41,7 +41,7 @@ namespace Lite.Goap
 		protected override bool CheckArrived(AStarNode node)
 		{
 			GoapAStarNode goapNode = node as GoapAStarNode;
-			return currentGoal.goalStatus.IsSame(goapNode.currentStatus);
+			return goapNode.nodeStatus.Contains(currentGoal.state);
 		}
 
 		protected override int CalCostG(AStarNode prevNode, AStarNode currentNode)

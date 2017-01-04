@@ -2,13 +2,13 @@
 using Lite.Strategy;
 
 
-namespace Lite
+namespace Lite.Bev
 {
-	public class BehaviourFacade : BaseFacade<BehaviourAgent>
+	public class AgentManager : IAgentManager<Agent>
 	{
 		private CommandHandlerManager CommandhandlerManager;
 
-		public BehaviourFacade()
+		public AgentManager()
 		{
 			CommandhandlerManager = new CommandHandlerManager();
 		}

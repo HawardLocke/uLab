@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-namespace Lite
+namespace Lite.Bev
 {
 
 	public class AnimationComponent : IComponent
@@ -11,9 +11,9 @@ namespace Lite
 
 		private string currentAnimation = "";
 
-		public BehaviourAgent agent;
+		public Agent agent;
 
-		public void Init(BehaviourAgent agent)
+		public void Init(Agent agent)
 		{
 			this.agent = agent;
 		}

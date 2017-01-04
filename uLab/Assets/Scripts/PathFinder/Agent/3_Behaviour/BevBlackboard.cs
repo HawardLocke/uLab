@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 
 
-namespace Lite
+namespace Lite.Bev
 {
 
-	public class BehaviourBlackboard : Blackborad
+	public class BevBlackboard : Blackborad
 	{
-		public BehaviourAgent agent;
+		public Agent agent;
 
 		//public Anim.State currentAnimState = null;
 		//public Anim.State nextAnimState = null;
@@ -15,7 +15,7 @@ namespace Lite
 		//public Bev.MoveToPosition moveToAction;
 		//public Bev.AttackAgent attackAction;
 
-		public BehaviourBlackboard(BehaviourAgent agent)
+		public BevBlackboard(Agent agent)
 		{
 			this.agent = agent;
 			

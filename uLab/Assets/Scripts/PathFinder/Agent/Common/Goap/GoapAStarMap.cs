@@ -10,23 +10,25 @@ namespace Lite.Goap
 {
 	// worldstate is node, action is edge
 
-	public class GoapAStarMap : AStarMap
+	public abstract class GoapAStarMap : AStarMap
 	{
 		private List<GoapAction> actionTable = new List<GoapAction>();
 
 		private List<GoapAction> neighbourList = new List<GoapAction>();
 
-		public GoapAStarNode CreateGoapNode(ContextStatus status)
+		public GoapAStarNode CreateGoapNode(WorldState status)
 		{
 			GoapAStarNode node = new GoapAStarNode();
-			node.currentStatus.Copy(status);
+			node.nodeStatus.Copy(status);
 			return node;
 		}
 
-		public void BuildActionTable(Lite.Agent agent)
+		public void AddAction(GoapAction action)
 		{
-
+			actionTable.Add(action);
 		}
+
+		public abstract void BuildActionTable(IAgent agent);
 
 		public override int GetNeighbourNodeCount(AStarNode node)
 		{
@@ -35,7 +37,7 @@ namespace Lite.Goap
 			for (int i = 0; i < actionTable.Count; ++i)
 			{
 				GoapAction action = actionTable[i];
-				if (goapNode.currentStatus.Contains(action.preconditon))
+				if (goapNode.nodeStatus.Contains(action.preconditons))
 					neighbourList.Add(action);
 			}
 			return neighbourList.Count;
@@ -44,9 +46,9 @@ namespace Lite.Goap
 		public override AStarNode GetNeighbourNode(AStarNode node, int index)
 		{
 			GoapAStarNode goapNode = node as GoapAStarNode;
-			ContextStatus status = new ContextStatus();
-			status.Copy(goapNode.currentStatus);
-			status.Merge(neighbourList[index].preconditon);
+			WorldState status = new WorldState(goapNode.nodeStatus.MaxStateCount);
+			status.Copy(goapNode.nodeStatus);
+			status.Merge(neighbourList[index].preconditons);
 			return CreateGoapNode(status);
 		}
 

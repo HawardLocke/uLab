@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Lite
+namespace Lite.Bev
 {
 
 	public class AgentComponent : IComponent
 	{
-		public BehaviourAgent agent;
+		public Agent agent;
 
-		private Queue<Bev.AgentAction> actionQueue = new Queue<Bev.AgentAction>();
+		private Queue<AgentAction> actionQueue = new Queue<AgentAction>();
 
-		private Bev.AgentAction currentAction;
+		private AgentAction currentAction;
 
 
 		public override void OnStart()
@@ -25,7 +25,7 @@ namespace Lite
 			ProcessActions();
 		}
 
-		public void PushAction(Bev.AgentAction action)
+		public void PushAction(AgentAction action)
 		{
 			actionQueue.Enqueue(action);
 		}
@@ -36,7 +36,7 @@ namespace Lite
 			{
 				if (actionQueue.Count > 0)
 				{
-					Bev.AgentAction action = actionQueue.Dequeue();
+					AgentAction action = actionQueue.Dequeue();
 					if (currentAction != null)
 						currentAction.Deactive(agent);
 					currentAction = action;

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace Lite
 {
-	public abstract class BaseFacade<T> where T : Agent
+	public abstract class IAgentManager<T> where T : IAgent
 	{
 		protected Dictionary<long, T> m_agentMap;
 
-		public BaseFacade()
+		public IAgentManager()
 		{
 			m_agentMap = new Dictionary<long, T>();
 		}

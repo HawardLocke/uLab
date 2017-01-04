@@ -5,11 +5,11 @@ using UnityEngine;
 namespace Lite
 {
 
-	public abstract class Agent
+	public abstract class IAgent
 	{
 		protected long m_guid;
 
-		public Agent(long guid)
+		public IAgent(long guid)
 		{
 			m_guid = guid;
 		}

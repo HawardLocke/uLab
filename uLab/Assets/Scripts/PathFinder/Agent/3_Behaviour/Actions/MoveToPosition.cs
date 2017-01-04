@@ -14,19 +14,19 @@ namespace Lite.Bev
 			actionType = ActionType.MoveTo;
 		}
 
-		public override void OnActive(BehaviourAgent agent)
+		public override void OnActive(Agent agent)
 		{
 			agent.locomotion.StartMove(targetPosition, GetSpeed(agent, speedType));
 			agent.animComponent.moveSpeed = GetClampSpeed(speedType);
 			Log.Info("enter run");
 		}
 
-		public override void OnDeactive(BehaviourAgent agent)
+		public override void OnDeactive(Agent agent)
 		{
 
 		}
 
-		public override void OnProcess(BehaviourAgent agent)
+		public override void OnProcess(Agent agent)
 		{
 			float deltaTime = GameTimer.deltaTime;
 			float distanceSqr = MathUtil.DistanceSqr2D(targetPosition, agent.locomotion.position);
@@ -69,7 +69,7 @@ namespace Lite.Bev
 			return name;
 		}
 
-		private float GetSpeed(BehaviourAgent agent, Bev.MoveSpeed speedType)
+		private float GetSpeed(Agent agent, Bev.MoveSpeed speedType)
 		{
 			float speed = 0;
 			switch (speedType)

@@ -24,12 +24,12 @@ namespace Lite.Bev
 			return isFinished;
 		}
 
-		public void Active(BehaviourAgent agent) { OnActive(agent); }
-		public void Deactive(BehaviourAgent agent) { OnDeactive(agent); }
-		public void Process(BehaviourAgent agent) { OnProcess(agent); }
-		public abstract void OnActive(BehaviourAgent agent);
-		public abstract void OnDeactive(BehaviourAgent agent);
-		public abstract void OnProcess(BehaviourAgent agent);
+		public void Active(Agent agent) { OnActive(agent); }
+		public void Deactive(Agent agent) { OnDeactive(agent); }
+		public void Process(Agent agent) { OnProcess(agent); }
+		public abstract void OnActive(Agent agent);
+		public abstract void OnDeactive(Agent agent);
+		public abstract void OnProcess(Agent agent);
 
 	}
 

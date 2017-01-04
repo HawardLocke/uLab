@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 using Lite;
-using Lite.AStar;
+using Lite.Strategy;
 using Lite.Goap;
 
 
 public class GoapPlannerTest : MonoBehaviour
 {
-	GoapAStarMap graph;
+	GoapMap graph;
 	GoapAction[] path = null;
 	GoapAStarPlanner pathFinder;
 
 
 	void Start()
 	{
-		graph = new GoapAStarMap();
+		graph = new GoapMap();
 
 		pathFinder = new GoapAStarPlanner();
 		pathFinder.Setup(graph);

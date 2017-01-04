@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-namespace Lite
+namespace Lite.Bev
 {
 
 
@@ -19,7 +19,7 @@ namespace Lite
 	}
 
 
-	public class BehaviourAgent : Agent
+	public class Agent : IAgent
 	{
 		public AgentComponent agentComponent;
 
@@ -29,13 +29,13 @@ namespace Lite
 
 		public MotionType currentMotionType;
 
-		public BehaviourBlackboard blackboard;
+		public BevBlackboard blackboard;
 
 
-		public BehaviourAgent(long guid) :
+		public Agent(long guid) :
 			base(guid)
 		{
-			blackboard = new BehaviourBlackboard(this);
+			blackboard = new BevBlackboard(this);
 		}
 
 		public void PushAction(Bev.AgentAction action)

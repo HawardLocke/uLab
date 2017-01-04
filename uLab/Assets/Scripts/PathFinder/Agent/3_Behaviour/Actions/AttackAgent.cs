@@ -5,24 +5,24 @@ namespace Lite.Bev
 {
 	public class AttackAgent : AgentAction
 	{
-		public BehaviourAgent targetAgent;
+		public Agent targetAgent;
 
 		public AttackAgent()
 		{
 			actionType = ActionType.Attack;
 		}
 
-		public override void OnActive(BehaviourAgent agent)
+		public override void OnActive(Agent agent)
 		{
 			Log.Info("enter attack");
 		}
 
-		public override void OnDeactive(BehaviourAgent agent)
+		public override void OnDeactive(Agent agent)
 		{
 
 		}
 
-		public override void OnProcess(BehaviourAgent agent)
+		public override void OnProcess(Agent agent)
 		{
 			if (targetAgent != null)
 			{

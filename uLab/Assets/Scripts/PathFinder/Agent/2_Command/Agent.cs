@@ -1,19 +1,17 @@
 
-using UnityEngine;
 
 using System.Collections.Generic;
-
 using Lite.Strategy;
 
 
-namespace Lite
+namespace Lite.Cmd
 {
 
-	public class CommandAgent : Agent
+	public class Agent : IAgent
 	{
 		private Queue<Command> m_CommandQueue;
 
-		public CommandAgent(long guid) :
+		public Agent(long guid) :
 			base(guid)
 		{
 			m_CommandQueue = new Queue<Command>();

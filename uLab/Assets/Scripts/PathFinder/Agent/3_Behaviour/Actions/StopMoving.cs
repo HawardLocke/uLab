@@ -13,17 +13,17 @@ namespace Lite.Bev
 			actionType = ActionType.StopMove;
 		}
 
-		public override void OnActive(BehaviourAgent agent)
+		public override void OnActive(Agent agent)
 		{
 			agent.animComponent.moveSpeed = 0;
 		}
 
-		public override void OnDeactive(BehaviourAgent agent)
+		public override void OnDeactive(Agent agent)
 		{
 
 		}
 
-		public override void OnProcess(BehaviourAgent agent)
+		public override void OnProcess(Agent agent)
 		{
 
 		}

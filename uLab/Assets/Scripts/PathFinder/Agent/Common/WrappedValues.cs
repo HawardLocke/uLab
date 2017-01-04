@@ -8,6 +8,8 @@ namespace Lite.Common
 	public abstract class AtomValue
 	{
 		public abstract bool Equals(AtomValue other);
+		public abstract AtomValue Clone();
+		public abstract void Copy(AtomValue from);
 		public virtual int ToInt() { return 0; }
 		public virtual void SetInt(int value) { }
 		public virtual long ToLong() { return 0; }
@@ -23,6 +25,10 @@ namespace Lite.Common
 	public class IntValue : AtomValue
 	{
 		int value;
+		public IntValue(int value)
+		{
+			this.value = value;
+		}
 		public override int ToInt()
 		{
 			return value;
@@ -38,10 +44,22 @@ namespace Lite.Common
 				return this.value == o.value;
 			return false;
 		}
+		public override AtomValue Clone()
+		{
+			return new IntValue(value);
+		}
+		public override void Copy(AtomValue from)
+		{
+			this.value = (from as IntValue).value;
+		}
 	}
 	public class LongValue : AtomValue
 	{
 		long value;
+		public LongValue(long value)
+		{
+			this.value = value;
+		}
 		public override long ToLong()
 		{
 			return value;
@@ -57,10 +75,22 @@ namespace Lite.Common
 				return this.value == o.value;
 			return false;
 		}
+		public override AtomValue Clone()
+		{
+			return new LongValue(value);
+		}
+		public override void Copy(AtomValue from)
+		{
+			this.value = (from as LongValue).value;
+		}
 	}
 	public class FloatValue : AtomValue
 	{
 		float value;
+		public FloatValue(float value)
+		{
+			this.value = value;
+		}
 		public override float ToFloat()
 		{
 			return value;
@@ -76,10 +106,22 @@ namespace Lite.Common
 				return this.value == o.value;
 			return false;
 		}
+		public override AtomValue Clone()
+		{
+			return new FloatValue(value);
+		}
+		public override void Copy(AtomValue from)
+		{
+			this.value = (from as FloatValue).value;
+		}
 	}
 	public class BoolValue : AtomValue
 	{
 		bool value;
+		public BoolValue(bool value)
+		{
+			this.value = value;
+		}
 		public override bool ToBool()
 		{
 			return value;
@@ -95,10 +137,22 @@ namespace Lite.Common
 				return this.value == o.value;
 			return false;
 		}
+		public override AtomValue Clone()
+		{
+			return new BoolValue(value);
+		}
+		public override void Copy(AtomValue from)
+		{
+			this.value = (from as BoolValue).value;
+		}
 	}
 	public class StringValue : AtomValue
 	{
 		string value;
+		public StringValue(string value)
+		{
+			this.value = value;
+		}
 		public override string ToString()
 		{
 			return value;
@@ -113,6 +167,14 @@ namespace Lite.Common
 			if (o != null)
 				return this.value == o.value;
 			return false;
+		}
+		public override AtomValue Clone()
+		{
+			return new StringValue(value);
+		}
+		public override void Copy(AtomValue from)
+		{
+			this.value = (from as StringValue).value;
 		}
 	}
 
