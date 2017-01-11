@@ -4,12 +4,12 @@ using Lite.Goap;
 namespace Lite.Strategy
 {
 
-	public class DropOffOre : GoapAction
+	public class ForgeTool : GoapAction
 	{
-		public DropOffOre(Agent agent) :
+		public ForgeTool(Agent agent) :
 			base(agent, GoapDefines.STATE_COUNT)
 		{
-			actionType = (uint)ActionType.DropOffOre;
+			actionType = (uint)ActionType.ForgeTool;
 			cost = 1;
 		}
 
@@ -20,8 +20,7 @@ namespace Lite.Strategy
 
 		protected override void OnSetupEffects()
 		{
-			effects.Set((int)StateType.HasOre, false);
-			effects.Set((int)StateType.CollectOre, true);
+			effects.Set((int)StateType.HasNewTools, true);
 		}
 
 	}

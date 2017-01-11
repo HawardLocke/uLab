@@ -10,7 +10,7 @@ namespace Lite.Strategy
 			base(agent, GoapDefines.STATE_COUNT)
 		{
 			actionType = (uint)ActionType.MineOre;
-			cost = 4;
+			cost = 1;
 		}
 
 		protected override void OnSetupPreconditons()

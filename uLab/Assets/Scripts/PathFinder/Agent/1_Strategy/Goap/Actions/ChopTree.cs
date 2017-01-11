@@ -9,8 +9,8 @@ namespace Lite.Strategy
 		public ChopTree(Agent agent) : 
 			base(agent, GoapDefines.STATE_COUNT)
 		{
-			actionType = (uint)ActionType.chopLog;
-			cost = 4;
+			actionType = (uint)ActionType.ChopLog;
+			cost = 1;
 		}
 
 		protected override void OnSetupPreconditons()

@@ -10,7 +10,7 @@ namespace Lite.Strategy
 			base(agent, GoapDefines.STATE_COUNT)
 		{
 			actionType = (uint)ActionType.PickupTools;
-			cost = 2;
+			cost = 1;
 		}
 
 		protected override void OnSetupPreconditons()

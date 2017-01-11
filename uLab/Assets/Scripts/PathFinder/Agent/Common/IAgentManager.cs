@@ -15,7 +15,7 @@ namespace Lite
 
 		public virtual void Init() { }
 
-		public virtual void Update() { }
+		public virtual void Update(long ms) { }
 
 		public virtual void Destroy() { }
 
