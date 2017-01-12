@@ -40,10 +40,10 @@ namespace Lite.Strategy
 	public enum GoalType
 	{
 		Default,
-		GetFirewood,
-		GetLogs,
-		GetOre,
-		GetTools,
+		MakeFirewoods,
+		MakeLogs,
+		MakeOre,
+		MakeTools,
 	}
 
 }

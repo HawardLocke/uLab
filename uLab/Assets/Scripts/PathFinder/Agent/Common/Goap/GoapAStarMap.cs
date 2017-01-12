@@ -9,14 +9,19 @@ using Lite.AStar;
 namespace Lite.Goap
 {
 	// worldstate is node, action is edge
-	// 因为worldstate组合结果数目比较大，所以map不构建图结构，而是在运行时生成临时的节点。
+	// 因为worldstate组合结果数目比较大，即node数目大，所以map不构建图结构，而是在运行时生成临时的节点。
 
 	public abstract class GoapAStarMap : AStarMap
 	{
+		private int maxStateCount = 0;
 		private List<GoapAction> actionTable = new List<GoapAction>();
 		private List<GoapAction> neighbourEdgeList = new List<GoapAction>();
 		private Queue<GoapAStarNode> nodePool = new Queue<GoapAStarNode>();
 
+		public GoapAStarMap(int stateCount)
+		{
+			maxStateCount = stateCount;
+		}
 
 		public void AddAction(GoapAction action)
 		{
@@ -32,7 +37,7 @@ namespace Lite.Goap
 			for (int i = 0; i < actionTable.Count; ++i)
 			{
 				GoapAction action = actionTable[i];
-				if (goapNode.state.Contains(action.preconditons))
+				if (goapNode.currentState.Contains(action.preconditons))
 					neighbourEdgeList.Add(action);
 			}
 			return neighbourEdgeList.Count;
@@ -42,8 +47,11 @@ namespace Lite.Goap
 		{
 			GoapAStarNode goapNode = node as GoapAStarNode;
 			GoapAction action = neighbourEdgeList[index];
-			GoapAStarNode neighbour = CreateGoapNode(goapNode.state, action);
-			neighbour.state.Merge(action.preconditons);
+			GoapAStarNode neighbour = CreateGoapNode();
+			neighbour.fromAction = action;
+			neighbour.currentState.Copy(goapNode.currentState);
+			neighbour.currentState.Merge(action.effects);
+			neighbour.goalState.Copy(goapNode.goalState);
 			return neighbour;
 		}
 
@@ -53,15 +61,13 @@ namespace Lite.Goap
 			nodePool.Enqueue((GoapAStarNode)node);
 		}
 
-		public GoapAStarNode CreateGoapNode(WorldState copyState, GoapAction fromAction)
+		public GoapAStarNode CreateGoapNode()
 		{
-			GoapAStarNode node = GetNodeFromPool(copyState.MaxStateCount);
-			node.state.Copy(copyState);
-			node.fromAction = fromAction;
+			GoapAStarNode node = GetNodeFromPool();
 			return node;
 		}
 
-		private GoapAStarNode GetNodeFromPool(int stateCount)
+		private GoapAStarNode GetNodeFromPool()
 		{
 			GoapAStarNode node;
 			if (nodePool.Count > 0)
@@ -72,7 +78,7 @@ namespace Lite.Goap
 			}
 			else
 			{
-				node = new GoapAStarNode(stateCount);
+				node = new GoapAStarNode(maxStateCount);
 			}
 			return node;
 		}

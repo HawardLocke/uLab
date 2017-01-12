@@ -4,22 +4,22 @@ namespace Lite.Goap
 {
 	public class GoapAStarNode : AStar.AStarNode
 	{
-		public WorldState state;
+		public WorldState currentState;
 		
-		//public WorldState goalStatus;
+		public WorldState goalState;
 
 		public GoapAction fromAction;
 
 		public GoapAStarNode(int stateCount)
 		{
-			state = new WorldState(stateCount);
+			currentState = new WorldState(stateCount);
 			fromAction = null;
 		}
 
 		public override void Reset()
 		{
 			base.Reset();
-			state.Reset();
+			currentState.Reset();
 			fromAction = null;
 		}
 

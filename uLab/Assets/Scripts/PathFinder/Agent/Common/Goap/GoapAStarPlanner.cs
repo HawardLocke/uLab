@@ -7,14 +7,18 @@ namespace Lite.Goap
 
 	public class GoapAStarPlanner : AStarPathPlanner
 	{
-		WorldState targetState;
+		GoapAStarGoal goal;
 
-		public GoapAction[] Plan(WorldState from, WorldState to)
+		public GoapAction[] Plan(WorldState from, GoapAStarGoal to)
 		{
-			targetState = to;
+			goal = to;
 
 			GoapAStarMap goapMap = map as GoapAStarMap;
-			AStarNode startNode = goapMap.CreateGoapNode(from, null);
+			AStarNode startNode = goapMap.CreateGoapNode();
+			((GoapAStarNode)startNode).fromAction = null;
+			((GoapAStarNode)startNode).currentState.Copy(from);
+			to.SetNodeGoalState(((GoapAStarNode)startNode).goalState);
+
 			AStarNode endNode = DoAStar(startNode);
 
 			// build action list.
@@ -56,7 +60,7 @@ namespace Lite.Goap
 		protected override bool CheckArrived(AStarNode node)
 		{
 			GoapAStarNode goapNode = node as GoapAStarNode;
-			return goapNode.state.Contains(targetState);
+			return goal.IsSatisfied(goapNode.currentState);
 		}
 
 		protected override int CalCostG(AStarNode prevNode, AStarNode currentNode)
@@ -66,7 +70,7 @@ namespace Lite.Goap
 
 		protected override int CalCostH(AStarNode node)
 		{
-			return targetState.CountDifference(((GoapAStarNode)node).state);
+			return ((GoapAStarNode)node).goalState.CountDifference(((GoapAStarNode)node).currentState);
 		}
 
 	}

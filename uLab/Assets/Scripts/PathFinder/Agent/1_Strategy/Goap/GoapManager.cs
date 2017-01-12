@@ -18,7 +18,7 @@ namespace Lite.Strategy
 		public GoapManager(Agent agent)
 		{
 			owner = agent;
-			map = new GoapMap();
+			map = new GoapMap(GoapDefines.STATE_COUNT);
 			map.BuildActionTable(agent);
 			planner = new GoapAStarPlanner();
 			planner.Setup(map);
@@ -41,17 +41,19 @@ namespace Lite.Strategy
 
 		public void AddGoal(GoapGoal goal)
 		{
-
+			if (ContainsGoal(goal.goalType))
+				return;
+			goalList.Add(goal);
 		}
 
-		public bool ContainsGoal(GoapGoal goal)
+		public bool ContainsGoal(GoalType goalType)
 		{
 			for (int i = 0; i < goalList.Count; ++i)
 			{
-				/*if ()
+				if (goalList[i].goalType == goalType)
 				{
-				
-				}*/
+					return true;
+				}
 			}
 			return false;
 		}
@@ -59,7 +61,7 @@ namespace Lite.Strategy
 		public GoapPlan BuildPlan(GoapGoal goal)
 		{
 			GoapPlan plan = null;
-			planner.Plan(owner.worldState, goal.goalState);
+			planner.Plan(owner.worldState, goal);
 			return plan;
 		}
 

@@ -4,18 +4,15 @@ using Lite.Goap;
 
 namespace Lite.Strategy
 {
-	public abstract class GoapGoal
+	public abstract class GoapGoal : GoapAStarGoal
 	{
 		public GoalType goalType;
-
-		public WorldState goalState;
 
 		private GoapPlan plan;
 
 		public GoapGoal()
 		{
 			goalType = GoalType.Default;
-			goalState = new WorldState(GoapDefines.STATE_COUNT);
 			plan = null;
 		}
 
@@ -33,11 +30,6 @@ namespace Lite.Strategy
 		{
 			if (plan != null)
 				plan.Excute();
-		}
-
-		public virtual bool IsSatisfied()
-		{
-			return false;
 		}
 
 	}

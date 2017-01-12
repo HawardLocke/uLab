@@ -7,6 +7,12 @@ namespace Lite.Strategy
 {
 	public class GoapMap : GoapAStarMap
 	{
+		public GoapMap(int stateCount):
+			base(stateCount)
+		{
+
+		}
+
 		public override void BuildActionTable(IAgent agnt)
 		{
 			Agent agent = agnt as Agent;

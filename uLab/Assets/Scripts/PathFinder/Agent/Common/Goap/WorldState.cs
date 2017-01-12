@@ -97,6 +97,16 @@ namespace Lite.Goap
 			return true;
 		}
 
+		public bool HasState(int index)
+		{
+			return bits[index];
+		}
+
+		public AtomValue Get(int index)
+		{
+			return values[index];
+		}
+
 		public int CountDifference(WorldState other)
 		{
 			int count = bits.Count;
