@@ -9,19 +9,14 @@ using Lite.AStar;
 namespace Lite.Goap
 {
 	// worldstate is node, action is edge
+	// 因为worldstate组合结果数目比较大，所以map不构建图结构，而是在运行时生成临时的节点。
 
 	public abstract class GoapAStarMap : AStarMap
 	{
 		private List<GoapAction> actionTable = new List<GoapAction>();
+		private List<GoapAction> neighbourEdgeList = new List<GoapAction>();
+		private Queue<GoapAStarNode> nodePool = new Queue<GoapAStarNode>();
 
-		private List<GoapAction> neighbourList = new List<GoapAction>();
-
-		public GoapAStarNode CreateGoapNode(WorldState status)
-		{
-			GoapAStarNode node = new GoapAStarNode();
-			node.nodeStatus.Copy(status);
-			return node;
-		}
 
 		public void AddAction(GoapAction action)
 		{
@@ -32,24 +27,54 @@ namespace Lite.Goap
 
 		public override int GetNeighbourNodeCount(AStarNode node)
 		{
-			neighbourList.Clear();
+			neighbourEdgeList.Clear();
 			GoapAStarNode goapNode = node as GoapAStarNode;
 			for (int i = 0; i < actionTable.Count; ++i)
 			{
 				GoapAction action = actionTable[i];
-				if (goapNode.nodeStatus.Contains(action.preconditons))
-					neighbourList.Add(action);
+				if (goapNode.state.Contains(action.preconditons))
+					neighbourEdgeList.Add(action);
 			}
-			return neighbourList.Count;
+			return neighbourEdgeList.Count;
 		}
 
 		public override AStarNode GetNeighbourNode(AStarNode node, int index)
 		{
 			GoapAStarNode goapNode = node as GoapAStarNode;
-			WorldState status = new WorldState(goapNode.nodeStatus.MaxStateCount);
-			status.Copy(goapNode.nodeStatus);
-			status.Merge(neighbourList[index].preconditons);
-			return CreateGoapNode(status);
+			GoapAction action = neighbourEdgeList[index];
+			GoapAStarNode neighbour = CreateGoapNode(goapNode.state, action);
+			neighbour.state.Merge(action.preconditons);
+			return neighbour;
+		}
+
+		public override void RecycleNode(AStarNode node)
+		{
+			node.Reset();
+			nodePool.Enqueue((GoapAStarNode)node);
+		}
+
+		public GoapAStarNode CreateGoapNode(WorldState copyState, GoapAction fromAction)
+		{
+			GoapAStarNode node = GetNodeFromPool(copyState.MaxStateCount);
+			node.state.Copy(copyState);
+			node.fromAction = fromAction;
+			return node;
+		}
+
+		private GoapAStarNode GetNodeFromPool(int stateCount)
+		{
+			GoapAStarNode node;
+			if (nodePool.Count > 0)
+			{
+				node = nodePool.Dequeue();
+				node.Reset();
+				Log.Info("Get Node From Pool...");
+			}
+			else
+			{
+				node = new GoapAStarNode(stateCount);
+			}
+			return node;
 		}
 
 	}

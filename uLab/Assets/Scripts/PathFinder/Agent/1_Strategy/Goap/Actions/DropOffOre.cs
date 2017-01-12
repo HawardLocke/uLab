@@ -15,13 +15,13 @@ namespace Lite.Strategy
 
 		protected override void OnSetupPreconditons()
 		{
-			preconditons.Set((int)StateType.HasOre, true);
+			preconditons.Set((int)WorldStateType.HasOre, true);
 		}
 
 		protected override void OnSetupEffects()
 		{
-			effects.Set((int)StateType.HasOre, false);
-			effects.Set((int)StateType.CollectOre, true);
+			effects.Set((int)WorldStateType.HasOre, false);
+			effects.Set((int)WorldStateType.CollectOre, true);
 		}
 
 	}

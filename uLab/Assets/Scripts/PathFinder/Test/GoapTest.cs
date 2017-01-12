@@ -37,7 +37,7 @@ public class GoapTest : MonoBehaviour
 
 	void Update()
 	{
-		app.Update((long)(Time.timeSinceLevelLoad*1000));
+		app.Update();
 	}
 
 	/*long mills = 0;

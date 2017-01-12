@@ -7,20 +7,21 @@ namespace Lite.Goap
 
 	public class GoapAStarPlanner : AStarPathPlanner
 	{
-		GoapGoal currentGoal;
+		WorldState targetState;
 
-		public GoapAction[] Plan(GoapGoal goal)
+		public GoapAction[] Plan(WorldState from, WorldState to)
 		{
-			currentGoal = goal;
+			targetState = to;
 
 			GoapAStarMap goapMap = map as GoapAStarMap;
-			GoapAStarNode startNode = goapMap.CreateGoapNode(goal.state) as GoapAStarNode;
-
-			GoapAStarNode endNode = DoAStar(startNode) as GoapAStarNode;
+			AStarNode startNode = goapMap.CreateGoapNode(from, null);
+			AStarNode endNode = DoAStar(startNode);
 
 			// build action list.
+			endNode = ReverseNodeList(endNode) as GoapAStarNode;
+			endNode = endNode.prev;
 			int nodeCount = 0;
-			GoapAStarNode pathNode = endNode;
+			AStarNode pathNode = endNode;
 			while (pathNode != null)
 			{
 				nodeCount++;
@@ -31,28 +32,41 @@ namespace Lite.Goap
 			int index = 0;
 			while (pathNode != null)
 			{
-				actionArray[index++] = null;
-				pathNode = pathNode.prev as GoapAStarNode;
+				actionArray[index++] = ((GoapAStarNode)pathNode).fromAction;
+				pathNode = pathNode.prev;
 			}
-			Cleanup();
+			
 			return actionArray;
+		}
+
+		private AStarNode ReverseNodeList(AStarNode head)
+		{
+			AStarNode node = head;
+			AStarNode prevNode = null;
+			while (node != null)
+			{
+				AStarNode tmpNode = node;
+				node = node.prev;
+				tmpNode.prev = prevNode;
+				prevNode = tmpNode;
+			}
+			return prevNode;
 		}
 
 		protected override bool CheckArrived(AStarNode node)
 		{
 			GoapAStarNode goapNode = node as GoapAStarNode;
-			return goapNode.nodeStatus.Contains(currentGoal.state);
+			return goapNode.state.Contains(targetState);
 		}
 
 		protected override int CalCostG(AStarNode prevNode, AStarNode currentNode)
 		{
-			return prevNode.g + map.GetEdge(prevNode.id, currentNode.id).cost;
+			return prevNode.g + ((GoapAStarNode)currentNode).fromAction.cost;
 		}
 
 		protected override int CalCostH(AStarNode node)
 		{
-			int dist = 0;
-			return dist;
+			return targetState.CountDifference(((GoapAStarNode)node).state);
 		}
 
 	}

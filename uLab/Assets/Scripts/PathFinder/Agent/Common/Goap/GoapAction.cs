@@ -2,8 +2,7 @@
 
 namespace Lite.Goap
 {
-
-	public abstract class GoapAction
+	public abstract class GoapAction : Lite.Graph.GraphEdge
 	{
 		protected IAgent owner;
 
@@ -12,7 +11,8 @@ namespace Lite.Goap
 		public WorldState effects;
 		public int cost;
 
-		public GoapAction(IAgent owner, int maxStateCount)
+		public GoapAction(IAgent owner, int maxStateCount):
+			base(0,0,0)
 		{
 			this.owner = owner;
 			actionType = 0;

@@ -1,7 +1,7 @@
 
 namespace Lite.Strategy
 {
-	public enum StateType
+	public enum WorldStateType
 	{
 		HasTool,
 		HasFirewood,
@@ -34,7 +34,16 @@ namespace Lite.Strategy
 
 	public class GoapDefines
 	{
-		public static readonly int STATE_COUNT = (int)StateType.Count;
+		public static readonly int STATE_COUNT = (int)WorldStateType.Count;
+	}
+
+	public enum GoalType
+	{
+		Default,
+		GetFirewood,
+		GetLogs,
+		GetOre,
+		GetTools,
 	}
 
 }

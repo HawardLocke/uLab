@@ -19,12 +19,6 @@ namespace Lite.AStar
 			this.map = map;
 		}
 
-		public void Cleanup()
-		{
-			openList = null;
-			closedList = null;
-		}
-
 		protected AStarNode DoAStar(AStarNode startNode)
 		{
 			openList = null;
@@ -278,6 +272,21 @@ namespace Lite.AStar
 			}
 		}
 
+		public void Cleanup()
+		{
+			while (openList != null)
+			{
+				map.RecycleNode(openList);
+				openList = openList.next;
+			}
+			while (closedList != null)
+			{
+				map.RecycleNode(closedList);
+				closedList = closedList.next;
+			}
+			openList = null;
+			closedList = null;
+		}
 
 	}
 

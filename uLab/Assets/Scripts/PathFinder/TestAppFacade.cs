@@ -32,11 +32,12 @@ namespace Lite
 			bevAgentManager.Init();
 		}
 
-		public void Update(long ms)
+		public void Update()
 		{
+			long ms = GameTimer.tickTime;
 			if (ms - lastUpdateTime >= 200)
 			{
-				stgAgentManager.Update(ms);
+				stgAgentManager.Update();
 				lastUpdateTime = ms;
 			}
 		}

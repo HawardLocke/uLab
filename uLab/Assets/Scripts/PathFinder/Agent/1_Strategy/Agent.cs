@@ -15,45 +15,28 @@ namespace Lite.Strategy
 
 	public class Agent : IAgent
 	{
+		public Career career { private set; get; }
 
-		public Career career
-		{
-			private set;
-			get;
-		}
+		private GoapManager goapManager;
 
-		GoapMap graph;
-		GoapAction[] actionList;
-		GoapAStarPlanner goapPlanner;
-
+		public WorldState worldState { private set; get; }
 
 		public Agent(long guid, Career career) :
 			base(guid)
 		{
 			this.career = career;
-
-			graph = new GoapMap();
-			graph.BuildActionTable(this);
-			goapPlanner = new GoapAStarPlanner();
-			goapPlanner.Setup(graph);
+			goapManager = new GoapManager(this);
+			worldState = new WorldState(GoapDefines.STATE_COUNT);
 		}
 
-		public void Update(long ms)
+		public void Init()
 		{
-			if (actionList == null)
-			{
-				GoapGoal goal = MakeGoal();
-				actionList = goapPlanner.Plan(goal);
-			}
-			else
-			{
-
-			}
+			worldState.Set((int)WorldStateType.CollectFirewood, false);
 		}
 
-		private GoapGoal MakeGoal()
+		public void Update()
 		{
-			return null;
+			goapManager.Update();
 		}
 
 	}

@@ -21,6 +21,11 @@ namespace Lite
 			get { return Time.timeSinceLevelLoad; }
 		}
 
+		public static long tickTime
+		{
+			get { return (long)(Time.timeSinceLevelLoad * 1000); }
+		}
+
 	}
 
 }

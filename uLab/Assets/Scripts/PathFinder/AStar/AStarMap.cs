@@ -13,6 +13,8 @@ namespace Lite.AStar
 
 		public abstract AStarNode GetNeighbourNode(AStarNode node, int index);
 
+		public virtual void RecycleNode(AStarNode node) { }
+
 	}
 
 }

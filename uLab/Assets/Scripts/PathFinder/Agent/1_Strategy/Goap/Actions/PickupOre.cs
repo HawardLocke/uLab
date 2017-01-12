@@ -17,12 +17,12 @@ namespace Lite.Strategy
 
 		protected override void OnSetupPreconditons()
 		{
-			preconditons.Set((int)StateType.HasOre, false);
+			preconditons.Set((int)WorldStateType.HasOre, false);
 		}
 
 		protected override void OnSetupEffects()
 		{
-			effects.Set((int)StateType.HasOre, true);
+			effects.Set((int)WorldStateType.HasOre, true);
 		}
 
 	}

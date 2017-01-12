@@ -21,6 +21,16 @@ namespace Lite.Goap
 
 		public int MaxStateCount { get { return bits.Count; } }
 
+		public void Reset()
+		{
+			int count = MaxStateCount;
+			for (int i = 0; i < count; ++i)
+			{
+				bits[i] = false;
+				values[i] = null;
+			}
+		}
+
 		public void Copy(WorldState from)
 		{
 			int count = MaxStateCount;
@@ -85,6 +95,17 @@ namespace Lite.Goap
 				}
 			}
 			return true;
+		}
+
+		public int CountDifference(WorldState other)
+		{
+			int count = bits.Count;
+			int diff = 0;
+			for (int i = 0; i < count; ++i)
+			{
+				diff += bits[i] == other.bits[i] ? 0 : 1;
+			}
+			return diff;
 		}
 
 		public void Set(int index, int value)
