@@ -11,6 +11,8 @@ namespace Lite.Goap
 		public WorldState effects;
 		public int cost;
 
+		private bool isFinished;
+
 		public GoapAction(IAgent owner, int maxStateCount):
 			base(0,0,0)
 		{
@@ -19,13 +21,17 @@ namespace Lite.Goap
 			preconditons = new WorldState(maxStateCount);
 			effects = new WorldState(maxStateCount);
 			cost = 0;
+			isFinished = false;
 			OnSetupPreconditons();
 			OnSetupEffects();
 		}
 
-		protected virtual void OnSetupPreconditons() { }
+		protected abstract void OnSetupPreconditons();
+		protected abstract void OnSetupEffects();
+		public void SetFinished() { isFinished = true; }
+		public bool IsFinished() { return isFinished; }
 
-		protected virtual void OnSetupEffects() { }
+		public virtual void Update() { }
 
 	}
 

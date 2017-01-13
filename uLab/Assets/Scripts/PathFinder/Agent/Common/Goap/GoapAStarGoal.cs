@@ -6,7 +6,7 @@ namespace Lite.Goap
 	{
 		public abstract bool IsSatisfied(WorldState state);
 
-		public abstract void SetNodeGoalState(WorldState goalState);
+		public abstract void MergeToNodeGoalState(WorldState goalState);
 
 	}
 

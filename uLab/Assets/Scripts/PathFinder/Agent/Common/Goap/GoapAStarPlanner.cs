@@ -9,7 +9,7 @@ namespace Lite.Goap
 	{
 		GoapAStarGoal goal;
 
-		public GoapAction[] Plan(WorldState from, GoapAStarGoal to)
+		public GoapAStarNode Plan(WorldState from, GoapAStarGoal to)
 		{
 			goal = to;
 
@@ -17,14 +17,14 @@ namespace Lite.Goap
 			AStarNode startNode = goapMap.CreateGoapNode();
 			((GoapAStarNode)startNode).fromAction = null;
 			((GoapAStarNode)startNode).currentState.Copy(from);
-			to.SetNodeGoalState(((GoapAStarNode)startNode).goalState);
+			to.MergeToNodeGoalState(((GoapAStarNode)startNode).goalState);
 
 			AStarNode endNode = DoAStar(startNode);
 
 			// build action list.
 			endNode = ReverseNodeList(endNode) as GoapAStarNode;
 			endNode = endNode.prev;
-			int nodeCount = 0;
+			/*int nodeCount = 0;
 			AStarNode pathNode = endNode;
 			while (pathNode != null)
 			{
@@ -40,7 +40,8 @@ namespace Lite.Goap
 				pathNode = pathNode.prev;
 			}
 			
-			return actionArray;
+			return actionArray;*/
+			return endNode as GoapAStarNode;
 		}
 
 		private AStarNode ReverseNodeList(AStarNode head)

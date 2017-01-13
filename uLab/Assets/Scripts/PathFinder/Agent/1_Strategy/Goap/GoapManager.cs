@@ -30,12 +30,19 @@ namespace Lite.Strategy
 			if (currentGoal != null)
 			{
 				currentGoal.Update();
+				if (currentGoal.isAchived)
+				{
+					
+				}
 			}
 			else if (goalList.Count > 0)
 			{
-				currentGoal = goalList[0];
-				GoapPlan plan = BuildPlan(currentGoal);
-				currentGoal.Active(plan);
+				GoapPlan plan = BuildPlan(goalList[0]);
+				if (plan != null)
+				{
+					currentGoal = goalList[0];
+					currentGoal.Active(plan);
+				}
 			}
 		}
 
@@ -44,6 +51,11 @@ namespace Lite.Strategy
 			if (ContainsGoal(goal.goalType))
 				return;
 			goalList.Add(goal);
+		}
+
+		public void RemoveGoal()
+		{
+
 		}
 
 		public bool ContainsGoal(GoalType goalType)
@@ -61,7 +73,16 @@ namespace Lite.Strategy
 		public GoapPlan BuildPlan(GoapGoal goal)
 		{
 			GoapPlan plan = null;
-			planner.Plan(owner.worldState, goal);
+			GoapAStarNode node = planner.Plan(owner.worldState, goal);
+			if (node != null)
+			{
+				plan = new GoapPlan();
+				while (node != null)
+				{
+					plan.AddAction(node.fromAction);
+					node = node.prev as GoapAStarNode;
+				}
+			}
 			return plan;
 		}
 

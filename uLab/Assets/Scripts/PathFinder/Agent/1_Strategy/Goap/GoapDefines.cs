@@ -40,7 +40,7 @@ namespace Lite.Strategy
 	public enum GoalType
 	{
 		Default,
-		MakeFirewoods,
+		MakeFirewood,
 		MakeLogs,
 		MakeOre,
 		MakeTools,
