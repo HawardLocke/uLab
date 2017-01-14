@@ -9,14 +9,6 @@ namespace Lite.Cmd
 
 	public class AgentManager : IAgentManager<Agent>
 	{
-		public void Process()
-		{
-			foreach (Agent agent in this.m_agentMap.Values)
-			{
-				agent.Process();
-			}
-		}
-
 		public void OnReceiveCommand(Command Command)
 		{
 			Agent agent = FindAgent(Command.ownerGuid);
@@ -30,7 +22,7 @@ namespace Lite.Cmd
 
 		public void OnAgentQuit(long agentGuid)
 		{
-			DeleteAgent(agentGuid);
+			RemoveAgent(agentGuid);
 		}
 
 

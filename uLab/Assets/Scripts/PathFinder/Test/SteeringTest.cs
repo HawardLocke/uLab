@@ -11,7 +11,7 @@ using Lite.Bev;
 
 public class SteeringTest : MonoBehaviour
 {
-	TestAppFacade app;
+	AppFacade app;
 
 	long bot1_id;
 
@@ -27,7 +27,7 @@ public class SteeringTest : MonoBehaviour
 
 	void Start()
 	{
-		app = new TestAppFacade();
+		app = AppFacade.Instance;
 		app.Init();
 
 		lineMat = new Material(Shader.Find("Diffuse"));

@@ -1,6 +1,8 @@
 
 
 using Lite.Goap;
+using Lite.Knowledge;
+using Lite.Common;
 
 
 namespace Lite.Strategy
@@ -19,6 +21,10 @@ namespace Lite.Strategy
 
 		public string name;
 
+		public ISensor sensor { private set; get; }
+
+		public Blackboard<int> blackboard { private set; get; }
+
 		private GoapManager goapManager;
 
 		public WorldState worldState { private set; get; }
@@ -27,16 +33,24 @@ namespace Lite.Strategy
 			base(guid)
 		{
 			this.career = career;
+			blackboard = new Blackboard<int>();
 			goapManager = new GoapManager(this);
 			worldState = new WorldState(GoapDefines.STATE_COUNT);
 		}
 
-		public void Init()
+		public override void OnCreate()
 		{
+			AppFacade.Instance.sensorManager.AddSensor<SimpleAgentSensor>(this);
+
 			worldState.Set((int)WorldStateType.CollectFirewood, false);
 		}
 
-		public void Update()
+		public override void OnDestroy()
+		{
+			
+		}
+
+		public override void OnUpdate()
 		{
 			goapManager.Update();
 		}

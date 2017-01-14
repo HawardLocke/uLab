@@ -1,5 +1,5 @@
 
-using UnityEngine;
+
 
 namespace Lite
 {
@@ -7,17 +7,17 @@ namespace Lite
 	{
 		public static void Info(string text)
 		{
-			Debug.Log(text);
+			UnityEngine.Debug.Log(text);
 		}
 
 		public static void Warning(string text)
 		{
-			Debug.LogWarning(text);
+			UnityEngine.Debug.LogWarning(text);
 		}
 
 		public static void Error(string text)
 		{
-			Debug.LogError(text);
+			UnityEngine.Debug.LogError(text);
 		}
 	}
 

@@ -19,6 +19,12 @@ namespace Lite
 			get { return m_guid; }
 		}
 
+		public virtual void OnCreate() { }
+
+		public virtual void OnDestroy() { }
+
+		public virtual void OnUpdate() { }
+
 	}
 
 }

@@ -22,7 +22,7 @@ namespace Lite.Cmd
 			m_CommandQueue.Enqueue(Command);
 		}
 
-		public void Process()
+		public override void OnUpdate()
 		{
 			//filters
 			//send to behavior layer

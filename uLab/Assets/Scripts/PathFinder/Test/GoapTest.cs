@@ -6,11 +6,12 @@ using System.Diagnostics;
 using Lite;
 using Lite.Strategy;
 using Lite.Goap;
+using Lite.Knowledge;
 
 
 public class GoapTest : MonoBehaviour
 {
-	TestAppFacade app;
+	AppFacade app;
 	Agent blacksmith;
 	Agent logger;
 	Agent miner;
@@ -18,7 +19,7 @@ public class GoapTest : MonoBehaviour
 
 	void Start()
 	{
-		app = new TestAppFacade();
+		app = AppFacade.Instance;
 		app.Init();
 
 		blacksmith = new Agent(GuidGenerator.NextLong(), Career.Blacksmith);
