@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\Common\IComponent.cs" />
      <Compile Include="Assets\Scripts\Common\Log.cs" />
      <Compile Include="Assets\Scripts\Common\MathUtil.cs" />
+     <Compile Include="Assets\Scripts\Common\ProtobufUtil.cs" />
      <Compile Include="Assets\Scripts\Common\RuntimeStatus.cs" />
      <Compile Include="Assets\Scripts\Common\WrappedValues.cs" />
      <Compile Include="Assets\Scripts\ConstDefine\AppDefine.cs" />
@@ -98,7 +99,6 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Sensor\Sensors\AgentSensor.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Agent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\AgentManager.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Command\Command.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\ChopFirewood.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\ChopTree.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\DropOffFireWood.cs" />
@@ -110,18 +110,18 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\PickUpLogs.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\PickUpTool.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\PickupOre.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\AgentAction.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Goals\Goal_MakeFirewood.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Goals\Goal_MakeLogs.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Goals\Goal_MakeOre.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Goals\Goal_MakeTools.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\GoapAgentAction.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\GoapDefines.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\GoapGoal.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\GoapManager.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\GoapMap.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\GoapPlan.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Command\Agent.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Command\AgentManager.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Command\AgentActionHelper.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\2_Command\CommandManager.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Actions\AttackAgent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Actions\MoveToPosition.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Actions\StopMoving.cs" />

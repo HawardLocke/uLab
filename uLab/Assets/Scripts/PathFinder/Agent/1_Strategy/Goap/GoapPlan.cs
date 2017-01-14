@@ -9,18 +9,21 @@ namespace Lite.Strategy
 
 	public class GoapPlan
 	{
-		private List<GoapAction> actionList;
+		private List<AgentAction> actionList;
+		private AgentAction currentAction;
 		private int currentIndex;
 		public bool isFinished { private set; get; }
+		private bool isFirstTimeExcute;
 
 		public GoapPlan()
 		{
-			actionList = new List<GoapAction>();
+			actionList = new List<AgentAction>();
 			currentIndex = 0;
 			isFinished = false;
+			isFirstTimeExcute = true;
 		}
 
-		public void AddAction(GoapAction action)
+		public void AddAction(AgentAction action)
 		{
 			actionList.Add(action);
 		}
@@ -29,11 +32,18 @@ namespace Lite.Strategy
 		{
 			if (actionList.Count > 0)
 			{
-				GoapAction action = actionList[currentIndex];
-				action.Update();
-				if (action.IsFinished())
+				if (currentAction == null)
 				{
-					action.ApplyEffects();
+					currentAction = actionList[currentIndex];
+					currentAction.OnActive();
+				}
+				
+				currentAction.Update();
+
+				if (currentAction.IsFinished())
+				{
+					currentAction.OnDeactive();
+					currentAction.ApplyEffects();
 					currentIndex++;
 					if (currentIndex >= actionList.Count)
 					{

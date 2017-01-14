@@ -1,10 +1,11 @@
 
+using ProtoBuf;
 using Lite.Goap;
 
 namespace Lite.Strategy
 {
-
-	public class DropOffFirewood : GoapAgentAction
+	[ProtoContract]
+	public class DropOffFirewood : AgentAction
 	{
 		public DropOffFirewood(Agent agent) :
 			base(agent)
@@ -22,6 +23,11 @@ namespace Lite.Strategy
 		{
 			effects.Set((int)WorldStateType.HasFirewood, false);
 			effects.Set((int)WorldStateType.CollectFirewood, true);
+		}
+
+		public override byte[] ToBytes()
+		{
+			return ProtobufUtil.Serialize<DropOffFirewood>(this);
 		}
 
 	}

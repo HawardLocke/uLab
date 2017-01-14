@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-using Lite.Strategy;
+using Lite.Cmd;
 
 
 namespace Lite
@@ -25,13 +25,18 @@ namespace Lite
 			m_handlerMap.Remove(CommandType);
 		}
 
-		public void HandleCommand(Command Command)
+		public void HandleCommand(byte[] cmd)
 		{
 			ICommandHandler handler = null;
-			m_handlerMap.TryGetValue(Command.typeID, out handler);
+			ByteBuffer bb = new ByteBuffer(cmd);
+			int typeID = bb.ReadInt();
+			long agentID = bb.ReadLong();
+			byte[] buffer = bb.ReadBytes();
+			Strategy.AgentAction action = ProtobufUtil.DeSerialize<Strategy.AgentAction>(buffer);
+			m_handlerMap.TryGetValue(typeID, out handler);
 			if (handler != null)
 			{
-				handler.OnCommand(Command);
+				handler.OnCommand(action);
 			}
 		}
 

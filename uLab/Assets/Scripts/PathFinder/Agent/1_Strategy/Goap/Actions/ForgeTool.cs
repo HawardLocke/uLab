@@ -1,10 +1,11 @@
 
+using ProtoBuf;
 using Lite.Goap;
 
 namespace Lite.Strategy
 {
-
-	public class ForgeTool : GoapAgentAction
+	[ProtoContract]
+	public class ForgeTool : AgentAction
 	{
 		public ForgeTool(Agent agent) :
 			base(agent)
@@ -21,6 +22,11 @@ namespace Lite.Strategy
 		protected override void OnSetupEffects()
 		{
 			effects.Set((int)WorldStateType.HasNewTools, true);
+		}
+
+		public override byte[] ToBytes()
+		{
+			return ProtobufUtil.Serialize<ForgeTool>(this);
 		}
 
 	}

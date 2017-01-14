@@ -81,7 +81,7 @@ namespace Lite.Strategy
 				plan = new GoapPlan();
 				while (node != null)
 				{
-					plan.AddAction(node.fromAction);
+					plan.AddAction(node.fromAction as AgentAction);
 					node = node.prev as GoapAStarNode;
 				}
 			}

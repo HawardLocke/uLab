@@ -1,10 +1,11 @@
 
+using ProtoBuf;
 using Lite.Goap;
 
 namespace Lite.Strategy
 {
-
-	public class PickUpLogs : GoapAgentAction
+	[ProtoContract]
+	public class PickUpLogs : AgentAction
 	{
 		public PickUpLogs(Agent agent) :
 			base(agent)
@@ -21,6 +22,11 @@ namespace Lite.Strategy
 		protected override void OnSetupEffects()
 		{
 			effects.Set((int)WorldStateType.HasLogs, true);
+		}
+
+		public override byte[] ToBytes()
+		{
+			return ProtobufUtil.Serialize<PickUpLogs>(this);
 		}
 
 	}

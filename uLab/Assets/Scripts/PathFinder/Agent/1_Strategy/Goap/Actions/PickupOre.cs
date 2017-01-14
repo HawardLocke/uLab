@@ -1,10 +1,11 @@
 
+using ProtoBuf;
 using Lite.Goap;
 
 namespace Lite.Strategy
 {
-
-	public class PickUpOre : GoapAgentAction
+	[ProtoContract]
+	public class PickUpOre : AgentAction
 	{
 		public UnityEngine.Vector3 targetPosition;
 
@@ -23,6 +24,11 @@ namespace Lite.Strategy
 		protected override void OnSetupEffects()
 		{
 			effects.Set((int)WorldStateType.HasOre, true);
+		}
+
+		public override byte[] ToBytes()
+		{
+			return ProtobufUtil.Serialize<PickUpOre>(this);
 		}
 
 	}

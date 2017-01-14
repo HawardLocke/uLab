@@ -1,10 +1,11 @@
 
+using ProtoBuf;
 using Lite.Goap;
 
 namespace Lite.Strategy
 {
-
-	public class DropOffOre : GoapAgentAction
+	[ProtoContract]
+	public class DropOffOre : AgentAction
 	{
 		public DropOffOre(Agent agent) :
 			base(agent)
@@ -22,6 +23,11 @@ namespace Lite.Strategy
 		{
 			effects.Set((int)WorldStateType.HasOre, false);
 			effects.Set((int)WorldStateType.CollectOre, true);
+		}
+
+		public override byte[] ToBytes()
+		{
+			return ProtobufUtil.Serialize<DropOffOre>(this);
 		}
 
 	}

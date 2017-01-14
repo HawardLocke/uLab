@@ -1,5 +1,5 @@
 
-using Lite.Strategy;
+using Lite.Cmd;
 
 
 namespace Lite.Bev
@@ -23,7 +23,7 @@ namespace Lite.Bev
 			CommandhandlerManager.UnregisterHandler(CommandType);
 		}
 
-		public void HandleCommand(Command Command)
+		public void HandleCommand(byte[] Command)
 		{
 			CommandhandlerManager.HandleCommand(Command);
 		}

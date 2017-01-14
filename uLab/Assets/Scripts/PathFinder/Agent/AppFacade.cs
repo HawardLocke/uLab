@@ -9,7 +9,7 @@ namespace Lite
 
 		public Strategy.AgentManager stgAgentManager { private set; get; }
 
-		public Cmd.AgentManager cmdAgentManager { private set; get; }
+		public Cmd.CommandManager commandManager { private set; get; }
 
 		public Bev.AgentManager bevAgentManager { private set; get; }
 
@@ -28,8 +28,8 @@ namespace Lite
 			stgAgentManager = new Strategy.AgentManager();
 			stgAgentManager.Init();
 
-			cmdAgentManager = new Cmd.AgentManager();
-			cmdAgentManager.Init();
+			commandManager = new Cmd.CommandManager();
+			commandManager.Init();
 
 			bevAgentManager = new Bev.AgentManager();
 			bevAgentManager.Init();
@@ -42,9 +42,11 @@ namespace Lite
 			{
 				sensorManager.Update();
 				stgAgentManager.Update();
-				cmdAgentManager.Update();
 				lastUpdateTime = ms;
 			}
+
+			commandManager.Update();
+
 		}
 
 	}
