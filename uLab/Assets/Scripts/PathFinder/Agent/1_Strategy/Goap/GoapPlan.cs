@@ -33,6 +33,7 @@ namespace Lite.Strategy
 				action.Update();
 				if (action.IsFinished())
 				{
+					action.ApplyEffects();
 					currentIndex++;
 					if (currentIndex >= actionList.Count)
 					{

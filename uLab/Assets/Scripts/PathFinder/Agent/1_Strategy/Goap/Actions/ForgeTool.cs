@@ -4,10 +4,10 @@ using Lite.Goap;
 namespace Lite.Strategy
 {
 
-	public class ForgeTool : GoapAction
+	public class ForgeTool : GoapAgentAction
 	{
 		public ForgeTool(Agent agent) :
-			base(agent, GoapDefines.STATE_COUNT)
+			base(agent)
 		{
 			actionType = (uint)ActionType.ForgeTool;
 			cost = 1;

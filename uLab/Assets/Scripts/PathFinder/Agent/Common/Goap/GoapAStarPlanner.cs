@@ -23,24 +23,9 @@ namespace Lite.Goap
 
 			// build action list.
 			endNode = ReverseNodeList(endNode) as GoapAStarNode;
-			endNode = endNode.prev;
-			/*int nodeCount = 0;
-			AStarNode pathNode = endNode;
-			while (pathNode != null)
-			{
-				nodeCount++;
-				pathNode = pathNode.prev as GoapAStarNode;
-			}
-			GoapAction[] actionArray = new GoapAction[nodeCount];
-			pathNode = endNode;
-			int index = 0;
-			while (pathNode != null)
-			{
-				actionArray[index++] = ((GoapAStarNode)pathNode).fromAction;
-				pathNode = pathNode.prev;
-			}
-			
-			return actionArray;*/
+			if (endNode != null)
+				endNode = endNode.prev;
+
 			return endNode as GoapAStarNode;
 		}
 

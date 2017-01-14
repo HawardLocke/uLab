@@ -4,10 +4,10 @@ using Lite.Goap;
 namespace Lite.Strategy
 {
 
-	public class DropOffTools : GoapAction
+	public class DropOffTools : GoapAgentAction
 	{
 		public DropOffTools(Agent agent) :
-			base(agent, GoapDefines.STATE_COUNT)
+			base(agent)
 		{
 			actionType = (uint)ActionType.DropOffTools;
 			cost = 1;

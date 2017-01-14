@@ -19,6 +19,17 @@ namespace Lite.Strategy
 			goalState.Set((int)WorldStateType.CollectLogs, true);
 		}
 
+		public override void Active(GoapPlan plan)
+		{
+			base.Active(plan);
+			Log.Info("active MakeLogs");
+		}
+
+		public override void Deactive()
+		{
+			Log.Info("deactive MakeLogs");
+		}
+
 	}
 
 

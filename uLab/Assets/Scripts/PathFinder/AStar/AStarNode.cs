@@ -14,23 +14,28 @@ namespace Lite.AStar
 
 		public AStarNode(int id)
 		{
-			Reset();
+			_reset();
 			this.id = id;
 		}
 
 		public AStarNode()
 		{
-			Reset();
+			_reset();
 			this.id = -1;
 		}
 
-		public virtual void Reset()
+		private void _reset()
 		{
 			id = -1;
 			g = h = f = 0;
 			prev = null;
 			next = null;
 			blockValue = 0;
+		}
+
+		public virtual void Reset()
+		{
+			_reset();
 		}
 
 	}

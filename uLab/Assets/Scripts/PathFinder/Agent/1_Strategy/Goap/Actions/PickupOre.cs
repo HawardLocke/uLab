@@ -4,12 +4,12 @@ using Lite.Goap;
 namespace Lite.Strategy
 {
 
-	public class PickUpOre : GoapAction
+	public class PickUpOre : GoapAgentAction
 	{
 		public UnityEngine.Vector3 targetPosition;
 
 		public PickUpOre(Agent agent) :
-			base(agent, GoapDefines.STATE_COUNT)
+			base(agent)
 		{
 			actionType = (uint)ActionType.PickupOre;
 			cost = 1;

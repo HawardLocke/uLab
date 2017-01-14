@@ -4,10 +4,10 @@ using Lite.Goap;
 namespace Lite.Strategy
 {
 
-	public class PickUpLogs : GoapAction
+	public class PickUpLogs : GoapAgentAction
 	{
 		public PickUpLogs(Agent agent) :
-			base(agent, GoapDefines.STATE_COUNT)
+			base(agent)
 		{
 			actionType = (uint)ActionType.PickupLogs;
 			cost = 2;

@@ -17,6 +17,8 @@ namespace Lite.Strategy
 	{
 		public Career career { private set; get; }
 
+		public string name;
+
 		private GoapManager goapManager;
 
 		public WorldState worldState { private set; get; }
@@ -37,6 +39,11 @@ namespace Lite.Strategy
 		public void Update()
 		{
 			goapManager.Update();
+		}
+
+		public void AddGoal(GoapGoal goal)
+		{
+			goapManager.AddGoal(goal);
 		}
 
 	}

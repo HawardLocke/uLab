@@ -4,10 +4,10 @@ using Lite.Goap;
 namespace Lite.Strategy
 {
 
-	public class MineOre : GoapAction
+	public class MineOre : GoapAgentAction
 	{
 		public MineOre(Agent agent) :
-			base(agent, GoapDefines.STATE_COUNT)
+			base(agent)
 		{
 			actionType = (uint)ActionType.MineOre;
 			cost = 1;

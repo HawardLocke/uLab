@@ -13,6 +13,7 @@ namespace Lite.Goap
 		public GoapAStarNode(int stateCount)
 		{
 			currentState = new WorldState(stateCount);
+			goalState = new WorldState(stateCount);
 			fromAction = null;
 		}
 

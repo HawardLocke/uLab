@@ -4,10 +4,10 @@ using Lite.Goap;
 namespace Lite.Strategy
 {
 
-	public class ChopTree : GoapAction
+	public class ChopTree : GoapAgentAction
 	{
 		public ChopTree(Agent agent) : 
-			base(agent, GoapDefines.STATE_COUNT)
+			base(agent)
 		{
 			actionType = (uint)ActionType.ChopLog;
 			cost = 1;

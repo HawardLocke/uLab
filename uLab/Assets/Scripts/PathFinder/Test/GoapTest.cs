@@ -22,17 +22,26 @@ public class GoapTest : MonoBehaviour
 		app.Init();
 
 		blacksmith = new Agent(GuidGenerator.NextLong(), Career.Blacksmith);
+		blacksmith.name = "Blacksmith";
 		app.stgAgentManager.AddAgent(blacksmith);
 
 		logger = new Agent(GuidGenerator.NextLong(), Career.Logger);
+		logger.name = "logger";
 		app.stgAgentManager.AddAgent(logger);
 
 		miner = new Agent(GuidGenerator.NextLong(), Career.Miner);
+		miner.name = "miner";
 		app.stgAgentManager.AddAgent(miner);
 
 		woodCutter = new Agent(GuidGenerator.NextLong(), Career.WoodCutter);
+		woodCutter.name = "woodCutter";
 		app.stgAgentManager.AddAgent(woodCutter);
 
+		// goals
+		blacksmith.AddGoal(new Goal_MakeTools());
+		logger.AddGoal(new Goal_MakeLogs());
+		miner.AddGoal(new Goal_MakeOre());
+		woodCutter.AddGoal(new Goal_MakeFirewood());
 	}
 
 	void Update()

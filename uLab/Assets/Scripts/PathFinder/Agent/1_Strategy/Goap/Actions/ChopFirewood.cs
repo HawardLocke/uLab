@@ -4,10 +4,10 @@ using Lite.Goap;
 namespace Lite.Strategy
 {
 
-	public class ChopFirewood : GoapAction
+	public class ChopFirewood : GoapAgentAction
 	{
 		public ChopFirewood(Agent agent) :
-			base(agent, GoapDefines.STATE_COUNT)
+			base(agent)
 		{
 			actionType = (uint)ActionType.ChopFirewood;
 			cost = 1;
@@ -23,6 +23,8 @@ namespace Lite.Strategy
 		{
 			effects.Set((int)WorldStateType.HasFirewood, true);
 		}
+
+		
 
 	}
 

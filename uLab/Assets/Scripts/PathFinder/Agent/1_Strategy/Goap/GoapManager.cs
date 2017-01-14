@@ -32,7 +32,9 @@ namespace Lite.Strategy
 				currentGoal.Update();
 				if (currentGoal.isAchived)
 				{
-					
+					currentGoal.Deactive();
+					goalList.Remove(currentGoal);
+					currentGoal = null;
 				}
 			}
 			else if (goalList.Count > 0)
