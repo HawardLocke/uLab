@@ -125,18 +125,18 @@ namespace Lite
 			Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 			RaycastHit hit;
 			int layerMask =
-				1 << LayerMask.NameToLayer(GameDefine.LayerTerrain)
-				| 1 << LayerMask.NameToLayer(GameDefine.LayerBot);
+				1 << LayerMask.NameToLayer(AppDefine.LayerTerrain)
+				| 1 << LayerMask.NameToLayer(AppDefine.LayerBot);
 
 			if (Physics.Raycast(ray, out hit, 50, layerMask))
 			{
 				Vector3 hitPoint = hit.point;
 				int hitLayer = hit.collider.gameObject.layer;
-				if (hitLayer == LayerMask.NameToLayer(GameDefine.LayerTerrain))
+				if (hitLayer == LayerMask.NameToLayer(AppDefine.LayerTerrain))
 				{
 					OnClickTerrain(hitPoint);
 				}
-				else if (hitLayer == LayerMask.NameToLayer(GameDefine.LayerBot))
+				else if (hitLayer == LayerMask.NameToLayer(AppDefine.LayerBot))
 				{
 					OnClickBot(hit.collider.gameObject);
 				}

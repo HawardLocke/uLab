@@ -10,7 +10,7 @@ namespace Lite.Strategy
 		public PickUpTool(Agent agent) :
 			base(agent)
 		{
-			actionType = (uint)ActionType.PickupTools;
+			actionType = (int)ActionType.PickupTools;
 			cost = 1;
 		}
 

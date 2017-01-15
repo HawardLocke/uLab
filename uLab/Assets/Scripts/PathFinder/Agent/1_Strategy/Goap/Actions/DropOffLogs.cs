@@ -10,7 +10,7 @@ namespace Lite.Strategy
 		public DropOffLogs(Agent agent) :
 			base(agent)
 		{
-			actionType = (uint)ActionType.DropOffLogs;
+			actionType = (int)ActionType.DropOffLogs;
 			cost = 1;
 		}
 

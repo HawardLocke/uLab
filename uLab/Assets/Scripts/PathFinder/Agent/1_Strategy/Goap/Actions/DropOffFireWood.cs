@@ -10,7 +10,7 @@ namespace Lite.Strategy
 		public DropOffFirewood(Agent agent) :
 			base(agent)
 		{
-			actionType = (uint)ActionType.DropOffFirewood;
+			actionType = (int)ActionType.DropOffFirewood;
 			cost = 1;
 		}
 

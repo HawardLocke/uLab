@@ -10,7 +10,7 @@ namespace Lite.Strategy
 		public ForgeTool(Agent agent) :
 			base(agent)
 		{
-			actionType = (uint)ActionType.ForgeTool;
+			actionType = (int)ActionType.ForgeTool;
 			cost = 1;
 		}
 

@@ -95,7 +95,7 @@ public class SteeringTest : MonoBehaviour
 		animCom.Init(agent);
 		agent.animComponent = animCom;
 
-		goAvatar.layer = LayerMask.NameToLayer(GameDefine.LayerBot);
+		goAvatar.layer = LayerMask.NameToLayer(AppDefine.LayerBot);
 
 		float x = MathUtil.RandClamp() * 5;
 		float y = 0;

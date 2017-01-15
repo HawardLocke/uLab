@@ -13,6 +13,8 @@ namespace Lite
 
 		public Bev.AgentManager bevAgentManager { private set; get; }
 
+		public Bev.CommandHandlerManager commandHandlerManager { private set; get; }
+
 		long lastUpdateTime = 0;
 
 		public AppFacade()
@@ -33,6 +35,8 @@ namespace Lite
 
 			bevAgentManager = new Bev.AgentManager();
 			bevAgentManager.Init();
+
+			commandHandlerManager = new Bev.CommandHandlerManager();
 		}
 
 		public void Update()

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Lite.Strategy;
 
 
+
+
 namespace Lite.Cmd
 {
 
@@ -21,9 +23,15 @@ namespace Lite.Cmd
 
 		}
 
-		public void PushCommand(byte[] buffer)
+		public void PushCommand(AgentAction action)
 		{
-			commandList.Enqueue(buffer);
+			if (CheckAction(action))
+			{
+				if (ConstDefine.STAND_ALONE)
+					AppFacade.Instance.commandHandlerManager.HandleCommand(action);
+				else
+					commandList.Enqueue(action.Serialize());
+			}
 		}
 
 		public void Update()
@@ -31,8 +39,13 @@ namespace Lite.Cmd
 			if (commandList.Count > 0)
 			{
 				byte[] cmd = commandList.Dequeue();
-				AppFacade.Instance.bevAgentManager.HandleCommand(cmd);
+				AppFacade.Instance.commandHandlerManager.HandleCommand(cmd);
 			}
+		}
+
+		private bool CheckAction(AgentAction action)
+		{
+			return true;
 		}
 
 	}

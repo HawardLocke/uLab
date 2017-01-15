@@ -1,4 +1,6 @@
 
+#define STAND_ALONE
+
 using Lite.Cmd;
 
 
@@ -19,7 +21,7 @@ namespace Lite.Strategy
 	*/
 	public abstract class AgentAction : Lite.Goap.GoapAction
 	{
-		public uint actionType;
+		public int actionType;
 
 		protected Agent owner;
 
@@ -40,7 +42,7 @@ namespace Lite.Strategy
 
 		public virtual void OnActive()
 		{
-			AppFacade.Instance.commandManager.PushCommand(this.Serialize());
+			AppFacade.Instance.commandManager.PushCommand(this);
 		}
 
 		public virtual void OnDeactive()

@@ -56,7 +56,6 @@
      <Compile Include="Assets\Scripts\Common\RuntimeStatus.cs" />
      <Compile Include="Assets\Scripts\Common\WrappedValues.cs" />
      <Compile Include="Assets\Scripts\ConstDefine\AppDefine.cs" />
-     <Compile Include="Assets\Scripts\ConstDefine\GameDefine.cs" />
      <Compile Include="Assets\Scripts\ConstDefine\MessageDefine.cs" />
      <Compile Include="Assets\Scripts\Framework\App.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\LuaBehaviour.cs" />
@@ -149,6 +148,7 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\WorldState.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\IAgent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\IAgentManager.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\ConstDefine.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphEdge.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphNode.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\SparseGraph.cs" />

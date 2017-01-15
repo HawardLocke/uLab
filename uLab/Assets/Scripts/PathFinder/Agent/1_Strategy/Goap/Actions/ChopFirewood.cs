@@ -11,7 +11,7 @@ namespace Lite.Strategy
 		public ChopFirewood(Agent agent) :
 			base(agent)
 		{
-			actionType = (uint)ActionType.ChopFirewood;
+			actionType = (int)ActionType.ChopFirewood;
 			cost = 1;
 		}
 

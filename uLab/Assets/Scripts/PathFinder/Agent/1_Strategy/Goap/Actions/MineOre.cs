@@ -10,7 +10,7 @@ namespace Lite.Strategy
 		public MineOre(Agent agent) :
 			base(agent)
 		{
-			actionType = (uint)ActionType.MineOre;
+			actionType = (int)ActionType.MineOre;
 			cost = 1;
 		}
 

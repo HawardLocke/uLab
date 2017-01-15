@@ -1,4 +1,4 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,26 +7,32 @@ namespace Lite
 {
 	public class AppDefine
 	{
-		public static bool LuaBundleMode = false;                    //True:ä»bundleä¸­åŠ è½½lua, false:ç›´æ¥è¯»luaæ–‡ä»¶
+		public static bool LuaBundleMode = false;                    //True:´ÓbundleÖĞ¼ÓÔØlua, false:Ö±½Ó¶ÁluaÎÄ¼ş
 
-		public static bool UpdateMode = false;                       //æ›´æ–°æ¨¡å¼-é»˜è®¤å…³é—­ 
+		public static bool UpdateMode = false;                       //¸üĞÂÄ£Ê½-Ä¬ÈÏ¹Ø±Õ 
 
-		public static bool LuaByteMode = false;                       //Luaå­—èŠ‚ç æ¨¡å¼-é»˜è®¤å…³é—­ 
-		
+		public static bool LuaByteMode = false;                       //Lua×Ö½ÚÂëÄ£Ê½-Ä¬ÈÏ¹Ø±Õ 
+
 		public const int TimerInterval = 1;
-		public const int GameFrameRate = 30;                        //æ¸¸æˆå¸§é¢‘
+		public const int GameFrameRate = 30;                        //ÓÎÏ·Ö¡Æµ
 
-		public const string AppName = "uLab";               //åº”ç”¨ç¨‹åºåç§°
-		public const string AppPrefix = AppName + "_";              //åº”ç”¨ç¨‹åºå‰ç¼€
-		public const string ExtName = ".unity3d";                   //ç´ ææ‰©å±•å
-		public const string StreamingAssetDir = "StreamingAssets";           //ç´ æç›®å½• 
-		public const string WebUrl = "http://192.168.1.28:6688/";      //æµ‹è¯•æ›´æ–°åœ°å€
+		public const string AppName = "uLab";               //Ó¦ÓÃ³ÌĞòÃû³Æ
+		public const string AppPrefix = AppName + "_";              //Ó¦ÓÃ³ÌĞòÇ°×º
+		public const string ExtName = ".unity3d";                   //ËØ²ÄÀ©Õ¹Ãû
+		public const string StreamingAssetDir = "StreamingAssets";           //ËØ²ÄÄ¿Â¼ 
+		public const string WebUrl = "http://192.168.1.28:6688/";      //²âÊÔ¸üĞÂµØÖ·
 
-		public static string UserId = string.Empty;                 //ç”¨æˆ·ID
-		public static int SocketPort = 8866;                           //SocketæœåŠ¡å™¨ç«¯å£
-		public static string SocketAddress = "127.0.0.1";          //SocketæœåŠ¡å™¨åœ°å€
+		public static string UserId = string.Empty;                 //ÓÃ»§ID
+		public static int SocketPort = 8866;                           //Socket·şÎñÆ÷¶Ë¿Ú
+		public static string SocketAddress = "127.0.0.1";          //Socket·şÎñÆ÷µØÖ·
 
-		public const string ManagerGOName = "Managers";				// ç»™å„ç§ç®¡ç†å™¨ä½¿ç”¨çš„go
+		public const string ManagerGOName = "Managers";				// ¸ø¸÷ÖÖ¹ÜÀíÆ÷Ê¹ÓÃµÄgo
+
+
+		// layer
+		public static string LayerDefault = "Default";
+		public static string LayerTerrain = "Terrain";
+		public static string LayerBot = "Bot";
 
 	}
 }

@@ -10,7 +10,7 @@ namespace Lite.Strategy
 		public DropOffOre(Agent agent) :
 			base(agent)
 		{
-			actionType = (uint)ActionType.DropOffOre;
+			actionType = (int)ActionType.DropOffOre;
 			cost = 1;
 		}
 
