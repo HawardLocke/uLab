@@ -10,7 +10,7 @@ namespace Lite.Strategy
 		public ChopTree(Agent agent) : 
 			base(agent)
 		{
-			actionType = (int)ActionType.ChopLog;
+			actionType = (int)ActionType.ChopTree;
 			cost = 1;
 		}
 

@@ -30,7 +30,7 @@ namespace Lite.Cmd
 				if (ConstDefine.STAND_ALONE)
 					AppFacade.Instance.commandHandlerManager.HandleCommand(action);
 				else
-					commandList.Enqueue(action.Serialize());
+					commandList.Enqueue(action.ToBytes());
 			}
 		}
 

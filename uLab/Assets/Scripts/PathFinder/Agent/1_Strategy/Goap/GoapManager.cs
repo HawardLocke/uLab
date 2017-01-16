@@ -85,6 +85,7 @@ namespace Lite.Strategy
 					node = node.prev as GoapAStarNode;
 				}
 			}
+			planner.Cleanup();
 			return plan;
 		}
 

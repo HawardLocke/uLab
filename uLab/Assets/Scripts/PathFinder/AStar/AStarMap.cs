@@ -15,6 +15,7 @@ namespace Lite.AStar
 
 		public virtual void RecycleNode(AStarNode node) { }
 
+		public virtual void Cleanup() { }
 	}
 
 }

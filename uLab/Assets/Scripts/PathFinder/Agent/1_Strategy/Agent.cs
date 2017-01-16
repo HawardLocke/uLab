@@ -12,7 +12,10 @@ namespace Lite.Strategy
 		Miner,
 		Logger,
 		WoodCutter,
-		Blacksmith
+		Blacksmith,
+
+		Tree,
+		Ore
 	}
 
 	public class Agent : IAgent
@@ -20,6 +23,9 @@ namespace Lite.Strategy
 		public Career career { private set; get; }
 
 		public string name;
+		public int x;
+		public int y;
+		public int z;
 
 		public ISensor sensor { private set; get; }
 
@@ -28,6 +34,12 @@ namespace Lite.Strategy
 		private GoapManager goapManager;
 
 		public WorldState worldState { private set; get; }
+
+		public int numLogs = 0;
+		public int numFirewood = 0;
+		public int numOre = 0;
+		public int numTools = 0;
+
 
 		public Agent(long guid, Career career) :
 			base(guid)
@@ -41,8 +53,6 @@ namespace Lite.Strategy
 		public override void OnCreate()
 		{
 			AppFacade.Instance.sensorManager.AddSensor<SimpleAgentSensor>(this);
-
-			worldState.Set((int)WorldStateType.CollectFirewood, false);
 		}
 
 		public override void OnDestroy()
@@ -52,12 +62,21 @@ namespace Lite.Strategy
 
 		public override void OnUpdate()
 		{
+			UpdateWorldState();
 			goapManager.Update();
 		}
 
 		public void AddGoal(GoapGoal goal)
 		{
 			goapManager.AddGoal(goal);
+		}
+
+		private void UpdateWorldState()
+		{
+			worldState.Set((int)WorldStateType.HasTool, numTools>0);
+			worldState.Set((int)WorldStateType.HasFirewood, numFirewood>0);
+			worldState.Set((int)WorldStateType.HasOre, numOre>0);
+			worldState.Set((int)WorldStateType.HasLogs, numLogs>0);
 		}
 
 	}

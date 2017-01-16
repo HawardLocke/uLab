@@ -16,12 +16,12 @@ namespace Lite.Strategy
 
 		protected override void OnSetupPreconditons()
 		{
-			preconditons.Set((int)WorldStateType.HasTool, true);
+			preconditons.Set((int)WorldStateType.HasNewTools, true);
 		}
 
 		protected override void OnSetupEffects()
 		{
-			effects.Set((int)WorldStateType.HasTool, false);
+			effects.Set((int)WorldStateType.HasNewTools, false);
 			effects.Set((int)WorldStateType.CollectTools, true);
 		}
 

@@ -1,27 +1,30 @@
 
-#define STAND_ALONE
+using ProtoBuf;
 
 using Lite.Cmd;
 
 
 namespace Lite.Strategy
 {
-	/*
-	using ProtoBuf;
 	[ProtoContract]
-	class Person
-	{
-		[ProtoMember(1)]
-		public int Id { get; set; }
-		[ProtoMember(2)]
-		public string Name { get; set; }
-		[ProtoMember(3)]
-		public Address Address { get; set; }
-	}
-	*/
+	[ProtoInclude(1, typeof(ChopFirewood))]
+	[ProtoInclude(2, typeof(ChopTree))]
+	[ProtoInclude(3, typeof(DropOffFirewood))]
+	[ProtoInclude(4, typeof(DropOffLogs))]
+	[ProtoInclude(5, typeof(DropOffOre))]
+	[ProtoInclude(6, typeof(DropOffTools))]
+	[ProtoInclude(7, typeof(ForgeTool))]
+	[ProtoInclude(8, typeof(MineOre))]
+	[ProtoInclude(9, typeof(PickUpLogs))]
+	[ProtoInclude(10, typeof(PickUpOre))]
+	[ProtoInclude(11, typeof(PickUpTool))]
 	public abstract class AgentAction : Lite.Goap.GoapAction
 	{
+		[ProtoMember(1)]
 		public int actionType;
+
+		[ProtoMember(2)]
+		public long ownerID;
 
 		protected Agent owner;
 
@@ -33,6 +36,7 @@ namespace Lite.Strategy
 			base(GoapDefines.STATE_COUNT)
 		{
 			owner = agent;
+			ownerID = agent.Guid;
 		}
 
 		public void ApplyEffects()
@@ -63,14 +67,14 @@ namespace Lite.Strategy
 
 		public virtual void Update() { }
 
-		public byte[] Serialize()
+		/*public byte[] ToBytes()
 		{
 			ByteBuffer bb = new ByteBuffer();
 			bb.WriteInt((int)actionType);
 			bb.WriteLong(owner.Guid);
 			bb.WriteBytes(ToBytes());
 			return bb.ToBytes();
-		}
+		}*/
 
 		public abstract byte[] ToBytes();
 

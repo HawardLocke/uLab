@@ -69,10 +69,6 @@ namespace Lite.AStar
 
 		private void EvaluateNeighbour(AStarNode currentNode, AStarNode neighbourNode)
 		{
-			float blockValue = neighbourNode.blockValue;
-			if (blockValue > 0.9)
-				return;
-
 			int g = CalCostG(currentNode, neighbourNode);
 			int h = CalCostH(neighbourNode);
 			int f = g + h;
@@ -274,6 +270,8 @@ namespace Lite.AStar
 
 		public void Cleanup()
 		{
+			map.Cleanup();
+
 			while (openList != null)
 			{
 				map.RecycleNode(openList);
@@ -284,6 +282,7 @@ namespace Lite.AStar
 				map.RecycleNode(closedList);
 				closedList = closedList.next;
 			}
+
 			openList = null;
 			closedList = null;
 		}

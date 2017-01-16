@@ -20,7 +20,7 @@ namespace Lite.Strategy
 	{
 		Default,
 		ChopFirewood,
-		ChopLog,
+		ChopTree,
 		ForgeTool,
 		DropOffFirewood,
 		DropOffLogs,

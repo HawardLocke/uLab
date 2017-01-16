@@ -4,6 +4,7 @@ using Lite.Goap;
 
 namespace Lite.Strategy
 {
+	// 
 	[ProtoContract]
 	public class PickUpLogs : AgentAction
 	{

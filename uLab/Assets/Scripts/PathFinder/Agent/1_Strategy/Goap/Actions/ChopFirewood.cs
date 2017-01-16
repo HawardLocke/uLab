@@ -5,6 +5,7 @@ using Lite.Goap;
 
 namespace Lite.Strategy
 {
+	// °ÑÔ­Ä¾log¿³³ÉÄ¾²ñfirewood
 	[ProtoContract]
 	public class ChopFirewood : AgentAction
 	{
@@ -19,6 +20,7 @@ namespace Lite.Strategy
 		{
 			preconditons.Set((int)WorldStateType.HasTool, true);
 			preconditons.Set((int)WorldStateType.HasFirewood, false);
+			preconditons.Set((int)WorldStateType.HasLogs, true);
 		}
 
 		protected override void OnSetupEffects()

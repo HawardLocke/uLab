@@ -18,6 +18,8 @@ namespace Lite.Goap
 		private List<GoapAction> neighbourEdgeList = new List<GoapAction>();
 		private Queue<GoapAStarNode> nodePool = new Queue<GoapAStarNode>();
 
+		private int nodeIdCounter = 0;
+
 		public GoapAStarMap(int stateCount)
 		{
 			maxStateCount = stateCount;
@@ -55,6 +57,12 @@ namespace Lite.Goap
 			return neighbour;
 		}
 
+		public override void Cleanup()
+		{
+			nodeIdCounter = 0;
+			neighbourEdgeList.Clear();
+		}
+
 		public override void RecycleNode(AStarNode node)
 		{
 			node.Reset();
@@ -78,7 +86,7 @@ namespace Lite.Goap
 			}
 			else
 			{
-				node = new GoapAStarNode(maxStateCount);
+				node = new GoapAStarNode(nodeIdCounter++, maxStateCount);
 			}
 			return node;
 		}
