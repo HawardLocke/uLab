@@ -6,7 +6,7 @@ using Lite.Cmd;
 
 namespace Lite.Strategy
 {
-	[ProtoContract]
+	/*[ProtoContract]
 	[ProtoInclude(1, typeof(ChopFirewood))]
 	[ProtoInclude(2, typeof(ChopTree))]
 	[ProtoInclude(3, typeof(DropOffFirewood))]
@@ -17,14 +17,10 @@ namespace Lite.Strategy
 	[ProtoInclude(8, typeof(MineOre))]
 	[ProtoInclude(9, typeof(PickUpLogs))]
 	[ProtoInclude(10, typeof(PickUpOre))]
-	[ProtoInclude(11, typeof(PickUpTool))]
+	[ProtoInclude(11, typeof(PickUpTool))]*/
 	public abstract class AgentAction : Lite.Goap.GoapAction
 	{
-		[ProtoMember(1)]
 		public int actionType;
-
-		[ProtoMember(2)]
-		public long ownerID;
 
 		protected Agent owner;
 
@@ -36,7 +32,6 @@ namespace Lite.Strategy
 			base(GoapDefines.STATE_COUNT)
 		{
 			owner = agent;
-			ownerID = agent.Guid;
 		}
 
 		public void ApplyEffects()
@@ -67,16 +62,16 @@ namespace Lite.Strategy
 
 		public virtual void Update() { }
 
-		/*public byte[] ToBytes()
+		public byte[] _ToBytes()
 		{
 			ByteBuffer bb = new ByteBuffer();
 			bb.WriteInt((int)actionType);
 			bb.WriteLong(owner.Guid);
 			bb.WriteBytes(ToBytes());
 			return bb.ToBytes();
-		}*/
+		}
 
-		public abstract byte[] ToBytes();
+		protected abstract byte[] ToBytes();
 
 	}
 

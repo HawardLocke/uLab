@@ -24,7 +24,7 @@ namespace Lite.Strategy
 			effects.Set((int)WorldStateType.HasTool, true);
 		}
 
-		public override byte[] ToBytes()
+		protected override byte[] ToBytes()
 		{
 			return ProtobufUtil.Serialize<PickUpTool>(this);
 		}

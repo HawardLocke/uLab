@@ -18,6 +18,13 @@ namespace Lite
 
 			AppFacade.Instance.stgAgentManager.AddAgent(agent);
 			// sync to bev
+			sb_CreateEntity msg = new sb_CreateEntity();
+			msg.career = (int)career;
+			msg.x = x;
+			msg.y = y;
+			msg.z = z;
+			AppFacade.Instance.commandManager.PushMessage(msg);
+
 			return agent;
 		}
 

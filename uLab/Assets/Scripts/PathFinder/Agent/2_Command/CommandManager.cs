@@ -28,9 +28,9 @@ namespace Lite.Cmd
 			if (CheckAction(action))
 			{
 				if (ConstDefine.STAND_ALONE)
-					AppFacade.Instance.commandHandlerManager.HandleCommand(action);
+					AppFacade.Instance.msgHandlerManager.HandleAgentAction(action);
 				else
-					commandList.Enqueue(action.ToBytes());
+					commandList.Enqueue(action._ToBytes());
 			}
 		}
 
@@ -39,13 +39,21 @@ namespace Lite.Cmd
 			if (commandList.Count > 0)
 			{
 				byte[] cmd = commandList.Dequeue();
-				AppFacade.Instance.commandHandlerManager.HandleCommand(cmd);
+				AppFacade.Instance.msgHandlerManager.HandleAgentAction(cmd);
 			}
 		}
 
 		private bool CheckAction(AgentAction action)
 		{
 			return true;
+		}
+
+		public void PushMessage(IMessage msg)
+		{
+			if (ConstDefine.STAND_ALONE)
+				AppFacade.Instance.msgHandlerManager.HandleMessage(msg._ToBytes());
+			else
+				AppFacade.Instance.msgHandlerManager.HandleMessage(msg._ToBytes());
 		}
 
 	}

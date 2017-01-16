@@ -69,7 +69,6 @@
      <Compile Include="Assets\ToLua\Editor\ToLuaTree.cs" />
      <None Include="Assets\Scripts\PathFinder\Agent\Readme.txt" />
      <None Include="Assets\Resources\Template\Npc0.txt" />
-     <None Include="Assets\Art\Dwarfs\Shader\Compressed MaskedShader2sided 5-4 cut out.shader" />
      <None Include="Assets\ToLua\readme.txt" />
      <None Include="Assets\Resources\Template\AutoGenMecanim.txt" />
  <Reference Include="UnityEditor.Advertisements">

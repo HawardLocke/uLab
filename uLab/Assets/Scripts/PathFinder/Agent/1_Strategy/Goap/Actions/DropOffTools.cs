@@ -25,7 +25,7 @@ namespace Lite.Strategy
 			effects.Set((int)WorldStateType.CollectTools, true);
 		}
 
-		public override byte[] ToBytes()
+		protected override byte[] ToBytes()
 		{
 			return ProtobufUtil.Serialize<DropOffTools>(this);
 		}

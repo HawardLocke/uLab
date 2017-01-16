@@ -17,6 +17,11 @@ public class GoapTest : MonoBehaviour
 		AppFacade.Instance.Init();
 
 		Agent agent;
+
+		agent = EntityFactory.Instance.CreateAgent(Career.Tree, -500, 0, -500);
+
+		agent = EntityFactory.Instance.CreateAgent(Career.Ore, -500, 0, 500);
+
 		agent = EntityFactory.Instance.CreateAgent(Career.Blacksmith, 0, 0, 0);
 		agent.AddGoal(new Goal_MakeTools());
 		/*

@@ -28,7 +28,7 @@ namespace Lite.Strategy
 			effects.Set((int)WorldStateType.HasFirewood, true);
 		}
 
-		public override byte[] ToBytes()
+		protected override byte[] ToBytes()
 		{
 			return ProtobufUtil.Serialize<ChopFirewood>(this);
 		}

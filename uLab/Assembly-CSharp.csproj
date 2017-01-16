@@ -98,6 +98,7 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Sensor\Sensors\AgentSensor.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Agent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\AgentManager.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\EntityFactory.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\ChopFirewood.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\ChopTree.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\1_Strategy\Goap\Actions\DropOffFireWood.cs" />
@@ -127,13 +128,14 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Agent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\AgentAction.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\AgentManager.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\AvatarFactory.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\BevBlackboard.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\CommandHandlerManager.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Components\AgentComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Components\AnimationComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Components\LocomotionComponent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Define.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\ICommandHandler.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Message\EntityMsgHandler.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Message\MessageHandlerManager.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\AppFacade.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\BehaviourNodes.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\BehaviourTree.cs" />
@@ -148,6 +150,8 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Goap\WorldState.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\IAgent.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\IAgentManager.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\IMessage.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\sb_messages.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\ConstDefine.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphEdge.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Graph\GraphNode.cs" />
@@ -314,7 +318,6 @@
      <Compile Include="Assets\ToLua\Source\LuaConst.cs" />
      <None Include="Assets\Scripts\PathFinder\Agent\Readme.txt" />
      <None Include="Assets\Resources\Template\Npc0.txt" />
-     <None Include="Assets\Art\Dwarfs\Shader\Compressed MaskedShader2sided 5-4 cut out.shader" />
      <None Include="Assets\ToLua\readme.txt" />
      <None Include="Assets\Resources\Template\AutoGenMecanim.txt" />
  <Reference Include="UnityEngine.UI">
