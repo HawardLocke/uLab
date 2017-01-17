@@ -6,7 +6,12 @@ namespace Lite.Bev
 		Default = 0,
 		MoveTo,
 		StopMove,
-		Attack
+		Attack,
+
+		Work,
+		DropOffThings,
+		PickUpThings,
+
 	}
 
 	public enum MoveSpeed
