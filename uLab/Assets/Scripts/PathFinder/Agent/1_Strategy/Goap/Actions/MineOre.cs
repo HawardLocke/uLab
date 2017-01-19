@@ -1,11 +1,11 @@
 
-using ProtoBuf;
+
 using Lite.Goap;
 
 namespace Lite.Strategy
 {
-	[ProtoContract]
-	public class MineOre : AgentAction
+
+	public class MineOre : GoapAgentAction
 	{
 		public MineOre(Agent agent) :
 			base(agent)
@@ -23,11 +23,6 @@ namespace Lite.Strategy
 		protected override void OnSetupEffects()
 		{
 			effects.Set((int)WorldStateType.HasOre, true);
-		}
-
-		protected override byte[] ToBytes()
-		{
-			return ProtobufUtil.Serialize<MineOre>(this);
 		}
 
 	}

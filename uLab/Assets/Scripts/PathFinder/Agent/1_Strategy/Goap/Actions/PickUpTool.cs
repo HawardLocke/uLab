@@ -1,11 +1,10 @@
 
-using ProtoBuf;
+
 using Lite.Goap;
 
 namespace Lite.Strategy
 {
-	[ProtoContract]
-	public class PickUpTool : AgentAction
+	public class PickUpTool : GoapAgentAction
 	{
 		public PickUpTool(Agent agent) :
 			base(agent)
@@ -22,11 +21,6 @@ namespace Lite.Strategy
 		protected override void OnSetupEffects()
 		{
 			effects.Set((int)WorldStateType.HasTool, true);
-		}
-
-		protected override byte[] ToBytes()
-		{
-			return ProtobufUtil.Serialize<PickUpTool>(this);
 		}
 
 	}

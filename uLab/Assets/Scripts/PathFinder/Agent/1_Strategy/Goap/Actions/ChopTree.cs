@@ -1,11 +1,10 @@
 
-using ProtoBuf;
+
 using Lite.Goap;
 
 namespace Lite.Strategy
 {
-	[ProtoContract]
-	public class ChopTree : AgentAction
+	public class ChopTree : GoapAgentAction
 	{
 		public ChopTree(Agent agent) : 
 			base(agent)
@@ -25,11 +24,6 @@ namespace Lite.Strategy
 			effects.Set((int)WorldStateType.HasLogs, true);
 		}
 
-		protected override byte[] ToBytes()
-		{
-			return ProtobufUtil.Serialize<ChopTree>(this);
-		}
-		
 	}
 
 }

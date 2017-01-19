@@ -23,7 +23,7 @@ namespace Lite.Cmd
 
 		}
 
-		public void PushCommand(AgentAction action)
+		/*public void PushCommand(GoapAgentAction action)
 		{
 			if (CheckAction(action))
 			{
@@ -32,7 +32,7 @@ namespace Lite.Cmd
 				else
 					commandList.Enqueue(action._ToBytes());
 			}
-		}
+		}*/
 
 		public void Update()
 		{
@@ -43,7 +43,7 @@ namespace Lite.Cmd
 			}
 		}
 
-		private bool CheckAction(AgentAction action)
+		private bool CheckAction(GoapAgentAction action)
 		{
 			return true;
 		}

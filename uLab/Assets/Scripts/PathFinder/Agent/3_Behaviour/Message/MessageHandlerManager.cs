@@ -16,13 +16,13 @@ namespace Lite
 
 	public abstract class IAgentActionHandler
 	{
-		public abstract Strategy.AgentAction ToAction(byte[] Command);
+		public abstract Strategy.GoapAgentAction ToAction(byte[] Command);
 
-		public abstract void OnAction(Strategy.AgentAction action);
+		public abstract void OnAction(Strategy.GoapAgentAction action);
 
 		public void OnAction(byte[] Command)
 		{
-			Strategy.AgentAction action = ToAction(Command);
+			Strategy.GoapAgentAction action = ToAction(Command);
 			OnAction(action);
 		}
 
@@ -60,7 +60,7 @@ namespace Lite
 			m_agentActionHandlerMap.Remove(CommandType);
 		}
 
-		public void HandleAgentAction(Strategy.AgentAction action)
+		public void HandleAgentAction(Strategy.GoapAgentAction action)
 		{
 			IAgentActionHandler handler = null;
 			m_agentActionHandlerMap.TryGetValue(action.actionType, out handler);

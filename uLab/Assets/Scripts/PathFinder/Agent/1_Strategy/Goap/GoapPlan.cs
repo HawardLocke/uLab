@@ -9,21 +9,21 @@ namespace Lite.Strategy
 
 	public class GoapPlan
 	{
-		private List<AgentAction> actionList;
-		private AgentAction currentAction;
+		private List<GoapAgentAction> actionList;
+		private GoapAgentAction currentAction;
 		private int currentIndex;
 		public bool isFinished { private set; get; }
 		private bool isFirstTimeExcute;
 
 		public GoapPlan()
 		{
-			actionList = new List<AgentAction>();
+			actionList = new List<GoapAgentAction>();
 			currentIndex = 0;
 			isFinished = false;
 			isFirstTimeExcute = true;
 		}
 
-		public void AddAction(AgentAction action)
+		public void AddAction(GoapAgentAction action)
 		{
 			actionList.Add(action);
 		}
