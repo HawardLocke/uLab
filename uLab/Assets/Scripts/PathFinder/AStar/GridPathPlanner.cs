@@ -5,17 +5,7 @@ using System.Collections.Generic;
 
 namespace Lite.AStar
 {
-	public struct Point2D
-	{
-		public float x;
-		public float y;
-		public Point2D(float x, float y)
-		{
-			this.x = x;
-			this.y = y;
-		}
-	}
-
+	
 	public class GridPathPlanner : AStarPathPlanner
 	{
 		private int startX;

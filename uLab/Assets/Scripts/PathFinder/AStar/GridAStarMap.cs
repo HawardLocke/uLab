@@ -18,7 +18,7 @@ namespace Lite.AStar
 
 		private int nodeIdCounter;
 
-		public void InitMap(int width, int height)
+		public void InitMap(int width, int height, ref int[,] mask)
 		{
 			nodeIdCounter = 0;
 			this.width = width;
@@ -37,6 +37,7 @@ namespace Lite.AStar
 					nodes[x, y] = node;
 					node.x = x;
 					node.y = y;
+					node.blockValue = mask[x, y];
 				}
 			}
 
@@ -104,7 +105,8 @@ namespace Lite.AStar
 
 		private bool IsNeighbourPassable(GridAStarNode from, GridAStarNode to)
 		{
-			return (from.x == to.x || from.y == to.y) || (nodes[from.x, to.y].blockValue < 1 && nodes[to.x, from.y].blockValue < 1);
+			return (nodes[from.x, to.y].blockValue < 1 && nodes[to.x, from.y].blockValue < 1) 
+				|| (from.x == to.x && from.y == to.y);
 		}
 
 	}
