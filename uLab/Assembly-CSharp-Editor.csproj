@@ -86,6 +86,9 @@
      <Compile Include="Assets\Editor\BehaviourTree\Source\Inspectors\RunBehaviourInspector.cs" />
      <Compile Include="Assets\Editor\BehaviourTree\Source\Inspectors\ServiceInspector.cs" />
      <Compile Include="Assets\Editor\Configs\ConfigLoader.cs" />
+     <Compile Include="Assets\Editor\Excel\ExcelConverter.cs" />
+     <Compile Include="Assets\Editor\Excel\ExcelReader.cs" />
+     <Compile Include="Assets\Editor\Excel\Excel_To_X.cs" />
      <Compile Include="Assets\Editor\Excel\XlsxReader.cs" />
      <Compile Include="Assets\Editor\Excel\Xlsx_To_X.cs" />
      <Compile Include="Assets\Editor\Lua\CustomSettings.cs" />

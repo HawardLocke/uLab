@@ -282,6 +282,8 @@
      <Compile Include="Assets\Scripts\Template\DB.cs" />
      <Compile Include="Assets\Scripts\Template\IData.cs" />
      <Compile Include="Assets\Scripts\Template\TabReader.cs" />
+     <Compile Include="Assets\Scripts\Template\TemplateManager.cs" />
+     <Compile Include="Assets\Scripts\Template\TwTemplate.cs" />
      <Compile Include="Assets\Scripts\Template\auto\AutoGenMecanim_Data.cs" />
      <Compile Include="Assets\Scripts\Template\auto\Npc0_Data.cs" />
      <Compile Include="Assets\Scripts\Test\MagicBox.cs" />
