@@ -37,11 +37,11 @@ namespace Lite.BevTree
 			return m_child;
 		}
 
-		protected override void OnStart(Context context)
+		protected override void OnInit()
 		{
 			if (m_child != null)
 			{
-				m_child._start(context);
+				m_child._init();
 			}
 		}
 

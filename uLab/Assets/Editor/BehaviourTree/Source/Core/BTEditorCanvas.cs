@@ -69,7 +69,20 @@ namespace Lite.BevTreeEditor
 		}
 
 		public Vector2 Position { get; set; }
-		public Rect Area { get; set; }
+		
+		private Rect area;
+		public Rect Area
+		{
+			get
+			{
+				return area;
+			}
+			set
+			{
+				area = value;
+			}
+		}
+
 		public bool IsDebuging { get; set; }
 		public string Clipboard { get; set; }
 		

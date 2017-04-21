@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lite.BevTree
 {
-	[CreateAssetMenu(menuName = "Behaviour Tree")]
+	[CreateAssetMenu(menuName = "Lite/Behaviour Tree", order = 1)]
 	public class BTAsset : ScriptableObject
 	{
 		[System.Serializable]
@@ -18,6 +18,8 @@ namespace Lite.BevTree
 		private string m_serializedData;
 		[SerializeField]
 		private Rect m_canvasArea;
+		[SerializeField]
+		private Vector2 m_canvasPosition;
 		[SerializeField]
 		private List<AssetIDPair> m_subtrees;
 		[SerializeField]
@@ -50,6 +52,18 @@ namespace Lite.BevTree
 			set
 			{
 				m_canvasArea = value;
+			}
+		}
+
+		public Vector2 CanvasPosition
+		{
+			get
+			{
+				return m_canvasPosition;
+			}
+			set
+			{
+				m_canvasPosition = value;
 			}
 		}
 

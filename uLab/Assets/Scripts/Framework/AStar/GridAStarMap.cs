@@ -18,14 +18,12 @@ namespace Lite.AStar
 
 		private int nodeIdCounter;
 
-		public void InitMap(int width, int height, ref int[,] mask)
+
+		public void InitMap(int width, int height, NavigationData data)
 		{
 			nodeIdCounter = 0;
 			this.width = width;
 			this.height = height;
-
-			if (nodes != null)
-				nodes = null;
 
 			nodes = new GridAStarNode[width, height];
 
@@ -37,10 +35,30 @@ namespace Lite.AStar
 					nodes[x, y] = node;
 					node.x = x;
 					node.y = y;
-					node.blockValue = mask[x, y];
+					node.blockValue = data.At(x, y);
 				}
 			}
+		}
 
+		public void InitMap(int width, int height, int[,] mask)
+		{
+			nodeIdCounter = 0;
+			this.width = width;
+			this.height = height;
+
+			nodes = new GridAStarNode[width, height];
+
+			for (int x = 0; x < width; ++x)
+			{
+				for (int y = 0; y < height; ++y)
+				{
+					GridAStarNode node = new GridAStarNode(nodeIdCounter++);
+					nodes[x, y] = node;
+					node.x = x;
+					node.y = y;
+					node.blockValue = mask != null ? mask[x, y] : 0;
+				}
+			}
 		}
 
 		public void SetNodePassable(int x, int y, bool passable)

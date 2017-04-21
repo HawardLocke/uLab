@@ -219,6 +219,25 @@ namespace Lite.BevTreeEditor
 			return status;
 		}
 
+		private RunningStatus GetConstraintResult(BehaviourNode node, int index)
+		{
+			RunningStatus status = RunningStatus.None;
+			if (BTDebugHelper.DebugContext != null)
+			{
+				long treeId = BTDebugHelper.CurrentDebugRootTree.guid;
+				if (BTDebugHelper.DebugContext._travelNodes.ContainsKey(treeId))
+				{
+					if (BTDebugHelper.DebugContext._travelNodes[treeId].Contains(node))
+					{
+						int bits = BTDebugHelper.DebugContext.blackboard.GetInt(treeId, node.guid, "Constraints");
+						int v = (bits >> index) & 1;
+						status = v == 1 ? RunningStatus.Success : RunningStatus.Failure;
+					}
+				}
+			}
+			return status;
+		}
+
 		private void DrawTransitions()
 		{
 			Vector2 nodeSize = BTEditorStyle.GetNodeSize(m_node);
@@ -340,10 +359,25 @@ namespace Lite.BevTreeEditor
 			if (!m_node.IsConstraintsExpanded)
 			{
 				Rect consLabelPos = new Rect(cnsFoldoutPos.x + 20, cnsFoldoutPos.y + constraintOffsetY, 100, 20);
-				EditorGUI.LabelField(consLabelPos, "<color=white>Constraints</color>", BTEditorStyle.NodeConstraintLabel);
+				EditorGUI.LabelField(consLabelPos, "Constraints", BTEditorStyle.NodeConstraintLabel);
 			}
 			else
 			{
+				int bits = -1;
+				if (BTDebugHelper.DebugContext != null && BTDebugHelper.CurrentDebugRootTree != null)
+				{
+					long treeId = BTDebugHelper.CurrentDebugRootTree.guid;
+					if (BTDebugHelper.DebugContext._travelNodes.ContainsKey(treeId))
+					{
+						if (BTDebugHelper.DebugContext._travelNodes[treeId].Contains(m_node))
+						{
+							bits = BTDebugHelper.DebugContext.blackboard.GetInt(treeId, m_node.guid, "Constraints");
+							
+						}
+					}
+				}
+
+				bool lastFailed = false;
 				for (int i = 0; i < m_node.Constraints.Count; i++)
 				{
 					Constraint constraint = m_node.Constraints[i];
@@ -351,9 +385,26 @@ namespace Lite.BevTreeEditor
 					Rect headerPos = position;
 					headerPos.y += nodeSize.y + i * 16 + constraintOffsetY;
 					Rect labelPos = new Rect(headerPos.x, headerPos.y, position.width + 50, 16);
-					string str = string.Format(constraint.InvertResult ? "<color=white>! {0}</color>" : "<color=white>{0}</color>", constraint.Title);
+
+					string str = "";
+					if (bits != -1 && !lastFailed)
+					{
+						int v = (bits >> i) & 1;
+						if (v == 1)
+						{
+							str = string.Format(constraint.InvertResult ? "<color=green>! {0}</color>" : "<color=green>{0}</color>", constraint.Title);
+						}
+						else
+						{
+							lastFailed = true;
+							str = string.Format(constraint.InvertResult ? "<color=red>! {0}</color>" : "<color=red>{0}</color>", constraint.Title);
+						}
+					}
+					else
+					{
+						str = string.Format(constraint.InvertResult ? "<color=white>! {0}</color>" : "<color=white>{0}</color>", constraint.Title);
+					}
 					EditorGUI.LabelField(labelPos, str, BTEditorStyle.NodeConstraintLabel);
-					
 				}
 			}
 		}

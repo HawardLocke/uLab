@@ -80,10 +80,10 @@ namespace Lite.BevTree
 		}
 
 
-		public void Start(Context context)
+		public void Init()
 		{
 			if (root != null)
-				root._start(context);
+				root._init();
 		}
 
 
@@ -227,31 +227,31 @@ namespace Lite.BevTree
 	// for editor debug
 	public static class BTDebugHelper
 	{
+
 		public static Context DebugContext = null;
 
 		public static BehaviourTree CurrentDebugRootTree = null;
 
-		private static Dictionary<string, BehaviourTree> DebugTrees = new Dictionary<string, BehaviourTree>();
+		private static Dictionary<string, BehaviourTree> debugTrees = new Dictionary<string, BehaviourTree>();
 
 		// for breakpoint debugging
 		public static bool BreakPointEnabled { get; set; }
 
 		public static void AddHotTree(BehaviourTree tree)
 		{
-			if (tree != null && !DebugTrees.ContainsKey(tree.guidString))
-				DebugTrees.Add(tree.guidString, tree);
+			if (tree != null && !debugTrees.ContainsKey(tree.guidString))
+				debugTrees.Add(tree.guidString, tree);
 		}
 
-		public static void RemoveHotTree(BehaviourTree tree)
+		public static void ClearHotTree()
 		{
-			if (tree != null && DebugTrees.ContainsKey(tree.guidString))
-				DebugTrees.Remove(tree.guidString);
+			debugTrees.Clear();
 		}
 
 		public static BehaviourTree FindTree(string uid)
 		{
 			BehaviourTree tree;
-			DebugTrees.TryGetValue(uid, out tree);
+			debugTrees.TryGetValue(uid, out tree);
 			return tree;
 		}
 

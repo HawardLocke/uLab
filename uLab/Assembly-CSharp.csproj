@@ -58,11 +58,81 @@
      <Compile Include="Assets\Scripts\Common\WrappedValues.cs" />
      <Compile Include="Assets\Scripts\ConstDefine\AppDefine.cs" />
      <Compile Include="Assets\Scripts\ConstDefine\MessageDefine.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\AStarMap.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\AStarNode.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\AStarPathPlanner.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\GraphAStarMap.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\GraphAStarNode.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\GraphPathPlanner.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\GridAStarMap.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\GridAStarNode.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\GridPathPlanner.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\NavigationData.cs" />
+     <Compile Include="Assets\Scripts\Framework\AStar\Point2D.cs" />
      <Compile Include="Assets\Scripts\Framework\App.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Action\DebugLog.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Action\Fail.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Action\RunBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Action\Succeed.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Action\Wait.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Composite\OR.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Composite\Parallel.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Composite\Random.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Composite\RandomSelector.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Composite\Selector.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Composite\Sequence.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Composite\WeightedRandom.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Condition\FALSE.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Condition\TRUE.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\Action.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\BehaviourNode.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\BehaviourTree.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\BevCommon.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\Blackboard.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\Composite.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\Constraint.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\DebugOptions.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\Decorator.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\MemoryVar.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\NodeGroup.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\Root.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Core\Service.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Decorator\Invert.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Decorator\Repeat.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Decorator\RepeatForever.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\AddMenuAttribute.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\BTAsset.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\HelpBoxAttribute.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\BTHideInInspectorAttribute.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\BTIgnoreAttribute.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\BTOptInAttribute.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\BTPropertyAttribute.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\DataReaderProvider.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\DataWriterProvider.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\IDataReader.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\IDataWriter.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\IJsonSerializable.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\JsonDataReader.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\JsonDataWriter.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\JsonReader.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\JsonReaderSettings.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\JsonSerializationException.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\JsonToken.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\JsonWriter.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\JsonWriterSettings.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\ReferenceHandler.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Serialization\TypeCoercionUtility.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Utility\BTUtils.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Utility\EnumExtensions.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Utility\FixedSizeStack.cs" />
+     <Compile Include="Assets\Scripts\Framework\BehaviourTree\Extend\Utility\Tuple.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\LuaBehaviour.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\Manager.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\Message.cs" />
      <Compile Include="Assets\Scripts\Framework\Core\Singleton.cs" />
+     <Compile Include="Assets\Scripts\Framework\Graph\GraphEdge.cs" />
+     <Compile Include="Assets\Scripts\Framework\Graph\GraphNode.cs" />
+     <Compile Include="Assets\Scripts\Framework\Graph\SparseGraph.cs" />
      <Compile Include="Assets\Scripts\Framework\Interface\IListener.cs" />
      <Compile Include="Assets\Scripts\Framework\Interface\ITimerBehaviour.cs" />
      <Compile Include="Assets\Scripts\Manager\EntityManager.cs" />
@@ -84,16 +154,6 @@
      <Compile Include="Assets\Scripts\Network\Protocol\auto_gen\login_pb.cs" />
      <Compile Include="Assets\Scripts\Network\Protocol\auto_gen\scene_pb.cs" />
      <Compile Include="Assets\Scripts\Network\SocketClient.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\AStarMap.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\AStarNode.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\AStarPathPlanner.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\GraphAStarMap.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\GraphAStarNode.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\GraphPathPlanner.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\GridAStarMap.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\GridAStarNode.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\GridPathPlanner.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\AStar\Point2D.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Sensor\ISensor.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Sensor\SensorDefines.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\0_Sensor\SensorManager.cs" />
@@ -142,61 +202,6 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Message\EntityMsgHandler.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\3_Behaviour\Message\MessageHandlerManager.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\AppFacade.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Action\DebugLog.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Action\Fail.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Action\RunBehaviour.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Action\Succeed.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Action\Wait.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Composite\Parallel.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Composite\Random.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Composite\RandomSelector.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Composite\Selector.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Composite\Sequence.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Composite\WeightedRandom.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Condition\FALSE.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Condition\TRUE.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\Action.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\BehaviourNode.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\BehaviourTree.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\BevCommon.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\Blackboard.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\Composite.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\Constraint.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\DebugOptions.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\Decorator.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\MemoryVar.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\NodeGroup.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\Root.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Core\Service.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Decorator\Invert.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Decorator\Repeat.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Decorator\RepeatForever.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\AddMenuAttribute.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\BTAsset.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\HelpBoxAttribute.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\BTHideInInspectorAttribute.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\BTIgnoreAttribute.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\BTOptInAttribute.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\BTPropertyAttribute.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\DataReaderProvider.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\DataWriterProvider.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\IDataReader.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\IDataWriter.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\IJsonSerializable.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\JsonDataReader.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\JsonDataWriter.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\JsonReader.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\JsonReaderSettings.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\JsonSerializationException.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\JsonToken.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\JsonWriter.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\JsonWriterSettings.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\ReferenceHandler.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Serialization\TypeCoercionUtility.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Utility\BTUtils.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Utility\EnumExtensions.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Utility\FixedSizeStack.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Agent\Common\BehaviourTree\Extend\Utility\Tuple.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Blackboard.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Entitas\Caching\EntitasCache.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\Entitas\Caching\ObjectCache.cs" />
@@ -268,12 +273,10 @@
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\IMessage.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\Common\sb_messages.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Agent\ConstDefine.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Graph\GraphEdge.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Graph\GraphNode.cs" />
-     <Compile Include="Assets\Scripts\PathFinder\Graph\SparseGraph.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Test\GoapTest.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Test\GraphPathTest.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Test\MapEditor.cs" />
+     <Compile Include="Assets\Scripts\PathFinder\Test\PathOptimizer.cs" />
      <Compile Include="Assets\Scripts\PathFinder\Test\SteeringTest.cs" />
      <Compile Include="Assets\Scripts\StartUp.cs" />
      <Compile Include="Assets\Scripts\Template\DB.cs" />
@@ -454,19 +457,19 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
  <Reference Include="Debugger">
- <HintPath>E:/Locke/GitHub/uLab-/uLab/Assets/Plugins/Debugger.dll</HintPath>
+ <HintPath>E:/Locke/GitHub/uLab/uLab/Assets/Plugins/Debugger.dll</HintPath>
  </Reference>
  <Reference Include="protobuf-net">
- <HintPath>E:/Locke/GitHub/uLab-/uLab/Assets/Plugins/protobuf-net.dll</HintPath>
+ <HintPath>E:/Locke/GitHub/uLab/uLab/Assets/Plugins/protobuf-net.dll</HintPath>
  </Reference>
  <Reference Include="Excel">
- <HintPath>E:/Locke/GitHub/uLab-/uLab/Assets/Plugins/Excel/Excel.dll</HintPath>
+ <HintPath>E:/Locke/GitHub/uLab/uLab/Assets/Plugins/Excel/Excel.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>E:/Locke/GitHub/uLab-/uLab/Assets/Plugins/Excel/ICSharpCode.SharpZipLib.dll</HintPath>
+ <HintPath>E:/Locke/GitHub/uLab/uLab/Assets/Plugins/Excel/ICSharpCode.SharpZipLib.dll</HintPath>
  </Reference>
  <Reference Include="System.Data">
- <HintPath>E:/Locke/GitHub/uLab-/uLab/Assets/Plugins/Excel/System.Data.dll</HintPath>
+ <HintPath>E:/Locke/GitHub/uLab/uLab/Assets/Plugins/Excel/System.Data.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

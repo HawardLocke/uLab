@@ -662,8 +662,8 @@ namespace Lite.BevTreeEditor
 					tex = m_weightedRandomIcon;
 				else if (node is Lite.BevTree.Random)
 					tex = m_randomIcon;
-				else if (node is RandomSelector)
-					tex = m_randomSelectorIcon;
+				/*else if (node is RandomSelector)
+					tex = m_randomSelectorIcon;*/
 				
 			}
 			else if (node is Decorator)

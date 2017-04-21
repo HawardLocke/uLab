@@ -59,11 +59,11 @@ namespace Lite.BevTree
 		}
 
 
-		protected override void OnStart(Context context)
+		protected override void OnInit()
 		{
 			for (int i = 0; i < m_children.Count; i++)
 			{
-				m_children[i]._start(context);
+				m_children[i]._init();
 			}
 		}
 

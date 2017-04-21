@@ -50,14 +50,14 @@ namespace Lite.BevTree
 			m_behaviourTreeAsset = btAsset.GetSubtreeAsset(m_behaviourTreeID);
 		}
 
-		protected override void OnStart(Context context)
+		protected override void OnInit()
 		{
 			if(m_behaviourTreeAsset != null)
 			{
 				m_behaviourTree = m_behaviourTreeAsset.CreateRuntimeTree();
 				if(m_behaviourTree != null)
 				{
-					m_behaviourTree.Root._start(context);
+					m_behaviourTree.Root._init();
 				}
 			}
 		}
