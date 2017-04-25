@@ -104,7 +104,7 @@ public static class ToLuaMenu
         string dir = CustomSettings.saveDir;
         string[] files = Directory.GetFiles(dir, "*.cs", SearchOption.TopDirectoryOnly);
 
-        if (files.Length < 3 && beCheck)
+        if (files.Length < 3 && beCheck && false)
         {
             if (EditorUtility.DisplayDialog("自动生成", "点击确定自动生成常用类型注册文件， 也可通过菜单逐步完成此功能", "确定", "取消"))
             {

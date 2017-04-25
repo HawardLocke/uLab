@@ -433,7 +433,6 @@
      <Compile Include="Assets\ToLua\Source\Generate\UnityEngine_WWWWrap.cs" />
      <Compile Include="Assets\ToLua\Source\Generate\UnityEngine_WrapModeWrap.cs" />
      <Compile Include="Assets\ToLua\Source\LuaConst.cs" />
-     <None Include="Assets\Scripts\PathFinder\Agent\Readme.txt" />
      <None Include="Assets\Resources\Template\Npc0.txt" />
      <None Include="Assets\ToLua\readme.txt" />
      <None Include="Assets\Resources\Template\AutoGenMecanim.txt" />

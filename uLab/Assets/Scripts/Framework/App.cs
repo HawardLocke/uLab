@@ -20,7 +20,6 @@ namespace Lite
 		public static LuaManager		luaManager = null;
 		public static UIManager			uiManager = null;
 		public static NetworkManager	networkManager = null;
-		public static EntityManager entityManager = null;
 
 
 		public void Initialize()
@@ -31,7 +30,6 @@ namespace Lite
 			networkManager = this.AddManager<NetworkManager>();
 			luaManager = this.AddManager<LuaManager>();
 			uiManager = this.AddManager<UIManager>();
-			entityManager = this.AddManager<EntityManager>();
 			
 
 			foreach (var mgr in mManagerDic.Values)
