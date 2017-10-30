@@ -1,7 +1,7 @@
 
 
 
-UIBase =  class("UIBase", function()end)
+local UIBase =  class("UIBase")
 
 function UIBase:OnEnter()
 	
@@ -19,4 +19,5 @@ function UIBase:OnResume()
 	
 end
 
+return UIBase
 

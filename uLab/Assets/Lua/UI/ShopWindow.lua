@@ -8,7 +8,7 @@ local ShopWindow = class("ShopWindow",UIBase)
 local buttonNames = { "bag", "Shop", "shop", "tip", "dialog"}
 
 
-function ShopWindow.OnInit(obj)
+function ShopWindow:OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 
@@ -44,18 +44,20 @@ function onBtnClick(go)
 	local index = tonumber(string.sub(go.name, string.len(go.name)))
 	
 	if index == 1 then
-		OpenWindow(GameUI.bag)
+		gUIManager:OpenWindow(GameUI.bag)
 	elseif index == 2 then
-		OpenWindow(GameUI.role)
+		gUIManager:OpenWindow(GameUI.role)
 	elseif index == 3 then
-		OpenWindow(GameUI.shop)
+		gUIManager:OpenWindow(GameUI.shop)
 	elseif index == 4 then
-		OpenWindow(GameUI.tip)
+		gUIManager:OpenWindow(GameUI.tip)
 	elseif index == 5 then
-		OpenWindow(GameUI.dialog)
+		gUIManager:OpenWindow(GameUI.dialog)
 	end
 end
 
 function onBackClick(go)
 	CloseWindow(GameUI.shop)
 end
+
+return ShopWindow

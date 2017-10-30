@@ -9,7 +9,7 @@ require "Functions"
 require "Common/functions"
 require "Network"
 require "UI/UIDefines"
-require "UI/UIBase"
+UIBase = require "UI/UIBase"
 require "UI/UIManager"
 require "protocol/MsgID"
 
@@ -24,8 +24,8 @@ Game = class("Game")
 function Game:OnInitialize()
 	self.RegisterPBC()
 	self.InitMsgHandlers()
-	gUIManager:OpenWindow(GameUI.login)
-	gUIManager:SetMainWindow(GameUI.login)
+	gUIManager:OpenWindow(GameUI.main)
+	gUIManager:SetMainWindow(GameUI.main)
 
 	App.networkManager:SendConnect()
 
@@ -38,12 +38,12 @@ function Game:InitMsgHandlers()
 end
 
 function Game:RegisterPBC()
-    local addr = io.open('D:/Locke/u/GitHub/uLab/uLab/Assets/Lua/'.."protocol/login.pb", "rb")
+    local addr = io.open('D:/Locke/git/-uLab/uLab/Assets/Lua/'.."protocol/login.pb", "rb")
     local buffer = addr:read "*a"
     addr:close()
     protobuf.register(buffer)
 
-    addr = io.open('D:/Locke/u/GitHub/uLab/uLab/Assets/Lua/'.."protocol/scene.pb", "rb")
+    addr = io.open('D:/Locke/git/-uLab/uLab/Assets/Lua/'.."protocol/scene.pb", "rb")
     buffer = addr:read "*a"
     addr:close()
     protobuf.register(buffer)

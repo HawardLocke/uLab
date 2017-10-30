@@ -5,7 +5,7 @@ local transform
 local BarWindow = class("BagWindow",UIBase)
 --local this = BarWindow
 
-function BarWindow.OnInit(obj)
+function BarWindow:OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 	--LogInfo("Bar OnInit")
@@ -26,3 +26,5 @@ end
 function BarWindow:OnResume()
 	--LogInfo("Bar OnResume")
 end
+
+return BarWindow

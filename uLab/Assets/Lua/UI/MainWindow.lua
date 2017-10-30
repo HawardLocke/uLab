@@ -2,21 +2,22 @@
 local gameObject
 local transform
 
-local MainWindow = class("MainWindow",UIBase)
+local MainWindow = class("MainWindow", UIBase)
 local this = MainWindow
 
 local buttonNames = { "bag", "role", "shop", "tip", "dialog", "show main", "send chat", "??", "reset" }
 
 
-function MainWindow.OnInit(obj)
+function MainWindow:OnInit(obj)
 	gameObject = obj
 	transform = obj.transform
 	--LogInfo("Main OnInit")
 	for i = 1, 9 do
 		local btn = Util.FindGameObject(gameObject, 'buttons/button'..tostring(i))
+		LogInfo(btn.name)
 		local label = Util.FindComponent(btn, 'Text', "Text")
 		label.text = buttonNames[i]
-		UIEventListener.SetOnClick(btn, onBtnClick)
+		UIEventListener.SetOnClick(btn, self.onBtnClick, self)
 	end
 end
 
@@ -36,23 +37,23 @@ function MainWindow:OnResume()
 	
 end
 
-function onBtnClick(go)
+function MainWindow:onBtnClick(go)
 	local index = tonumber(string.sub(go.name, string.len(go.name)))
 	
 	if index == 1 then
-		OpenWindow(GameUI.bag)
+		gUIManager:OpenWindow(GameUI.bag)
 	elseif index == 2 then
-		OpenWindow(GameUI.role)
+		gUIManager:OpenWindow(GameUI.role)
 	elseif index == 3 then
-		OpenWindow(GameUI.shop)
+		gUIManager:OpenWindow(GameUI.shop)
 	elseif index == 4 then
-		OpenWindow(GameUI.tip)
+		gUIManager:OpenWindow(GameUI.tip)
 	elseif index == 5 then
-		OpenWindow(GameUI.dialog)	
+		gUIManager:OpenWindow(GameUI.dialog)	
 	elseif index == 6 then
-		BackToMainWindow()
+		gUIManager:BackToMainWindow()
 	elseif index == 7 then
-		this.SendChat()
+		self.SendChat()
 	elseif index == 8 then
 		--
 	elseif index == 9 then
@@ -72,3 +73,5 @@ function MainWindow:SendChat()
 	--msg.password = "2333"
 	--App.networkManager:SendString(PBX.MsgID.cgLogin, msg:SerializeToString())
 end
+
+return MainWindow

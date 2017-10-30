@@ -1,6 +1,6 @@
 
 
-local LoginWindow = class("LoginWindow")
+local LoginWindow = class("LoginWindow", UIBase)
 
 
 function LoginWindow:OnInit(obj)

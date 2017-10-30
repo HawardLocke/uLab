@@ -55,7 +55,7 @@ namespace Lite.ui
 		}
 
 		// for lua
-		public static void SetOnClick(GameObject go, LuaInterface.LuaFunction luafunc)
+		public static void SetOnClick(GameObject go, LuaInterface.LuaFunction luafunc, LuaInterface.LuaTable instance)
 		{
 			if (go == null || luafunc == null)
 			{
@@ -65,13 +65,16 @@ namespace Lite.ui
 			UnityEngine.UI.Button btn = go.GetComponent<UnityEngine.UI.Button>();
 			if (btn != null)
 			{
-				btn.onClick.AddListener(delegate(){luafunc.Call(go);});
+				//btn.onClick.RemoveAllListeners(); why??
+				btn.onClick.AddListener(delegate () { if (instance != null) luafunc.Call(instance, go); else luafunc.Call(go); });
 			}
 			else
 			{
-				Get(go).onClick = delegate(GameObject obj){luafunc.Call(obj);};
+				Get(go).onClick += delegate (GameObject obj) { if (instance != null) luafunc.Call(instance, obj); else luafunc.Call(obj); };
 			}
+
 		}
+		
 	}
 
 

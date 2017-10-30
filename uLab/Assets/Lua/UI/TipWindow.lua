@@ -3,7 +3,7 @@ local gameObject
 
 local TipWindow = class("TipWindow",UIBase)
 
-function TipWindow.OnInit(obj)
+function TipWindow:OnInit(obj)
 	gameObject = obj
 	local ok = Util.FindGameObject(gameObject, 'buttons/button1')
 	UIEventListener.SetOnClick(ok, onOkClick)
@@ -34,3 +34,5 @@ end
 function onCancelClick(go)
 	CloseWindow(GameUI.tip)
 end
+
+return ShopWindow

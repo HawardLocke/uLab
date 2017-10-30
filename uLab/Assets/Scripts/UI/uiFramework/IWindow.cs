@@ -114,7 +114,7 @@ namespace Lite.ui
 		/// <param name="context"></param>
 		public T FindWidget<T>(string path) where T : Component
 		{
-			var child = this.transform.FindChild(path);
+			var child = this.transform.Find(path);
 			if (child == null)
 			{
 				Debug.LogError(string.Format("cannot find child at {0}", path));

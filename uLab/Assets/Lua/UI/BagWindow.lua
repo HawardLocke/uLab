@@ -16,11 +16,11 @@ function BagWindow:OnInit(obj)
 		local btn = Util.FindGameObject(gameObject, 'buttons/button'..tostring(i))
 		local label = Util.FindComponent(btn, 'Text', "Text")
 		label.text = buttonNames[i]
-		UIEventListener.SetOnClick(btn, onBtnClick)
+		UIEventListener.SetOnClick(btn, self.onBtnClick, self)
 	end
 
 	local back = Util.FindGameObject(gameObject, "buttons/back")
-	UIEventListener.SetOnClick(back, onBackClick)
+	UIEventListener.SetOnClick(back, self.onBackClick, self)
 
 end
 
@@ -40,22 +40,24 @@ function BagWindow:OnResume()
 	
 end
 
-function onBtnClick(go)
+function BagWindow:onBtnClick(go)
 	local index = tonumber(string.sub(go.name, string.len(go.name)))
 	
 	if index == 1 then
-		OpenWindow(GameUI.bag)
+		gUIManager:OpenWindow(GameUI.bag)
 	elseif index == 2 then
-		OpenWindow(GameUI.role)
+		gUIManager:OpenWindow(GameUI.role)
 	elseif index == 3 then
-		OpenWindow(GameUI.shop)
+		gUIManager:OpenWindow(GameUI.shop)
 	elseif index == 4 then
-		OpenWindow(GameUI.tip)
+		gUIManager:OpenWindow(GameUI.tip)
 	elseif index == 5 then
-		BackToMainWindow()
+		gUIManager:BackToMainWindow()
 	end
 end
 
-function onBackClick(go)
-	CloseWindow(GameUI.bag)
+function BagWindow:onBackClick(go)
+	gUIManager:CloseWindow(GameUI.bag)
 end
+
+return BagWindow
